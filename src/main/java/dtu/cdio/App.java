@@ -17,6 +17,9 @@ public class App {
 	public void start() {
 		gui.getUserButtonPressed("hvor mange spillere?", "2", "3", "4", "5", "6");
 		gui.getUserInteger("sælg huset", 10, 100);
+		Connector c = new Connector();
+		c.getConnection();
+		
 		
 	}
 	

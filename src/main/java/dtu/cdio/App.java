@@ -21,7 +21,7 @@ public class App {
 		gui.getUserInteger("sælg huset", 10, 100);
 		Connector c = new Connector();
 		c.getConnection();
-		print(c, "select * from ");
+		print(c, "select * from student;");
 		
 		
 		

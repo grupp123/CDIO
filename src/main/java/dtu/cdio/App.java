@@ -1,6 +1,8 @@
 package dtu.cdio;
 
 import java.awt.Color;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 
 import gui_fields.GUI_Field;
 import gui_fields.GUI_Street;
@@ -19,12 +21,33 @@ public class App {
 		gui.getUserInteger("sælg huset", 10, 100);
 		Connector c = new Connector();
 		c.getConnection();
+		print(c, "select * from ");
+		
 		
 		
 	}
 	
 	
-	
+	public void print(Connector c, String query) {
+		try {
+			ResultSet rs = c.doQuery(query);			
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int columnsNumber = rsmd.getColumnCount();
+			System.out.println(query);
+			while (rs.next()) {
+				for (int j = 1; j <= columnsNumber; j++) {
+					if (j > 1) System.out.print(" - ");
+					String columnValue = rs.getString(j);
+					System.out.print(columnValue + " " + rsmd.getColumnName(j));
+				}
+				System.out.println("");
+			}
+			System.out.println("");
+		}catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+
 	
 	
 	private GUI_Field[] generateFields() {

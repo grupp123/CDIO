@@ -37,7 +37,7 @@ import gui_main.GUI;
  * the {@link dk.dtu.compute.se.pisd.monopoly.mini.model.Card}
  * can be implemented based on the basic actions and activities
  * of this game controller. Then, the game controller takes care
- * of updating the GUI. test
+ * of updating the GUI.
  * 
  * @author Ekkart Kindler, ekki@dtu.dk
  *

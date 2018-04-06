@@ -1,6 +1,7 @@
 package dk.dtu.compute.se.pisd.monopoly.mini;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.List;
 
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Card;
@@ -72,24 +73,46 @@ public class GameController {
 	 */
 	public void createPlayers() {
 		// TODO the players should be created interactively
-		Player p = new Player();
-		p.setName("Player 1");
-		p.setCurrentPosition(game.getSpaces().get(0));
-		p.setColor(Color.RED);
-		game.addPlayer(p);
+		int numberofplayers ;
+		String valg = gui.getUserSelection("Vælg antal spillere", "2","3","4","5","6");
+		numberofplayers = Integer.parseInt(valg);
 		
-		p = new Player();
-		p.setName("Player 2");
-		p.setCurrentPosition(game.getSpaces().get(0));
-		p.setColor(Color.YELLOW);
-		game.addPlayer(p);
-		
-		p = new Player();
-		p.setName("Player 3");
-		p.setCurrentPosition(game.getSpaces().get(0));
-		p.setColor(Color.GREEN);
-		game.addPlayer(p);
+		ArrayList<String> names = new ArrayList<String>();;
+		Color[] colors = new Color[numberofplayers];
+		for (int i = 0; i < numberofplayers; i++) {
+			String name = gui.getUserString("Indtast navn: ");
+			if (name.equals("")) name = "Spiller "+(i+1);
+			else if (names.contains(name)) name += " "+(i+1);
+			names.add(name);			
+		}
+		Player[] players = new Player[numberofplayers];;
+		for (int i = 0; i < numberofplayers; i++) {
+			players[i] = new Player();
+			players[i].setName(names.get(i)); 
+			players[i].setCurrentPosition(game.getSpaces().get(0));
+			players[i].setColor(Color.red);
+			game.addPlayer(players[i]);
+		}
 	}
+		
+//		Player p = new Player();
+//		p.setName("Player 1");
+//		p.setCurrentPosition(game.getSpaces().get(0));
+//		p.setColor(Color.RED);
+//		game.addPlayer(p);
+//		
+//		p = new Player();
+//		p.setName("Player 2");
+//		p.setCurrentPosition(game.getSpaces().get(0));
+//		p.setColor(Color.YELLOW);
+//		game.addPlayer(p);
+//		
+//		p = new Player();
+//		p.setName("Player 9999");
+//		p.setCurrentPosition(game.getSpaces().get(0));
+//		p.setColor(Color.GREEN);
+//		game.addPlayer(p);
+//	}
 	
 	/**
 	 * This method will initialize the GUI. It should be called after

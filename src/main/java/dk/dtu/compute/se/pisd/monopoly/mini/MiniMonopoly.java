@@ -258,7 +258,7 @@ public class MiniMonopoly {
 		
 		CardMove rHusPladsen = new CardMove();
 		rHusPladsen.setText("Tag ind på Rådhuspladsen");
-		rHusPladsen.setTarget(game.getSpaces().get(39));
+		rHusPladsen.setTarget(game.getSpaces().get(10)); //det skal være 39 men jeg venter på at de sidste felter bliver lavet
 		cards.add(rHusPladsen);
 		
 		CardMovePassStart gronning = new CardMovePassStart();

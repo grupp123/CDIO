@@ -10,6 +10,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Property;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.OutOfJail;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeException;
 import gui_main.GUI;
 
@@ -245,6 +246,17 @@ public class GameController {
 					return;
 				}
 			}
+			
+			for(Card card : player.getOwnedCards())
+			{
+				if(card instanceof OutOfJail)
+				{
+					player.setInPrison(false);
+					player.removeOwnedCard(card);
+					break;
+				}
+			}
+			
 			if (!player.isInPrison()) {
 				// make the actual move by computing the new position and then
 				// executing the action moving the player to that space
@@ -504,6 +516,11 @@ public class GameController {
 		while (!player.getOwnedCards().isEmpty()) {
 			game.returnCardToDeck(player.getOwnedCards().get(0));
 		}
+	}
+	
+	public List<Player> getPlayers()
+	{
+		return game.getPlayers();
 	}
 	
 	/**

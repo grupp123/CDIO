@@ -5,6 +5,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Card;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeException;
+import java.util.List;
 
 public class CardRecieveMoneyFromPlayers extends Card{
 
@@ -31,10 +32,12 @@ public class CardRecieveMoneyFromPlayers extends Card{
 	@Override
 	public void doAction(GameController controller, Player player) throws PlayerBrokeException {
 		try {
-			for(int i = 0 ; i==2 ; i++ ) {
-				controller.paymentToBank(player, getAmount());
+			List<Player> players = controller.getPlayers();
+			for(int i = 0 ; i < players.size() ; i++ ) {
+				controller.payment(player, i, players.get(i));
+				controller.paymentToBank(players.get(i), getAmount());
 			}
-			controller.paymentFromBank(player, amount);
+			controller.paymentFromBank(player, amount * players.size());
 		} finally {
 			// Make sure that the card is returned to the deck even when
 			// an Exception should occur!

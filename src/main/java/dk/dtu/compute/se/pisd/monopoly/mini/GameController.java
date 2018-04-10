@@ -64,7 +64,7 @@ public class GameController {
 		super();
 		this.game = game;
 		
-		gui = new GUI();
+		// gui = new GUI();
 	}
 	
 	/**
@@ -107,6 +107,11 @@ public class GameController {
 			players[i].setColor(choosenColor.get(i));
 			game.addPlayer(players[i]);
 		}
+		
+		
+		view.playerUpdate();
+		
+		
 	}
 		
 //		Player p = new Player();
@@ -136,7 +141,9 @@ public class GameController {
 	 * based on the underlying game's spaces (fields).
 	 */
 	public void initializeGUI() {		
-		this. view = new View(game, gui);
+		this. view = new View(game);
+		
+		gui = view.createGUI(game);
 	}
 	
 	/**

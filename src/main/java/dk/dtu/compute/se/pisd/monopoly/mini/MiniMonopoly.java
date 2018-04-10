@@ -125,6 +125,7 @@ public class MiniMonopoly {
 		game.addSpace(p);
 		
 //		properties
+		
 		p = new Property();
 		p.setName("Frederiksberg All�");
 		p.setCost(2800);

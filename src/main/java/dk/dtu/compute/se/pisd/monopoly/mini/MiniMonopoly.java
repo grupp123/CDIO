@@ -7,24 +7,25 @@ import java.util.List;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Card;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Chance;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
-import dk.dtu.compute.se.pisd.monopoly.mini.model.Property;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Tax;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardLegat;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardMove;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardMoveBack;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardMovePassStart;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardNearestShip;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardPay;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardPayForAmountPropertiesHotel;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardReceiveMoneyFromBank;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardRecieveMoneyFromPlayers;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.OutOfJail;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.PayTax;
-import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardMovePassStart;
-import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardNearestShip;
-import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardPay;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.differentSpaces.FreeParking;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.differentSpaces.Go;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.differentSpaces.Jail;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Brewery;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Shipping;
-import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Utility;
 
 /**
  * Main class for setting up and running a (Mini-)Monoploy game.
@@ -49,7 +50,7 @@ public class MiniMonopoly {
 		// of creating it programmatically.
 		Game game = new Game();
 		
-		Space go = new Space();
+		Go go = new Go();
 		go.setName("Start");
 		game.addSpace(go);
 		
@@ -106,7 +107,7 @@ public class MiniMonopoly {
 		game.addSpace(r);
 		r.setColor(Color.pink);
 		
-		Space prison = new Space();
+		Jail prison = new Jail();
 		prison.setName("på besøg");
 		game.addSpace(prison);
 		
@@ -118,7 +119,7 @@ public class MiniMonopoly {
 		r.setColor(Color.green);
 		
 		Brewery p = new Brewery();
-		p.setName("Coca-Cola");
+		p.setName("Tuborg");
 		p.setCost(3000);
 		p.setRent(300);
 		game.addSpace(p);
@@ -169,8 +170,8 @@ public class MiniMonopoly {
 		game.addSpace(r);
 		r.setColor(Color.LIGHT_GRAY);
 		
-		Space Parkering = new Space();
-		Parkering.setName("Den Danske Bank");
+		FreeParking Parkering = new FreeParking();
+		Parkering.setName("Fri parkering");
 		game.addSpace(Parkering);
 		
 		r = new RealEstate();
@@ -220,7 +221,7 @@ public class MiniMonopoly {
 		r.setColor(Color.white);
 		
 		p = new Brewery();
-		p.setName("Faxe Bryggeri");
+		p.setName("Carlsberg");
 		p.setCost(3000);
 		p.setRent(150);
 		game.addSpace(p);

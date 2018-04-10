@@ -1,7 +1,6 @@
 package dk.dtu.compute.se.pisd.monopoly.mini;
 
 import java.awt.Color;
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,18 +11,23 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Tax;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.differentSpaces.FreeParking;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.differentSpaces.Go;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.differentSpaces.Jail;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Brewery;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Shipping;
-import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Utility;
 import gui_fields.GUI_Brewery;
 import gui_fields.GUI_Car;
 import gui_fields.GUI_Car.Pattern;
 import gui_fields.GUI_Car.Type;
 import gui_fields.GUI_Chance;
 import gui_fields.GUI_Field;
+import gui_fields.GUI_Jail;
 import gui_fields.GUI_Player;
+import gui_fields.GUI_Refuge;
 import gui_fields.GUI_Shipping;
+import gui_fields.GUI_Start;
 import gui_fields.GUI_Street;
 import gui_fields.GUI_Tax;
 import gui_main.GUI;
@@ -176,18 +180,44 @@ public class View implements Observer {
 			else if (space instanceof Shipping){
 				Shipping utility = (Shipping) space;
 				GUI_Shipping gui_shipping = new GUI_Shipping();
+				gui_shipping.setTitle(space.getName());
+				gui_shipping.setSubText(""+((Shipping) space).getCost());
 				guiFields[i] = gui_shipping;
 				
 			} else if (space instanceof Brewery){
 				Brewery utility = (Brewery) space;
 				GUI_Brewery gui_brewery = new GUI_Brewery();
+				gui_brewery.setTitle(space.getName());
+				gui_brewery.setSubText(""+((Brewery) space).getCost());
 				guiFields[i] = gui_brewery;
 
 			} else if (space instanceof Tax){
 				Tax tax = (Tax) space;
 				GUI_Tax gui_tax = new GUI_Tax();
 				guiFields[i] = gui_tax;
-			} else {
+				gui_tax.setBackGroundColor(Color.gray);
+				gui_tax.setTitle("skat");
+				
+			}else if(space instanceof Go) {
+				Go go = (Go) space;
+				GUI_Start gui_start = new GUI_Start();
+				gui_start.setTitle(space.getName());
+				gui_start.setSubText("");
+				gui_start.setBackGroundColor(Color.RED);
+				guiFields[i] = gui_start;
+				
+			}else if(space instanceof Jail) {
+				Jail jail = (Jail) space;
+				GUI_Jail gui_jail = new GUI_Jail();
+				gui_jail.setSubText(space.getName());
+				guiFields[i] = gui_jail;
+			}else if(space instanceof FreeParking) {
+				FreeParking freeparking = (FreeParking) space;
+				GUI_Refuge gui_refuge = new GUI_Refuge();
+				gui_refuge.setSubText(space.getName());
+				guiFields[i] = gui_refuge;
+			}
+			else {
 				GUI_Field gui_field = new GUI_Field(Color.red, Color.red, space.getName(), "e", "r") {
 				};
 				guiFields[i] = gui_field;

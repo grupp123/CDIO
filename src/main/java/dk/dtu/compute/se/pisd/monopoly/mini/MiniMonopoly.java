@@ -9,6 +9,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Property;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Tax;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardLegat;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardMove;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardMoveBack;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardPayForAmountPropertiesHotel;
@@ -213,7 +214,7 @@ public class MiniMonopoly {
 		reparation.setAmount(3000);
 		cards.add(reparation);
 		
-		CardReceiveMoneyFromBank trengende = new CardReceiveMoneyFromBank();
+		CardLegat trengende = new CardLegat();
 		trengende.setText("De modtager “Matador-legatet for værdi trængende”, stort kr. 40.000. Ved værdig trængende forstås, at Deres formue, d.v.s. Deres kontante penge + skøder + bygninger ikke overstiger kr. 15.000.");
 		trengende.setAmount(40000);
 		cards.add(trengende);

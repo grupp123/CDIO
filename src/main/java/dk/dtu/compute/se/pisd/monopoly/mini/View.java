@@ -181,12 +181,15 @@ public class View implements Observer {
 				Shipping utility = (Shipping) space;
 				GUI_Shipping gui_shipping = new GUI_Shipping();
 				gui_shipping.setTitle(space.getName());
+				gui_shipping.setBackGroundColor(Color.WHITE);
 				gui_shipping.setSubText(""+((Shipping) space).getCost());
 				guiFields[i] = gui_shipping;
 				
 			} else if (space instanceof Brewery){
 				Brewery utility = (Brewery) space;
 				GUI_Brewery gui_brewery = new GUI_Brewery();
+				gui_brewery.setBackGroundColor(Color.BLACK);
+				gui_brewery.setForeGroundColor(Color.WHITE);
 				gui_brewery.setTitle(space.getName());
 				gui_brewery.setSubText(""+((Brewery) space).getCost());
 				guiFields[i] = gui_brewery;
@@ -203,6 +206,7 @@ public class View implements Observer {
 				GUI_Start gui_start = new GUI_Start();
 				gui_start.setTitle(space.getName());
 				gui_start.setSubText("");
+				gui_start.setForeGroundColor(Color.WHITE);
 				gui_start.setBackGroundColor(Color.RED);
 				guiFields[i] = gui_start;
 				

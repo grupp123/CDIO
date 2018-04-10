@@ -233,7 +233,7 @@ public class MiniMonopoly {
 		game.addSpace(r);
 		r.setColor(Color.white);
 		
-		Space prison2 = new Space();
+		Jail prison2 = new Jail();
 		prison2.setName("De Fængsles");
 		game.addSpace(prison2);
 		

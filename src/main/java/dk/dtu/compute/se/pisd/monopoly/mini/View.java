@@ -12,8 +12,11 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Tax;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Brewery;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Shipping;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Utility;
+import gui_fields.GUI_Brewery;
 import gui_fields.GUI_Car;
 import gui_fields.GUI_Car.Pattern;
 import gui_fields.GUI_Car.Type;
@@ -162,18 +165,24 @@ public class View implements Observer {
 			if (space instanceof Chance) {
 				GUI_Chance gui_chance = new GUI_Chance();
 				guiFields[i] = gui_chance;
+				
 			} else if (space instanceof RealEstate) {
 				RealEstate realestate = (RealEstate) space; 
 				// GUI_Street gui_Street = new GUI_Street(realestate.getName());
 				GUI_Street gui_street = new GUI_Street(realestate.getName(), "" + realestate.getCost() + "", "" + realestate.getRent() + "", "" + realestate.getRent() + "", Color.white, Color.BLUE);
-				gui_street.setBackGroundColor(Color.black);
+				gui_street.setBackGroundColor(((RealEstate) space).getColor());
 				guiFields[i] = gui_street;
 			} // ...
-			else if (space instanceof Utility){
-				Utility utility = (Utility) space;
+			else if (space instanceof Shipping){
+				Shipping utility = (Shipping) space;
 				GUI_Shipping gui_shipping = new GUI_Shipping();
 				guiFields[i] = gui_shipping;
-						
+				
+			} else if (space instanceof Brewery){
+				Brewery utility = (Brewery) space;
+				GUI_Brewery gui_brewery = new GUI_Brewery();
+				guiFields[i] = gui_brewery;
+
 			} else if (space instanceof Tax){
 				Tax tax = (Tax) space;
 				GUI_Tax gui_tax = new GUI_Tax();

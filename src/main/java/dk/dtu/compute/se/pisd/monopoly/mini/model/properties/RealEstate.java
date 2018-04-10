@@ -1,5 +1,7 @@
 package dk.dtu.compute.se.pisd.monopoly.mini.model.properties;
 
+import java.awt.Color;
+
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Property;
 
 /**
@@ -13,5 +15,15 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Property;
 public class RealEstate extends Property{
 	
 	// TODO to be implemented
+	
+	Color color;
+	
+	public void setColor(Color color) {
+		this.color=color;
+	}
+	
+	public Color getColor() {
+		return this.color;
+	}
 
 }

@@ -215,10 +215,12 @@ public class View implements Observer {
 				GUI_Jail gui_jail = new GUI_Jail();
 				gui_jail.setSubText(space.getName());
 				guiFields[i] = gui_jail;
+				
 			}else if(space instanceof FreeParking) {
 				FreeParking freeparking = (FreeParking) space;
 				GUI_Refuge gui_refuge = new GUI_Refuge();
 				gui_refuge.setSubText(space.getName());
+				gui_refuge.setBackGroundColor(Color.WHITE);
 				guiFields[i] = gui_refuge;
 			}
 			else {

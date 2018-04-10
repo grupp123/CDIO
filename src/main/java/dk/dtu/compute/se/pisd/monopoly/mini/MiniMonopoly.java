@@ -124,6 +124,13 @@ public class MiniMonopoly {
 		p.setRent(250);
 		game.addSpace(p);
 		
+		p = new Property();
+		p.setName("Frederiksberg All�");
+		p.setCost(2800);
+		p.setRent(200);
+		game.addSpace(p);
+		
+		
 		List<Card> cards = new ArrayList<Card>();
 		
 		PayTax tax = new PayTax();

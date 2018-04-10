@@ -11,14 +11,18 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Chance;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.Tax;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Utility;
 import gui_fields.GUI_Car;
 import gui_fields.GUI_Car.Pattern;
 import gui_fields.GUI_Car.Type;
 import gui_fields.GUI_Chance;
 import gui_fields.GUI_Field;
 import gui_fields.GUI_Player;
+import gui_fields.GUI_Shipping;
 import gui_fields.GUI_Street;
+import gui_fields.GUI_Tax;
 import gui_main.GUI;
 
 /**
@@ -146,32 +150,41 @@ public class View implements Observer {
 	public GUI createGUI(Game game2) {
 
 		GUI_Field[] guiFields = new GUI_Field[game.getSpaces().size()];
+		
+		System.out.println(game.getSpaces().size());
 
 
 		int i = 0 ;
 		for (Space space: game.getSpaces()) {
-
-			// TODO, here we assume that the games fields fit to the GUI's fields;
-			// the GUI fields should actually be created according to the games
-			// fields
+			
+			System.out.println(i);
+			
 			if (space instanceof Chance) {
 				GUI_Chance gui_chance = new GUI_Chance();
 				guiFields[i] = gui_chance;
 			} else if (space instanceof RealEstate) {
 				RealEstate realestate = (RealEstate) space; 
 				// GUI_Street gui_Street = new GUI_Street(realestate.getName());
-				GUI_Street gui_street = new GUI_Street();
+				GUI_Street gui_street = new GUI_Street(realestate.getName(), "" + realestate.getCost() + "", "" + realestate.getRent() + "", "" + realestate.getRent() + "", Color.white, Color.BLUE);
+				gui_street.setBackGroundColor(Color.black);
 				guiFields[i] = gui_street;
 			} // ...
-			else {
+			else if (space instanceof Utility){
+				Utility utility = (Utility) space;
+				GUI_Shipping gui_shipping = new GUI_Shipping();
+				guiFields[i] = gui_shipping;
+						
+			} else if (space instanceof Tax){
+				Tax tax = (Tax) space;
+				GUI_Tax gui_tax = new GUI_Tax();
+				guiFields[i] = gui_tax;
+			} else {
 				GUI_Field gui_field = new GUI_Field(Color.red, Color.red, space.getName(), "e", "r") {
 				};
 				guiFields[i] = gui_field;
 			}
 
 			space2GuiField.put(space, guiFields[i++]);
-
-
 
 			// TODO we should also register with the properties as observer; but
 			// the current version does not update anything for the spaces, so we do not
@@ -191,7 +204,7 @@ public class View implements Observer {
 			// player's state in the GUI
 			player.attach(this);
 
-			updatePlayer(player);
+			
 
 
 		}

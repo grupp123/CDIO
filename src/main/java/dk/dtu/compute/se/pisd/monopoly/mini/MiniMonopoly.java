@@ -20,6 +20,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.PayTax;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardMovePassStart;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardNearestShip;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardPay;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Utility;
 
 /**
@@ -49,21 +50,21 @@ public class MiniMonopoly {
 		go.setName("Start");
 		game.addSpace(go);
 		
-		Property p = new Property();
-		p.setName("Rødovrevej");
-		p.setCost(1200);
-		p.setRent(50);
-		game.addSpace(p);
+		RealEstate r = new RealEstate();
+		r.setName("Rødovrevej");
+		r.setCost(1200);
+		r.setRent(50);
+		game.addSpace(r);
 		
 		Chance chance = new Chance();
 		chance.setName("Chance");
 		game.addSpace(chance);
 		
-		p = new Property();
-		p.setName("Hvidovrevej");
-		p.setCost(1200);
-		p.setRent(50);
-		game.addSpace(p);
+		r = new RealEstate();
+		r.setName("Hvidovrevej");
+		r.setCost(1200);
+		r.setRent(50);
+		game.addSpace(r);
 		
 		Tax t = new Tax();
 		t.setName("betal inkomstskat eller 10% eller 4000kr");
@@ -75,134 +76,128 @@ public class MiniMonopoly {
 		s.setRent(500);
 		game.addSpace(s);
 
-		p = new Property();
-		p.setName("Roskildevej");
-		p.setCost(2000);
-		p.setRent(100);
-		game.addSpace(p);
+		r = new RealEstate();
+		r.setName("Roskildevej");
+		r.setCost(2000);
+		r.setRent(100);
+		game.addSpace(r);
 		
 		chance = new Chance();
 		chance.setName("Chance");
 		game.addSpace(chance);
 		
-		p = new Property();
-		p.setName("Valby Langgade");
-		p.setCost(2000);
-		p.setRent(100);
-		game.addSpace(p);
+		r = new RealEstate();
+		r.setName("Valby Langgade");
+		r.setCost(2000);
+		r.setRent(100);
+		game.addSpace(r);
 		
-		p = new Property();
-		p.setName("Allégade");
-		p.setCost(2400);
-		p.setRent(150);
-		game.addSpace(p);
+		r = new RealEstate();
+		r.setName("Allégade");
+		r.setCost(2400);
+		r.setRent(150);
+		game.addSpace(r);
 		
 		Space prison = new Space();
 		prison.setName("på besøg");
 		game.addSpace(prison);
 		
-		p = new Property();
-		p.setName("Frederiksberg Allé");
-		p.setCost(2800);
-		p.setRent(200);
-		game.addSpace(p);
+		r = new RealEstate();
+		r.setName("Frederiksberg Allé");
+		r.setCost(2800);
+		r.setRent(200);
+		game.addSpace(r);
 		
-		p = new Property();
+		Property p = new Property();
 		p.setName("Coca-Cola");
 		p.setCost(3000);
 		p.setRent(300);
 		game.addSpace(p);
 		
-		p = new Property();
-		p.setName("Bülowsvej");
-		p.setCost(2800);
-		p.setRent(200);
-		game.addSpace(p);
+		r = new RealEstate();
+		r.setName("Bülowsvej");
+		r.setCost(2800);
+		r.setRent(200);
+		game.addSpace(r);
 		
-		p = new Property();
-		p.setName("Gl. Kongevej");
-		p.setCost(3200);
-		p.setRent(250);
-		game.addSpace(p);
+		r = new RealEstate();
+		r.setName("Gl. Kongevej");
+		r.setCost(3200);
+		r.setRent(250);
+		game.addSpace(r);
 		
-		p = new Property();
-		p.setName("Grenaa-Hundested");
-		p.setCost(4000);
-		p.setRent(500);
-		game.addSpace(p);
+		Utility util = new Utility();
+		util.setName("Grenaa-Hundested");
+		util.setCost(4000);
+		util.setRent(500);
+		game.addSpace(util);
 
 
-		p = new Property();
-		p.setName("Bernstorffsvej");
-		p.setCost(3600);
-		p.setRent(300);
-		game.addSpace(p);
+		r = new RealEstate();
+		r.setName("Bernstorffsvej");
+		r.setCost(3600);
+		r.setRent(300);
+		game.addSpace(r);
 		
 		chance = new Chance();
 		chance.setName("Chance");
 		game.addSpace(chance);
 		 
-		p = new Property();
-		p.setName("Hellerupvej");
-		p.setCost(3600);
-		p.setRent(300);
-		game.addSpace(p);
+		r = new RealEstate();
+		r.setName("Hellerupvej");
+		r.setCost(3600);
+		r.setRent(300);
+		game.addSpace(r);
 		
-		p = new Property();
-		p.setName("Strandvej");
-		p.setCost(4000);
-		p.setRent(400);
-		game.addSpace(p);
-		
-		p = new Property();
-		p.setName("Strandvej");
-		p.setCost(4000);
-		p.setRent(350);
-		game.addSpace(p);
+		r = new RealEstate();
+		r.setName("Strandvej");
+		r.setCost(4000);
+		r.setRent(400);
+		game.addSpace(r);
 		
 		Space Parkering = new Space();
 		Parkering.setName("Den Danske Bank");
 		game.addSpace(Parkering);
 		
-		p = new Property();
-		p.setName("Trianglen");
-		p.setCost(4400);
-		p.setRent(350);
-		game.addSpace(p);
+		r = new RealEstate();
+		r.setName("Trianglen");
+		r.setCost(4400);
+		r.setRent(350);
+		game.addSpace(r);
 		
 		chance = new Chance();
 		chance.setName("Chance");
 		game.addSpace(chance);
 		
-		p = new Property();
-		p.setName("Østerbrogade");
-		p.setCost(4400);
-		p.setRent(350);
-		game.addSpace(p);
+		r = new RealEstate();
+		r.setName("Østerbrogade");
+		r.setCost(4400);
+		r.setRent(350);
+		game.addSpace(r);
 		
-		p = new Property();
-		p.setName("Grønningen");
-		p.setCost(4800);
-		p.setRent(400);
-		game.addSpace(p);
+		r = new RealEstate();
+		r.setName("Grønningen");
+		r.setCost(4800);
+		r.setRent(400);
+		game.addSpace(r);
 		
-		p = new Property();
-		p.setName("Mols-Linien A/S");
-		p.setCost(4000);
-		p.setRent(350);
-		game.addSpace(p);
+		util = new Utility();
+		util.setName("Mols-Linien A/S");
+		util.setCost(4000);
+		util.setRent(350);
+		game.addSpace(util);
 		
-		p = new Property();
-		p.setName("Bredegade");
-		p.setCost(5200);
-		p.setRent(450);
-		game.addSpace(p);
+		r = new RealEstate();
+		r.setName("Bredegade");
+		r.setCost(5200);
+		r.setRent(450);
+		game.addSpace(r);
 		
-		p = new Property();
-		p.setName("Kgs. Nytorv");
-		p.setCost(5200);
-		p.setRent(450);
-		game.addSpace(p);
+		r = new RealEstate();
+		r.setName("Kgs. Nytorv");
+		r.setCost(5200);
+		r.setRent(450);
+		game.addSpace(r);
 		
 		p = new Property();
 		p.setName("Faxe Bryggeri");
@@ -210,63 +205,63 @@ public class MiniMonopoly {
 		p.setRent(150);
 		game.addSpace(p);
 		
-		p = new Property();
-		p.setName("Østergade");
-		p.setCost(5600);
-		p.setRent(500);
-		game.addSpace(p);
+		r = new RealEstate();
+		r.setName("Østergade");
+		r.setCost(5600);
+		r.setRent(500);
+		game.addSpace(r);
 		
 		Space prison2 = new Space();
 		prison2.setName("De Fængsles");
 		game.addSpace(prison2);
 		
-		p = new Property();
-		p.setName("Amagertorv");
-		p.setCost(6000);
-		p.setRent(400);
-		game.addSpace(p);
+		r = new RealEstate();
+		r.setName("Amagertorv");
+		r.setCost(6000);
+		r.setRent(400);
+		game.addSpace(r);
 	
-		p = new Property();
-		p.setName("Vimmelskaftet");
-		p.setCost(6000);
-		p.setRent(550);
-		game.addSpace(p);
+		r = new RealEstate();
+		r.setName("Vimmelskaftet");
+		r.setCost(6000);
+		r.setRent(550);
+		game.addSpace(r);
 		
 		chance = new Chance();
 		chance.setName("Chance");
 		game.addSpace(chance);
 		
-		p = new Property();
-		p.setName("Nygade");
-		p.setCost(6400);
-		p.setRent(600);
-		game.addSpace(p);
+		r = new RealEstate();
+		r.setName("Nygade");
+		r.setCost(6400);
+		r.setRent(600);
+		game.addSpace(r);
 		
-		p = new Property();
-		p.setName("Skandinavisk Linietrafik");
-		p.setCost(4000);
-		p.setRent(350);
-		game.addSpace(p);
+		util = new Utility();
+		util.setName("Skandinavisk Linietrafik");
+		util.setCost(4000);
+		util.setRent(350);
+		game.addSpace(util);
 		
 		chance = new Chance();
 		chance.setName("Chance");
 		game.addSpace(chance);
 		
-		p = new Property();
-		p.setName("Frederiksberggade");
-		p.setCost(7000);
-		p.setRent(700);
-		game.addSpace(p);
+		r = new RealEstate();
+		r.setName("Frederiksberggade");
+		r.setCost(7000);
+		r.setRent(700);
+		game.addSpace(r);
 		
 		Tax t1 = new Tax();
 		t.setName("Ekstraordinær statsskat betal kr. 2.000");
 		game.addSpace(t1);
 		
-		p = new Property();
-		p.setName("Rådhuspladsen");
-		p.setCost(8000);
-		p.setRent(1000);
-		game.addSpace(p);
+		r = new RealEstate();
+		r.setName("Rådhuspladsen");
+		r.setCost(8000);
+		r.setRent(1000);
+		game.addSpace(r);
 		
 
 		

@@ -12,7 +12,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Property;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeException;
 import gui_main.GUI;
-
+//dhdsk
 
 //YOLOOSS
 /**

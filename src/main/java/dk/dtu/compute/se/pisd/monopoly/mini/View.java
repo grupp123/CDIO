@@ -58,7 +58,7 @@ public class View implements Observer {
 			// fields
 			space2GuiField.put(space, guiFields[i++]);
 			
-			// TODO we should also register with the properties as observer; but
+			// TODO wee should also register with the properties as observer; but
 			// the current version does not update anything for the spaces, so we do not
 			// register the view as an observer for now
 		}

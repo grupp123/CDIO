@@ -2,7 +2,6 @@ package dk.dtu.compute.se.pisd.monopoly.mini;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Card;
@@ -78,33 +77,21 @@ public class GameController {
 		int numberofplayers ;
 		String valg = gui.getUserSelection("Vælg antal spillere", "2","3","4","5","6");
 		numberofplayers = Integer.parseInt(valg);
-		ArrayList<Color> colorList = new ArrayList<Color>(Arrays.asList(Color.BLUE, Color.RED, Color.GREEN, Color.PINK, Color.YELLOW,
-				Color.BLACK, Color.WHITE));
-		ArrayList<String> colorString = new ArrayList<String>(Arrays.asList("Blå", "Rød", "Grøn", "Pink", "Gul", "Sort", "Hvid"));
 		
-		ArrayList<Color> choosenColor = new ArrayList<Color>();
-		ArrayList<String> names = new ArrayList<String>();
+		ArrayList<String> names = new ArrayList<String>();;
+		Color[] colors = new Color[numberofplayers];
 		for (int i = 0; i < numberofplayers; i++) {
 			String name = gui.getUserString("Indtast navn: ");
 			if (name.equals("")) name = "Spiller "+(i+1);
 			else if (names.contains(name)) name += " "+(i+1);
-			names.add(name);
-			
-			String chooceColor = gui.getUserSelection("Vælg din bils farve", colorString.toArray(new String[0]));
-
-			int k = colorString.indexOf(chooceColor);
-			Color color_1 = colorList.get(k);
-			choosenColor.add(color_1);
-			
-			colorString.remove(k);
-			colorList.remove(k);
+			names.add(name);			
 		}
 		Player[] players = new Player[numberofplayers];;
 		for (int i = 0; i < numberofplayers; i++) {
 			players[i] = new Player();
 			players[i].setName(names.get(i)); 
 			players[i].setCurrentPosition(game.getSpaces().get(0));
-			players[i].setColor(choosenColor.get(i));
+			players[i].setColor(Color.red);
 			game.addPlayer(players[i]);
 		}
 		

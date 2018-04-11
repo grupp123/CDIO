@@ -52,6 +52,7 @@ public class MiniMonopoly {
 		
 		Go go = new Go();
 		go.setName("Start");
+		go.setText("Du får 2000 ved at passere start!");
 		game.addSpace(go);
 		
 		RealEstate r = new RealEstate();
@@ -75,6 +76,8 @@ public class MiniMonopoly {
 		Tax t = new Tax();
 		t.setName("betal inkomstskat eller 10% eller 4000kr");
 		game.addSpace(t);
+		t.setText("10% eller 4000");
+		
 
 		Shipping s = new Shipping();
 		s.setName("Rederiet Lindinger A/S");
@@ -279,9 +282,11 @@ public class MiniMonopoly {
 		game.addSpace(r);
 		r.setColor(Color.magenta);
 		
-		Tax t1 = new Tax();
+		t = new Tax();
 		t.setName("Ekstraordinær statsskat betal kr. 2.000");
-		game.addSpace(t1);
+		game.addSpace(t);
+		t.setText("2000");
+		
 		
 		r = new RealEstate();
 		r.setName("Rådhuspladsen");

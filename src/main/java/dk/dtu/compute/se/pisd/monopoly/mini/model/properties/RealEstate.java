@@ -16,7 +16,7 @@ public class RealEstate extends Property{
 	
 	// TODO to be implemented
 	
-	Color color;
+	private Color color;
 	
 	public void setColor(Color color) {
 		this.color=color;

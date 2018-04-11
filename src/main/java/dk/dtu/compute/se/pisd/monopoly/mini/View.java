@@ -169,6 +169,8 @@ public class View implements Observer {
 			if (space instanceof Chance) {
 				GUI_Chance gui_chance = new GUI_Chance();
 				guiFields[i] = gui_chance;
+				gui_chance.setBackGroundColor(Color.BLUE);
+				gui_chance.setDescription("Chancekort");
 				
 			} else if (space instanceof RealEstate) {
 				RealEstate realestate = (RealEstate) space; 
@@ -200,6 +202,8 @@ public class View implements Observer {
 				guiFields[i] = gui_tax;
 				gui_tax.setBackGroundColor(Color.gray);
 				gui_tax.setTitle("skat");
+				gui_tax.setSubText(((Tax) space).getText());
+				gui_tax.setDescription(((Tax) space).getText());
 				
 			}else if(space instanceof Go) {
 				Go go = (Go) space;
@@ -209,6 +213,7 @@ public class View implements Observer {
 				gui_start.setForeGroundColor(Color.WHITE);
 				gui_start.setBackGroundColor(Color.RED);
 				guiFields[i] = gui_start;
+				gui_start.setDescription(go.getText());
 				
 			}else if(space instanceof Jail) {
 				Jail jail = (Jail) space;

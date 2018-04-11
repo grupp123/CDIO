@@ -1,5 +1,7 @@
 package dk.dtu.compute.se.pisd.monopoly.mini.model;
 
+import java.awt.Color;
+
 import dk.dtu.compute.se.pisd.monopoly.mini.GameController;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeException;
 
@@ -16,5 +18,16 @@ public class Tax extends Space {
 		// TODO note that tax concerns all assets an not just cash
 		controller.paymentToBank(player, player.getBalance() / 10);
 	}
+	
+	private String text;
+	
+	public void setText(String text ) {
+		this.text=text;
+	}
+	
+	public String getText() {
+		return this.text;
+	}
+
 
 }

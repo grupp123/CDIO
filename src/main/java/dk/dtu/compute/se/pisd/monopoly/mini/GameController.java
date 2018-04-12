@@ -334,7 +334,7 @@ public class GameController {
 	 * @param player the player going to jail
 	 */
 	public void gotoJail(Player player) {
-		// TODO the 10 should not be hard coded
+		gui.showMessage("Player " + player.getName() + "Go directly to the jail without passing the start");
 		player.setCurrentPosition(game.getSpaces().get(10));
 		player.setInPrison(true);
 	}

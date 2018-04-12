@@ -244,29 +244,15 @@ public class GameController {
 				gui.showMessage("Player " + player.getName() + " stays in prison since he did not cast a double!");
 			}
 
-			//			if (player.isInPrison()) {
-			//				if (player.getOwnedCards(OutOfJail())){
-			//					gui.showMessage("Player " + player.getName() + " leaves prison now since he used the chance card !");
-			//					} else if (player.getBalance() >= 1000) {
-			//					player.payMoney(1000);
-			//					gui.showMessage("Player " + player.getName() + " leaves prison now since he pay 1000!");
-			//					} else {
-			//						gui.showMessage("Player " + player.getName() + " stays in prison since he did not pay 1000!");
-			//					}
-
-
 			if (player.isInPrison()) {
-				if (player.getBalance() >= 1000) {
+				if (player.getBalance () >= 1000) {
 					player.payMoney(1000);
 					gui.showMessage("Player " + player.getName() + " leaves prison now since he pay 1000!");
-				} else {
+					player.setInPrison (false);
+				}else {
 					gui.showMessage("Player " + player.getName() + " stays in prison since he did not pay 1000!");
-
 				}
 			}
-
-
-
 
 			if (castDouble) {
 				doublesCount++;
@@ -277,8 +263,7 @@ public class GameController {
 				}
 			}
 
-			for(Card card : player.getOwnedCards())
-			{
+			for(Card card : player.getOwnedCards()){
 				if(card instanceof OutOfJail)
 				{
 					player.setInPrison(false);
@@ -548,8 +533,7 @@ public class GameController {
 		}
 	}
 
-	public List<Player> getPlayers()
-	{
+	public List<Player> getPlayers(){
 		return game.getPlayers();
 	}
 

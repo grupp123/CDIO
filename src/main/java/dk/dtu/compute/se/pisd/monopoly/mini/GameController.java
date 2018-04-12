@@ -217,7 +217,7 @@ public class GameController {
 	}
 
 	/**
-	 * This method implements a activity of asingle move of the given player.
+	 * This method implements a activity of a single move of the given player.
 	 * It throws a {@link dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeException}
 	 * if the player goes broke in this move. Note that this is still a very
 	 * basic implementation of the move of a player; many aspects are still

@@ -22,6 +22,8 @@ import dk.dtu.compute.se.pisd.designpatterns.Subject;
  */
 public class Player extends Subject {
 	
+	private int id;
+	
 	private String name;
 	
 	private Color color;
@@ -264,6 +266,13 @@ public class Player extends Subject {
 		if (oldInPrison != inPrison) {
 			notifyChange();
 		}
+	}
+
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 
 }

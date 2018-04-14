@@ -7,20 +7,23 @@ import java.util.List;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Card;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Chance;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
-import dk.dtu.compute.se.pisd.monopoly.mini.model.Property;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Tax;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardLegat;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardMove;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardMoveBack;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardMovePassStart;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardNearestShip;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardPay;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardPayForAmountPropertiesHotel;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardReceiveMoneyFromBank;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardRecieveMoneyFromPlayers;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.OutOfJail;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.PayTax;
-import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardMovePassStart;
-import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardNearestShip;
-import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardPay;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.differentSpaces.FreeParking;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.differentSpaces.Go;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.differentSpaces.Jail;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Brewery;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Shipping;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Utility;
@@ -72,8 +75,10 @@ public class MiniMonopoly {
 		game.addSpace(r);
 		
 		Tax t = new Tax();
-		t.setName("betal inkomstskat eller 10% eller 4000kr");
+		t.setName("betal inkomstskat 10% eller 4000kr");
 		game.addSpace(t);
+		t.setText("10% eller 4000");
+		
 
 		Shipping s = new Shipping();
 		s.setName("Rederiet Lindinger A/S");
@@ -106,7 +111,7 @@ public class MiniMonopoly {
 		r.setColor(Color.BLUE);
 		game.addSpace(r);
 		
-		Space prison = new Space();
+		Jail prison = new Jail();
 		prison.setName("på besøg");
 		game.addSpace(prison);
 		
@@ -117,7 +122,7 @@ public class MiniMonopoly {
 		r.setColor(Color.pink);
 		game.addSpace(r);
 		
-		Utility u = new Utility();
+Utility u = new Utility();
 		u.setName("Coca-Cola");
 		u.setCost(3000);
 		u.setRent(300);
@@ -137,12 +142,11 @@ public class MiniMonopoly {
 		r.setColor(Color.pink);
 		game.addSpace(r);
 		
-		s = new Shipping();
+s = new Shipping();
 		s.setName("Grenaa-Hundested");
 		s.setCost(4000);
 		s.setRent(500);
 		game.addSpace(s);
-
 
 		r = new RealEstate();
 		r.setName("Bernstorffsvej");
@@ -169,7 +173,7 @@ public class MiniMonopoly {
 		r.setColor(Color.ORANGE);
 		game.addSpace(r);
 		
-		Space Parkering = new Space();
+Space Parkering = new Space();
 		Parkering.setName("Helle");
 		game.addSpace(Parkering);
 		
@@ -178,7 +182,7 @@ public class MiniMonopoly {
 		r.setCost(4400);
 		r.setRent(350);
 		r.setColor(Color.red);
-		game.addSpace(r);
+		game.addSpace(r);	
 		
 		chance = new Chance();
 		chance.setName("Chance");
@@ -198,7 +202,7 @@ public class MiniMonopoly {
 		r.setColor(Color.red);
 		game.addSpace(r);
 		
-		s = new Shipping();
+s = new Shipping();
 		s.setName("Mols-Linien A/S");
 		s.setCost(4000);
 		s.setRent(350);
@@ -218,7 +222,7 @@ public class MiniMonopoly {
 		r.setColor(Color.yellow);
 		game.addSpace(r);
 		
-		u = new Utility();
+u = new Utility();
 		u.setName("Faxe Bryggeri");
 		u.setCost(3000);
 		u.setRent(150);
@@ -231,7 +235,7 @@ public class MiniMonopoly {
 		r.setColor(Color.yellow);
 		game.addSpace(r);
 		
-		Space prison2 = new Space();
+		Jail prison2 = new Jail();
 		prison2.setName("De Fængsles");
 		game.addSpace(prison2);
 		
@@ -259,8 +263,9 @@ public class MiniMonopoly {
 		r.setRent(600);
 		r.setColor(Color.green);
 		game.addSpace(r);
+		r.setColor(Color.yelow);
 		
-		s = new Shipping();
+s = new Shipping();
 		s.setName("Skandinavisk Linietrafik");
 		s.setCost(4000);
 		s.setRent(350);
@@ -277,9 +282,11 @@ public class MiniMonopoly {
 		r.setColor(Color.pink);
 		game.addSpace(r);
 		
-		Tax t1 = new Tax();
+		t = new Tax();
 		t.setName("Ekstraordinær statsskat betal kr. 2.000");
-		game.addSpace(t1);
+		game.addSpace(t);
+		t.setText("2000");
+		
 		
 		r = new RealEstate();
 		r.setName("Rådhuspladsen");
@@ -287,7 +294,6 @@ public class MiniMonopoly {
 		r.setRent(1000);
 		r.setColor(Color.pink);
 		game.addSpace(r);
-		
 
 		
 		List<Card> cards = new ArrayList<Card>();

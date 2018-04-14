@@ -1,7 +1,6 @@
 package dk.dtu.compute.se.pisd.monopoly.mini;
 
 import java.awt.Color;
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,6 +11,10 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Tax;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.differentSpaces.FreeParking;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.differentSpaces.Go;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.differentSpaces.Jail;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Brewery;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Shipping;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Utility;
@@ -26,6 +29,7 @@ import gui_fields.GUI_Jail;
 import gui_fields.GUI_Player;
 import gui_fields.GUI_Refuge;
 import gui_fields.GUI_Shipping;
+import gui_fields.GUI_Start;
 import gui_fields.GUI_Street;
 import gui_fields.GUI_Tax;
 import gui_main.GUI;
@@ -74,7 +78,7 @@ public class View implements Observer {
 			// fields
 			//space2GuiField.put(space, guiFields[i++]);
 
-			// TODO we should also register with the properties as observer; but
+			// TODO wee should also register with the properties as observer; but
 			// the current version does not update anything for the spaces, so we do not
 			// register the view as an observer for now
 		}
@@ -167,6 +171,9 @@ public class View implements Observer {
 			if (space instanceof Chance) {
 				GUI_Chance gui_chance = new GUI_Chance();
 				guiFields[i] = gui_chance;
+				gui_chance.setBackGroundColor(Color.BLUE);
+				gui_chance.setDescription("Chancekort");
+				
 			} else if (space instanceof RealEstate) {
 				RealEstate realestate = (RealEstate) space; 
 				GUI_Street gui_street = new GUI_Street(realestate.getName(), "Pris : " + realestate.getCost() + "", "Husleje : " + realestate.getRent() + "", "husleje : " + realestate.getRent() + "", realestate.getColor(), Color.black);

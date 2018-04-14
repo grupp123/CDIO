@@ -14,7 +14,17 @@ public class Property extends Space {
 	private int cost;
 	private int rent;
 	
+	private int house = 0;
+	private int hotel = 0;
+	
 	private Player owner;
+	
+	public int getHotel() {
+		return hotel;
+	}
+	public int getHouse() {
+		return house;
+	}
 	
 
 	/**

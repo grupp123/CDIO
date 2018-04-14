@@ -14,6 +14,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Property;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.OutOfJail;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeException;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 import gui_main.GUI;
@@ -52,15 +53,15 @@ import gui_main.GUI;
  *
  */
 public class GameController {
-	
+
 	private Game game;
-	
+
 	private GUI gui;
-	
+
 	private View view;
-	
-    private boolean disposed = false;
-	
+
+	private boolean disposed = false;
+
 	/**
 	 * Constructor for a controller of a game.
 	 * 
@@ -69,10 +70,10 @@ public class GameController {
 	public GameController(Game game) {
 		super();
 		this.game = game;
-		
+
 		gui = new GUI();
 	}
-	
+
 	/**
 	 * This method will be called when the game is started to create
 	 * the participating players. Right now, the creation of players
@@ -84,56 +85,50 @@ public class GameController {
 		int numberofplayers ;
 		String valg = gui.getUserSelection("Vælg antal spillere", "2","3","4","5","6");
 		numberofplayers = Integer.parseInt(valg);
-		ArrayList<Color> colorList = new ArrayList<Color>(Arrays.asList(Color.BLUE, Color.RED, Color.GREEN, Color.PINK, Color.YELLOW,
-				Color.BLACK, Color.WHITE));
-		ArrayList<String> colorString = new ArrayList<String>(Arrays.asList("Blå", "Rød", "Grøn", "Pink", "Gul", "Sort", "Hvid"));
+
 		
-		ArrayList<Color> choosenColor = new ArrayList<Color>();
-		ArrayList<String> names = new ArrayList<String>();
+		ArrayList<String> names = new ArrayList<String>();;
+		Color[] colors = new Color[numberofplayers];
 		for (int i = 0; i < numberofplayers; i++) {
 			String name = gui.getUserString("Indtast navn: ");
 			if (name.equals("")) name = "Spiller "+(i+1);
 			else if (names.contains(name)) name += " "+(i+1);
 			names.add(name);
-			
-			String chooceColor = gui.getUserSelection("Vælg din bils farve", colorString.toArray(new String[0]));
-
-			int k = colorString.indexOf(chooceColor);
-			Color color_1 = colorList.get(k);
-			choosenColor.add(color_1);
-			
-			colorString.remove(k);
-			colorList.remove(k);
-		}
+    }
 		Player[] players = new Player[numberofplayers];;
 		for (int i = 0; i < numberofplayers; i++) {
 			players[i] = new Player();
 			players[i].setName(names.get(i)); 
 			players[i].setCurrentPosition(game.getSpaces().get(0));
-			players[i].setColor(choosenColor.get(i));
+			players[i].setColor(Color.red);
 			game.addPlayer(players[i]);
 		}
+
+
+		view.playerUpdate();
+
+
 	}
-		
-//		Player p = new Player();
-//		p.setName("Player 1");
-//		p.setCurrentPosition(game.getSpaces().get(0));
-//		p.setColor(Color.RED);
-//		game.addPlayer(p);
-//		
-//		p = new Player();
-//		p.setName("Player 2");
-//		p.setCurrentPosition(game.getSpaces().get(0));
-//		p.setColor(Color.YELLOW);
-//		game.addPlayer(p);
-//		
-//		p = new Player();
-//		p.setName("Player 9999");
-//		p.setCurrentPosition(game.getSpaces().get(0));
-//		p.setColor(Color.GREEN);
-//		game.addPlayer(p);
-//	}
-	
+
+	//		Player p = new Player();
+	//		p.setName("Player 1");
+	//		p.setCurrentPosition(game.getSpaces().get(0));
+	//		p.setColor(Color.RED);
+	//		game.addPlayer(p);
+	//		
+	//		p = new Player();
+	//		p.setName("Player 2");
+	//		p.setCurrentPosition(game.getSpaces().get(0));
+	//		p.setColor(Color.YELLOW);
+	//		game.addPlayer(p);
+	//		
+	//		p = new Player();
+	//		p.setName("Player 9999");
+	//		p.setCurrentPosition(game.getSpaces().get(0));
+	//		p.setColor(Color.GREEN);
+	//		game.addPlayer(p);
+	//	}
+
 	/**
 	 * This method will initialize the GUI. It should be called after
 	 * the players of the game are created. As of now, the initialization
@@ -142,9 +137,11 @@ public class GameController {
 	 * based on the underlying game's spaces (fields).
 	 */
 	public void initializeGUI() {		
-		this. view = new View(game, gui);
+		this. view = new View(game);
+
+		gui = view.createGUI(game);
 	}
-	
+
 	/**
 	 * The main method to start the game with the given player.
 	 * The game is started with the current player of the game;
@@ -153,7 +150,7 @@ public class GameController {
 	public void play() {
 		List<Player> players =  game.getPlayers();
 		Player c = game.getCurrentPlayer();
-		
+
 		int current = 0;
 		for (int i=0; i<players.size(); i++) {
 			Player p = players.get(i);
@@ -161,7 +158,7 @@ public class GameController {
 				current = i;
 			}
 		}
-		
+
 		boolean terminated = false;
 		while (!terminated) {
 			Player player = players.get(current);
@@ -172,7 +169,7 @@ public class GameController {
 					// We could react to the player having gone broke
 				}
 			}
-			
+
 			// Check whether we have a winner
 			Player winner = null;
 			int countActive = 0;
@@ -195,7 +192,7 @@ public class GameController {
 				gui.showMessage(
 						"All players are broke.");
 				break;
-				
+
 			}
 
 			// TODO offer all players the options to trade etc.
@@ -212,7 +209,7 @@ public class GameController {
 				}
 			}
 		}
-		
+
 		dispose();
 	}
 
@@ -235,15 +232,24 @@ public class GameController {
 			int die2 = (int) (1 + 3.0*Math.random());
 			castDouble = (die1 == die2);
 			gui.setDice(die1, die2);
-			
+
 			if (player.isInPrison() && castDouble) {
 				player.setInPrison(false);
 				gui.showMessage("Player " + player.getName() + " leaves prison now since he cast a double!");
 			} else if (player.isInPrison()) {
 				gui.showMessage("Player " + player.getName() + " stays in prison since he did not cast a double!");
 			}
-			// TODO note that the player could also pay to get out of prison,
-			//      which is not yet implemented 
+
+			if (player.isInPrison()) {
+				if (player.getBalance () >= 1000) {
+					player.payMoney(1000);
+					gui.showMessage("Player " + player.getName() + " leaves prison now since he pay 1000!");
+					player.setInPrison (false);
+				}else {
+					gui.showMessage("Player " + player.getName() + " stays in prison since he did not pay 1000!");
+				}
+			}
+
 			if (castDouble) {
 				doublesCount++;
 				if (doublesCount > 2) {
@@ -252,6 +258,16 @@ public class GameController {
 					return;
 				}
 			}
+
+			for(Card card : player.getOwnedCards()){
+				if(card instanceof OutOfJail)
+				{
+					player.setInPrison(false);
+					player.removeOwnedCard(card);
+					break;
+				}
+			}
+
 			if (!player.isInPrison()) {
 				// make the actual move by computing the new position and then
 				// executing the action moving the player to that space
@@ -266,7 +282,7 @@ public class GameController {
 			}
 		} while (castDouble);
 	}
-	
+
 	/**
 	 * This method implements the activity of moving the player to the new position,
 	 * including all actions associated with moving the player to the new position.
@@ -287,7 +303,7 @@ public class GameController {
 			this.paymentFromBank(player, 2000);
 		}		
 		gui.showMessage("Player " + player.getName() + " arrives at " + space.getIndex() + ": " +  space.getName() + ".");
-		
+
 		// Execute the action associated with the respective space. Note
 		// that this is delegated to the field, which implements this action
 		space.doAction(this, player);
@@ -299,11 +315,11 @@ public class GameController {
 	 * @param player the player going to jail
 	 */
 	public void gotoJail(Player player) {
-		// TODO the 10 should not be hard coded
+		gui.showMessage("Player " + player.getName() + "Go directly to the jail without passing the start");
 		player.setCurrentPosition(game.getSpaces().get(10));
 		player.setInPrison(true);
 	}
-	
+
 	/**
 	 * The method implementing the activity of taking a chance card.
 	 * 
@@ -321,7 +337,7 @@ public class GameController {
 			gui.displayChanceCard("done");
 		}
 	}
-	
+
 	/**
 	 * This method implements the action returning a drawn card to the
 	 * bottom of the deck.
@@ -331,7 +347,7 @@ public class GameController {
 	public void returnChanceCardToDeck(Card card) {
 		game.returnCardToDeck(card);
 	}
-	
+
 	/**
 	 * This method implements the activity where a player can obtain
 	 * cash by selling houses back to the bank, by mortgaging own properties,
@@ -346,7 +362,7 @@ public class GameController {
 	public void obtainCash(Player player, int amount) {
 		// TODO implement
 	}
-	
+
 	/**
 	 * This method implements the activity of offering a player to buy
 	 * a property. This is typically triggered by a player arriving on
@@ -361,7 +377,7 @@ public class GameController {
 		// TODO We might also allow the player to obtainCash before
 		// the actual offer, to see whether he can free enough cash
 		// for the sale.
-	
+
 		String choice = gui.getUserSelection(
 				"Player " + player.getName() +
 				": Do you want to buy " + property.getName() +
@@ -369,27 +385,27 @@ public class GameController {
 				"yes",
 				"no");
 
-        if (choice.equals("yes")) {
-    		try {
-    			paymentToBank(player, property.getCost());
-    		} catch (PlayerBrokeException e) {
-    			// if the payment fails due to the player being broke,
-    			// the an auction (among the other players is started
-    			auction(property);
-    			// then the current move is aborted by casting the
-    			// PlayerBrokeException again
-    			throw e;
-    		}
-    		player.addOwnedProperty(property);
-    		property.setOwner(player);
-    		return;
-        }
-        
+		if (choice.equals("yes")) {
+			try {
+				paymentToBank(player, property.getCost());
+			} catch (PlayerBrokeException e) {
+				// if the payment fails due to the player being broke,
+				// the an auction (among the other players is started
+				auction(property);
+				// then the current move is aborted by casting the
+				// PlayerBrokeException again
+				throw e;
+			}
+			player.addOwnedProperty(property);
+			property.setOwner(player);
+			return;
+		}
+
 		// In case the player does not buy the property an auction
-        // is started
+		// is started
 		auction(property);
 	}
-	
+
 	/**
 	 * This method implements a payment activity to another player,
 	 * which involves the player to obtain some cash on the way, in case he does
@@ -413,7 +429,7 @@ public class GameController {
 		payer.payMoney(amount);
 		receiver.receiveMoney(amount);
 	}
-	
+
 	/**
 	 * This method implements the action of a player receiving money from
 	 * the bank.
@@ -442,12 +458,12 @@ public class GameController {
 				playerBrokeToBank(player);
 				throw new PlayerBrokeException(player);
 			}
-			
+
 		}
 		gui.showMessage("Player " + player.getName() + " pays " +  amount + "$ to the bank.");
 		player.payMoney(amount);
 	}
-	
+
 	/**
 	 * This method implements the activity of auctioning a property.
 	 * 
@@ -459,7 +475,7 @@ public class GameController {
 		//(0 svarer til nej), den højeste bydende "vinder" grunden.
 		gui.showMessage("Now, there would be an auction of " + property.getName() + ".");
 	}
-	
+
 	/**
 	 * Action handling the situation when one player is broke to another
 	 * player. All money and properties are the other player.
@@ -482,15 +498,15 @@ public class GameController {
 			benificiary.addOwnedProperty(property);
 		}	
 		brokePlayer.removeAllProperties();
-		
+
 		while (!brokePlayer.getOwnedCards().isEmpty()) {
 			game.returnCardToDeck(brokePlayer.getOwnedCards().get(0));
 		}
-		
+
 		gui.showMessage("Player " + brokePlayer.getName() + "went broke and transfered all"
 				+ "assets to " + benificiary.getName());
 	}
-	
+
 	/**
 	 * Action handling the situation when a player is broke to the bank.
 	 * 
@@ -500,21 +516,25 @@ public class GameController {
 
 		player.setBalance(0);
 		player.setBroke(true);
-		
+
 		// TODO we also need to remove the houses and the mortgage from the properties 
 
 		for (Property property: player.getOwnedProperties()) {
 			property.setOwner(null);
 		}
 		player.removeAllProperties();
-		
+
 		gui.showMessage("Player " + player.getName() + " went broke");
-		
+
 		while (!player.getOwnedCards().isEmpty()) {
 			game.returnCardToDeck(player.getOwnedCards().get(0));
 		}
 	}
-	
+
+	public List<Player> getPlayers(){
+		return game.getPlayers();
+	}
+
 	/**
 	 * Method for disposing of this controller and cleaning up its resources.
 	 */

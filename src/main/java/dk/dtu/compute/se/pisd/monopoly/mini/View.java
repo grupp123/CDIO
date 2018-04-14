@@ -17,6 +17,8 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.differentSpaces.Jail;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Brewery;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Shipping;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Utility;
+import gui_codebehind.GUI_FieldFactory;
 import gui_fields.GUI_Brewery;
 import gui_fields.GUI_Car;
 import gui_fields.GUI_Car.Pattern;
@@ -157,15 +159,15 @@ public class View implements Observer {
 	public GUI createGUI(Game game2) {
 
 		GUI_Field[] guiFields = new GUI_Field[game.getSpaces().size()];
-		
+
 		System.out.println(game.getSpaces().size());
 
 
 		int i = 0 ;
 		for (Space space: game.getSpaces()) {
-			
+
 			System.out.println(i);
-			
+
 			if (space instanceof Chance) {
 				GUI_Chance gui_chance = new GUI_Chance();
 				guiFields[i] = gui_chance;
@@ -174,110 +176,88 @@ public class View implements Observer {
 				
 			} else if (space instanceof RealEstate) {
 				RealEstate realestate = (RealEstate) space; 
-				// GUI_Street gui_Street = new GUI_Street(realestate.getName());
-				GUI_Street gui_street = new GUI_Street(realestate.getName(), "" + realestate.getCost() + "", "" + realestate.getRent() + "", "" + realestate.getRent() + "", Color.white, Color.BLUE);
-				gui_street.setBackGroundColor(((RealEstate) space).getColor());
+				GUI_Street gui_street = new GUI_Street(realestate.getName(), "Pris : " + realestate.getCost() + "", "Husleje : " + realestate.getRent() + "", "husleje : " + realestate.getRent() + "", realestate.getColor(), Color.black);
 				guiFields[i] = gui_street;
-			} // ...
-			else if (space instanceof Shipping){
-				Shipping utility = (Shipping) space;
-				GUI_Shipping gui_shipping = new GUI_Shipping();
-				gui_shipping.setTitle(space.getName());
-				gui_shipping.setBackGroundColor(Color.WHITE);
-				gui_shipping.setSubText(""+((Shipping) space).getCost());
-				guiFields[i] = gui_shipping;
-				
-			} else if (space instanceof Brewery){
-				Brewery utility = (Brewery) space;
+			} else if (space instanceof Utility){
+				Utility utility = (Utility) space;
 				GUI_Brewery gui_brewery = new GUI_Brewery();
-				gui_brewery.setBackGroundColor(Color.BLACK);
-				gui_brewery.setForeGroundColor(Color.WHITE);
-				gui_brewery.setTitle(space.getName());
-				gui_brewery.setSubText(""+((Brewery) space).getCost());
-				guiFields[i] = gui_brewery;
-
+				gui_brewery.setTitle(utility.getName());
+				gui_brewery.setSubText("" + utility.getCost() + "");
+				gui_brewery.setDescription("Prisen er : " + utility.getCost() + " \n\r Lejen er : " + utility.getRent());
+				guiFields[i] = gui_brewery;						
 			} else if (space instanceof Tax){
 				Tax tax = (Tax) space;
 				GUI_Tax gui_tax = new GUI_Tax();
+				gui_tax.setTitle("SKAT");
+				gui_tax.setSubText("" + space.getName() + "");
+				gui_tax.setDescription("" + space.getName() + "");
 				guiFields[i] = gui_tax;
-				gui_tax.setBackGroundColor(Color.gray);
-				gui_tax.setTitle("skat");
-				gui_tax.setSubText(((Tax) space).getText());
-				gui_tax.setDescription(((Tax) space).getText());
-				
-			}else if(space instanceof Go) {
-				Go go = (Go) space;
-				GUI_Start gui_start = new GUI_Start();
-				gui_start.setTitle(space.getName());
-				gui_start.setSubText("");
-				gui_start.setForeGroundColor(Color.WHITE);
-				gui_start.setBackGroundColor(Color.RED);
-				guiFields[i] = gui_start;
-				gui_start.setDescription(go.getText());
-				
-			}else if(space instanceof Jail) {
-				Jail jail = (Jail) space;
-				GUI_Jail gui_jail = new GUI_Jail();
-				gui_jail.setSubText(space.getName());
-				guiFields[i] = gui_jail;
-				
-			}else if(space instanceof FreeParking) {
-				FreeParking freeparking = (FreeParking) space;
-				GUI_Refuge gui_refuge = new GUI_Refuge();
-				gui_refuge.setSubText(space.getName());
-				gui_refuge.setBackGroundColor(Color.WHITE);
-				guiFields[i] = gui_refuge;
+			} else if (space instanceof Shipping) {
+				Shipping shipping = (Shipping) space;
+				GUI_Shipping gui_shipping = new GUI_Shipping();
+				gui_shipping.setTitle("" + shipping.getCost() + "");
+				gui_shipping.setSubText(shipping.getName());
+				gui_shipping.setDescription("Pris: " + shipping.getCost() + "\n\r leje: " + shipping.getRent());
+				guiFields[i] = gui_shipping;
+			} else if(space instanceof Space){
+				if(space.getIndex() == 10 || space.getIndex() == 30) {
+					GUI_Jail gui_jail = new GUI_Jail();
+					guiFields[i] = gui_jail;
+
+				} else if (space.getIndex() == 20) {
+					GUI_Refuge gui_refuge = new GUI_Refuge();
+					guiFields[i] = gui_refuge;
+
+				} else {
+					GUI_Field gui_field = new GUI_Field(Color.red, Color.red, space.getName(), "e", "r") {};
+					guiFields[i] = gui_field;
+
+				}
 			}
-			else {
-				GUI_Field gui_field = new GUI_Field(Color.red, Color.red, space.getName(), "e", "r") {
-				};
-				guiFields[i] = gui_field;
+				space2GuiField.put(space, guiFields[i++]);
+
+				// TODO we should also register with the properties as observer; but
+				// the current version does not update anything for the spaces, so we do not
+				// register the view as an observer for now
 			}
 
-			space2GuiField.put(space, guiFields[i++]);
+			gui = new GUI(guiFields);
 
-			// TODO we should also register with the properties as observer; but
-			// the current version does not update anything for the spaces, so we do not
-			// register the view as an observer for now
+			for (Player player: game.getPlayers()) {
+				GUI_Car car = new GUI_Car(player.getColor(), Color.black, Type.CAR, Pattern.FILL);
+				GUI_Player guiPlayer = new GUI_Player(player.getName(), player.getBalance(), car);
+				player2GuiPlayer.put(player, guiPlayer);
+				gui.addPlayer(guiPlayer);
+				// player2position.put(player, 0);
+
+				// register this view with the player as an observer, in order to update the
+				// player's state in the GUI
+				player.attach(this);
+
+
+
+
+			}
+			return gui;
 		}
 
-		gui = new GUI(guiFields);
+		public void playerUpdate(){
 
-		for (Player player: game.getPlayers()) {
-			GUI_Car car = new GUI_Car(player.getColor(), Color.black, Type.CAR, Pattern.FILL);
-			GUI_Player guiPlayer = new GUI_Player(player.getName(), player.getBalance(), car);
-			player2GuiPlayer.put(player, guiPlayer);
-			gui.addPlayer(guiPlayer);
-			// player2position.put(player, 0);
+			for (Player player: game.getPlayers()) {
+				GUI_Car car = new GUI_Car(player.getColor(), Color.black, Type.CAR, Pattern.FILL);
+				GUI_Player guiPlayer = new GUI_Player(player.getName(), player.getBalance(), car);
+				player2GuiPlayer.put(player, guiPlayer);
+				System.out.println(guiPlayer + "\n" + player);
+				gui.addPlayer(guiPlayer);
+				// player2position.put(player, 0);
 
-			// register this view with the player as an observer, in order to update the
-			// player's state in the GUI
-			player.attach(this);
+				// register this view with the player as an observer, in order to update the
+				// player's state in the GUI
+				player.attach(this);
 
-			
-
-
-		}
-		return gui;
-	}
-
-	public void playerUpdate(){
-
-		for (Player player: game.getPlayers()) {
-			GUI_Car car = new GUI_Car(player.getColor(), Color.black, Type.CAR, Pattern.FILL);
-			GUI_Player guiPlayer = new GUI_Player(player.getName(), player.getBalance(), car);
-			player2GuiPlayer.put(player, guiPlayer);
-			System.out.println(guiPlayer + "\n" + player);
-			gui.addPlayer(guiPlayer);
-			// player2position.put(player, 0);
-
-			// register this view with the player as an observer, in order to update the
-			// player's state in the GUI
-			player.attach(this);
-
-			updatePlayer(player);
+				updatePlayer(player);
 
 
+			}
 		}
 	}
-}

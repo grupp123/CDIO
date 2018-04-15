@@ -21,6 +21,7 @@ public class RealEstate extends Property{
 	private int houses = 0;
 	private final int MAX_HOUSES = 5;
 	private int housePrice;
+	private boolean developped = false;
 	
 	public int getMAX_HOUSES() {
 		return MAX_HOUSES;
@@ -48,6 +49,7 @@ public class RealEstate extends Property{
 	
 	public void addHouse() {
 		houses++;
+		developped = true;
 		if (houses > MAX_HOUSES) {
 			//TODO evt en exception?
 			houses = MAX_HOUSES;
@@ -61,6 +63,9 @@ public class RealEstate extends Property{
 			//TODO exception
 			houses = 0;
 		}
+		if (houses == 0)
+			developped = false;
+		
 		notify();
 	}
 

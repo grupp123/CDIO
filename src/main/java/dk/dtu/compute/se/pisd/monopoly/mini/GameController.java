@@ -71,7 +71,6 @@ public class GameController {
 		super();
 		this.game = game;
 
-		gui = new GUI();
 	}
 
 	/**
@@ -87,48 +86,43 @@ public class GameController {
 		numberofplayers = Integer.parseInt(valg);
 
 		
-		ArrayList<String> names = new ArrayList<String>();;
-		Color[] colors = new Color[numberofplayers];
+		ArrayList<String> names = new ArrayList<String>();
+		ArrayList<Color> choosenColor = new ArrayList<Color>();
+		ArrayList<Color> colorList = new ArrayList<Color>(Arrays.asList(Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW,
+                Color.BLACK, Color.WHITE));
+        ArrayList<String> colorString = new ArrayList<String>(Arrays.asList("Blå", "Rød", "Grøn", "Gul", "Sort", "Hvid"));
 		for (int i = 0; i < numberofplayers; i++) {
 			String name = gui.getUserString("Indtast navn: ");
-			if (name.equals("")) name = "Spiller "+(i+1);
-			else if (names.contains(name)) name += " "+(i+1);
+			
+			if (name.equals("")) 
+				name = "Spiller "+(i+1);
+			else if (names.contains(name)) 
+				name += " "+(i+1);
 			names.add(name);
-    }
+			
+			String chooceColor = gui.getUserSelection("Vælg din bils farve", colorString.toArray(new String[0]));
+
+            int k = colorString.indexOf(chooceColor);
+            Color color_1 = colorList.get(k);
+            choosenColor.add(color_1);
+
+            colorString.remove(k);
+            colorList.remove(k);
+			
+		}
 		Player[] players = new Player[numberofplayers];;
 		for (int i = 0; i < numberofplayers; i++) {
 			players[i] = new Player();
 			players[i].setName(names.get(i)); 
 			players[i].setCurrentPosition(game.getSpaces().get(0));
-			players[i].setColor(Color.red);
+			players[i].setColor(choosenColor.get(i));
 			game.addPlayer(players[i]);
 		}
 
-
 		view.playerUpdate();
 
-
 	}
-
-	//		Player p = new Player();
-	//		p.setName("Player 1");
-	//		p.setCurrentPosition(game.getSpaces().get(0));
-	//		p.setColor(Color.RED);
-	//		game.addPlayer(p);
-	//		
-	//		p = new Player();
-	//		p.setName("Player 2");
-	//		p.setCurrentPosition(game.getSpaces().get(0));
-	//		p.setColor(Color.YELLOW);
-	//		game.addPlayer(p);
-	//		
-	//		p = new Player();
-	//		p.setName("Player 9999");
-	//		p.setCurrentPosition(game.getSpaces().get(0));
-	//		p.setColor(Color.GREEN);
-	//		game.addPlayer(p);
-	//	}
-
+	
 	/**
 	 * This method will initialize the GUI. It should be called after
 	 * the players of the game are created. As of now, the initialization
@@ -163,6 +157,7 @@ public class GameController {
 		while (!terminated) {
 			Player player = players.get(current);
 			if (!player.isBroke()) {
+				gui.getUserButtonPressed("Klik ok for at kaste","Kast");
 				try {
 					this.makeMove(player);
 				} catch (PlayerBrokeException e) {
@@ -196,6 +191,7 @@ public class GameController {
 			}
 
 			// TODO offer all players the options to trade etc.
+			trade(player);
 
 			current = (current + 1) % players.size();
 			game.setCurrentPlayer(players.get(current));
@@ -228,8 +224,8 @@ public class GameController {
 		boolean castDouble;
 		int doublesCount = 0;
 		do {
-			int die1 = (int) (1 + 3.0*Math.random());
-			int die2 = (int) (1 + 3.0*Math.random());
+			int die1 = (int) (1 + 6.0*Math.random());
+			int die2 = (int) (1 + 6.0*Math.random());
 			castDouble = (die1 == die2);
 			gui.setDice(die1, die2);
 
@@ -658,7 +654,7 @@ public class GameController {
 			}
 		}
 		
-		String[] choices = (String[]) players.keySet().toArray();
+		String[] choices = players.keySet().toArray(new String[0]);
 		
 		String choice = gui.getUserSelection("Vælg den spiller du vil købe fra.", choices);
 		

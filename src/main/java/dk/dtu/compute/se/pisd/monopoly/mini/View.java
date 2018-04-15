@@ -171,7 +171,7 @@ public class View implements Observer {
 			if (space instanceof Chance) {
 				GUI_Chance gui_chance = new GUI_Chance();
 				guiFields[i] = gui_chance;
-				gui_chance.setBackGroundColor(Color.BLUE);
+				gui_chance.setBackGroundColor(space.getColor());
 				gui_chance.setDescription("Chancekort");
 				
 			} else if (space instanceof RealEstate) {

@@ -65,6 +65,7 @@ public class MiniMonopoly {
 		
 		Chance chance = new Chance();
 		chance.setName("Chance");
+		chance.setColor(Color.white);
 		game.addSpace(chance);
 		
 		r = new RealEstate();
@@ -95,6 +96,7 @@ public class MiniMonopoly {
 		
 		chance = new Chance();
 		chance.setName("Chance");
+		chance.setColor(Color.white);
 		game.addSpace(chance);
 		
 		r = new RealEstate();
@@ -157,6 +159,7 @@ s = new Shipping();
 		
 		chance = new Chance();
 		chance.setName("Chance");
+		chance.setColor(Color.white);
 		game.addSpace(chance);
 		 
 		r = new RealEstate();
@@ -186,6 +189,7 @@ Space Parkering = new Space();
 		
 		chance = new Chance();
 		chance.setName("Chance");
+		chance.setColor(Color.white);
 		game.addSpace(chance);
 		
 		r = new RealEstate();
@@ -255,6 +259,7 @@ u = new Utility();
 		
 		chance = new Chance();
 		chance.setName("Chance");
+		chance.setColor(Color.white);
 		game.addSpace(chance);
 		
 		r = new RealEstate();
@@ -273,6 +278,7 @@ s = new Shipping();
 		
 		chance = new Chance();
 		chance.setName("Chance");
+		chance.setColor(Color.white);
 		game.addSpace(chance);
 		
 		r = new RealEstate();

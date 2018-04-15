@@ -23,6 +23,7 @@ public class Game extends Subject {
 	
 	private List<Player> players = new ArrayList<Player>();
 	
+	
 	private Player current;
 	
 	public final int MAX_HOUSES = 40;

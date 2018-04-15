@@ -209,7 +209,7 @@ public class View implements Observer {
 					guiFields[i] = gui_refuge;
 
 				} else {
-					GUI_Field gui_field = new GUI_Field(Color.red, Color.red, space.getName(), "e", "r") {};
+					GUI_Field gui_field = new GUI_Start(space.getName(), "", "", space.getColor(), Color.BLACK);
 					guiFields[i] = gui_field;
 
 				}

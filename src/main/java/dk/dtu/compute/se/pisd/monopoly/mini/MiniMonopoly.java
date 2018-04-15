@@ -53,7 +53,7 @@ public class MiniMonopoly {
 		
 		Space go = new Space();
 		go.setName("Start");
-		go.setColor(Color.gray);
+		go.setColor(Color.red);
 		game.addSpace(go);
 		
 		RealEstate r = new RealEstate();
@@ -268,7 +268,6 @@ u = new Utility();
 		r.setRent(600);
 		r.setColor(Color.green);
 		game.addSpace(r);
-		r.setColor(Color.yellow);
 		
 s = new Shipping();
 		s.setName("Skandinavisk Linietrafik");

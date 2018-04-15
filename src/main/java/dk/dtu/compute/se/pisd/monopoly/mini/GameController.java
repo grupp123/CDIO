@@ -293,10 +293,10 @@ public class GameController {
 
 		if (posOld > player.getCurrentPosition().getIndex()) {
 			// Note that this assumes that the game has more than 12 spaces here!
-			// TODO: the amount of 2000$ should not be a fixed constant here (could also
+			// TODO: the amount of 4000$ should not be a fixed constant here (could also
 			//       be configured in the Game class.
-			gui.showMessage("Player " + player.getName() + " receives 2000$ for passing Go!");
-			this.paymentFromBank(player, 2000);
+			gui.showMessage("Player " + player.getName() + " receives 4000Kr. for passing Go!");
+			this.paymentFromBank(player, 4000);
 		}		
 		gui.showMessage("Player " + player.getName() + " arrives at " + space.getIndex() + ": " +  space.getName() + ".");
 
@@ -716,7 +716,7 @@ public class GameController {
 			}
 		}
 		
-		String[] choices = (String[]) players.keySet().toArray();
+		String[] choices = players.keySet().toArray(new String[0]);
 		
 		String choice = gui.getUserSelection("Vælg den spiller du vil sælge til.", choices);
 		
@@ -770,7 +770,7 @@ public class GameController {
 	 * @return the picked property.
 	 */
 	private Property pickProperty(Map<String, Property> properties, String msg) {
-		String[] choices = (String[]) properties.keySet().toArray();
+		String[] choices = properties.keySet().toArray(new String[0]);
 		
 		String choice;
 		Property pickedProperty;

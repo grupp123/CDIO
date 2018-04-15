@@ -548,6 +548,10 @@ public class GameController {
 		}
 	}
 	
+	/**
+	 * Starts a trade event.
+	 * @param trader the trading player
+	 */
 	public void trade(Player trader) {
 		boolean choice = gui.getUserLeftButtonPressed(trader.getName()+"har du lyst til at handle?", "Ja", "Nej");
 		//If the user chooses no, no trade action will happen...	
@@ -566,11 +570,15 @@ public class GameController {
 			else {
 				tradeMortage(trader);
 			}
-			choice = gui.getUserLeftButtonPressed(trader.getName()+"har du lyst til at handle?", "Ja", "Nej");
+			choice = gui.getUserLeftButtonPressed(trader.getName()+"har du lyst til at handle, igen?", "Ja", "Nej");
 		}
 		
 	}
 	
+	/**
+	 * Starts the mortage event
+	 * @param player the mortaging player
+	 */
 	private void tradeMortage(Player player) {
 		Map<String,Property> mortageableProperties = new HashMap<String,Property>();
 		for (Property property: player.getOwnedProperties()) {
@@ -584,14 +592,14 @@ public class GameController {
 			}	
 		}
 		
-		String[] choices = (String[]) mortageableProperties.keySet().toArray();
-		
-		String choice = gui.getUserSelection("Vælg den grund du vil pantsætte", choices);
-		
-		Property chosenProperty = mortageableProperties.get(choice);
+		Property chosenProperty = pickProperty(mortageableProperties, "Vælg den grund du vil pantsætte");
 		//TODO mulighed for at pantsætte/mortage grunden.
 	}
 
+	/**
+	 * Start the buy event
+	 * @param buyer the buying player
+	 */
 	private void tradeBuy(Player buyer) {
 		String selection = gui.getUserSelection("Hvad vil du købe?","Hus","Spillers grund");
 		
@@ -604,11 +612,7 @@ public class GameController {
 				}	
 			}
 			
-			String[] choices = (String[]) developableProperties.keySet().toArray();
-			
-			String choice = gui.getUserSelection("Vælg den grund du vil udvikle.", choices);
-			
-			Property chosenProperty = developableProperties.get(choice);
+			Property chosenProperty = pickProperty(developableProperties, "Vælg den grund du vil udvikle.");
 			//TODO tilføj hus til den valgte property
 		}
 		else {
@@ -638,11 +642,7 @@ public class GameController {
 				}	
 			}
 			
-			choices = (String[]) buyableProperties.keySet().toArray();
-			
-			choice = gui.getUserSelection("Vælg den grund du vil købe.", choices);
-			
-			Property chosenProperty = buyableProperties.get(choice);
+			Property chosenProperty = pickProperty(buyableProperties, "Vælg den grund du vil købe.");
 			
 			Integer price = gui.getUserInteger("Indtast din pris.");
 			
@@ -651,6 +651,10 @@ public class GameController {
 		}
 	}
 	
+	/**
+	 * Starts the sell event
+	 * @param seller the selling player
+	 */
 	private void tradeSell(Player seller) {
 		String selection = gui.getUserSelection("Hvad vil du sælge?","Bolig","Grund");
 		
@@ -663,11 +667,7 @@ public class GameController {
 				}	
 			}
 			
-			String[] choices = (String[]) undevelopableProperties.keySet().toArray();
-			
-			String choice = gui.getUserSelection("Vælg den grund du vil udvikle.", choices);
-			
-			Property chosenProperty = undevelopableProperties.get(choice);
+			Property chosenProperty = pickProperty(undevelopableProperties, "Vælg den grund du vil uudvikle.");
 			//TODO fjern hus fra den valgte property
 		}
 		else {
@@ -697,18 +697,23 @@ public class GameController {
 				}	
 			}
 			
-			choices = (String[]) sellableProperties.keySet().toArray();
-			
-			choice = gui.getUserSelection("Vælg den grund du vil sælge.", choices);
-			
-			Property chosenProperty = sellableProperties.get(choice);
+			Property chosenProperty = pickProperty(sellableProperties, "Vælg den grund du vil sælge.");
 			
 			Integer price = gui.getUserInteger("Indtast din pris.");
+			
+			
 			
 			moveOwnership(buyer, chosenProperty, price, seller);
 		}
 	}
 	
+	/**
+	 * Handles the transaction of the ownership of a property from the seller to the buyer at the given prices.
+	 * @param buyer player buying the property
+	 * @param property the asset
+	 * @param price the agreed price
+	 * @param seller player selling the property
+	 */
 	private void moveOwnership(Player buyer, Property property, int price, Player seller) {
 		try {
 			payment(buyer, price, seller);
@@ -718,8 +723,23 @@ public class GameController {
 		} finally {
 			seller.removeOwnedProperty(property);
 			buyer.addOwnedProperty(property);
+			property.setOwner(buyer);
 		}
 		
+	}
+	
+	/**
+	 * Starts a list picking dialog with the given properties from the Map.
+	 * @param properties Map with the properties and names as key value
+	 * @param msg the dialog message shown to the player
+	 * @return the picked property.
+	 */
+	private Property pickProperty(Map<String, Property> properties, String msg) {
+		String[] choices = (String[]) properties.keySet().toArray();
+		
+		String choice = gui.getUserSelection(msg, choices);
+		
+		return properties.get(choice);
 	}
 
 }

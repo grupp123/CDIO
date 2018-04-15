@@ -549,7 +549,7 @@ public class GameController {
 	}
 	
 	/**
-	 * Starts a trade event.
+	 * Starts a trade dialogue.
 	 * @param trader the trading player
 	 */
 	public void trade(Player trader) {
@@ -560,11 +560,25 @@ public class GameController {
 			
 			//If user chooses to buy
 			if (selection.equals("Køb")) {
-				tradeBuy(trader);
+				selection = gui.getUserSelection("Hvad vil du købe?","Hus","Spillers grund");
+				
+				if (selection.equals("Hus")) {
+					tradeBuyHouse(trader);
+				}
+				else {
+					tradeBuyProperty(trader);
+				}
 			}
 			//If user chooses to sell
 			else if (selection.equals("Sælg")) {
-				tradeSell(trader);
+				selection = gui.getUserSelection("Hvad vil du sælge?","Bolig","Grund");
+				
+				if (selection.equals("Bolig")) {
+					tradeSellHouse(trader);
+				}
+				else {
+					tradeSellProperty(trader);
+				}
 			}
 			//If user chooses to mortage
 			else {
@@ -576,132 +590,157 @@ public class GameController {
 	}
 	
 	/**
-	 * Starts the mortage event
+	 * Starts the mortage dialogue
 	 * @param player the mortaging player
 	 */
 	private void tradeMortage(Player player) {
 		Map<String,Property> mortageableProperties = new HashMap<String,Property>();
 		for (Property property: player.getOwnedProperties()) {
-			//TODO tjek om der er allerede mortage på property
-			if (property instanceof RealEstate) {
-				//TODO tjek for om der er huse på RealEstate og tilføj kun hvis der ikke er nogle.
-				mortageableProperties.put(property.getName(),property);
+			if (!property.isMortaged()) {
+				if (property instanceof RealEstate) {
+					if (((RealEstate)property).getHouses() == 0)
+						mortageableProperties.put(property.getName(),property);
+				}
+				else {
+					mortageableProperties.put(property.getName(),property);
+				}	
 			}
-			else {
-				mortageableProperties.put(property.getName(),property);
-			}	
+			
 		}
 		
 		Property chosenProperty = pickProperty(mortageableProperties, "Vælg den grund du vil pantsætte");
-		//TODO mulighed for at pantsætte/mortage grunden.
+		
+		if (chosenProperty != null) {
+			chosenProperty.setMortaged(true);
+			paymentFromBank(player, chosenProperty.getMortageValue());
+		}
+		
+		
 	}
 
 	/**
-	 * Start the buy event
+	 * Starts a buy house dialogue.
 	 * @param buyer the buying player
 	 */
-	private void tradeBuy(Player buyer) {
-		String selection = gui.getUserSelection("Hvad vil du købe?","Hus","Spillers grund");
-		
-		if (selection.equals("Hus")) {
-			Map<String,Property> developableProperties = new HashMap<String,Property>();
-			for (Property property: buyer.getOwnedProperties()) {
-				if (property instanceof RealEstate) {
-					//TODO tjek for om der er under 5 huse (hotel).
+	private void tradeBuyHouse(Player buyer) {
+		Map<String,Property> developableProperties = new HashMap<String,Property>();
+		for (Property property: buyer.getOwnedProperties()) {
+			if (property instanceof RealEstate) {
+				if (((RealEstate)property).getHouses() < ((RealEstate)property).getMAX_HOUSES())
 					developableProperties.put(property.getName(),property);
-				}	
-			}
-			
-			Property chosenProperty = pickProperty(developableProperties, "Vælg den grund du vil udvikle.");
-			//TODO tilføj hus til den valgte property
+			}	
 		}
-		else {
-			Map<String, Player> players = new HashMap<String, Player>();
-			
-			for (Player player: game.getPlayers()) {
-				//Skal lige testes
-				if (!player.equals(buyer)) {
-					players.put(player.getName(), player);
-				}
+		
+		RealEstate chosenProperty = (RealEstate)pickProperty(developableProperties, "Vælg den grund du vil udvikle.");
+		
+		if (chosenProperty != null) {
+			try {
+				paymentToBank(buyer, chosenProperty.getHousePrice());
+			} catch (PlayerBrokeException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			
-			String[] choices = (String[]) players.keySet().toArray();
-			
-			String choice = gui.getUserSelection("Vælg den spiller du vil købe fra.", choices);
-			
-			Player seller = players.get(choice);
-			
-			Map<String,Property> buyableProperties = new HashMap<String,Property>();
-			for (Property property: seller.getOwnedProperties()) {
-				if (property instanceof RealEstate) {
-					//TODO tjek for om der er huse på RealEstate og tilføj kun hvis der ikke er nogle.
-					buyableProperties.put(property.getName(),property);
-				}
-				else {
-					buyableProperties.put(property.getName(),property);
-				}	
-			}
-			
-			Property chosenProperty = pickProperty(buyableProperties, "Vælg den grund du vil købe.");
-			
-			Integer price = gui.getUserInteger("Indtast din pris.");
-			
-			moveOwnership(buyer, chosenProperty, price, seller);
-			
+			chosenProperty.addHouse();
 		}
 	}
 	
 	/**
-	 * Starts the sell event
-	 * @param seller the selling player
+	 * Starts a buy property dialogue.
+	 * @param buyer the buying player
 	 */
-	private void tradeSell(Player seller) {
-		String selection = gui.getUserSelection("Hvad vil du sælge?","Bolig","Grund");
+	private void tradeBuyProperty(Player buyer) {
+		Map<String, Player> players = new HashMap<String, Player>();
 		
-		if (selection.equals("Bolig")) {
-			Map<String,Property> undevelopableProperties = new HashMap<String,Property>();
-			for (Property property: seller.getOwnedProperties()) {
-				if (property instanceof RealEstate) {
-					//TODO tjek for om der er mindst 1 hus.
-					undevelopableProperties.put(property.getName(),property);
-				}	
+		for (Player player: game.getPlayers()) {
+			//Skal lige testes
+			if (!player.equals(buyer)) {
+				players.put(player.getName(), player);
 			}
-			
-			Property chosenProperty = pickProperty(undevelopableProperties, "Vælg den grund du vil uudvikle.");
-			//TODO fjern hus fra den valgte property
 		}
-		else {
-			Map<String, Player> players = new HashMap<String, Player>();
-			
-			for (Player player: game.getPlayers()) {
-				//Skal lige testes
-				if (!player.equals(seller)) {
-					players.put(player.getName(), player);
-				}
+		
+		String[] choices = (String[]) players.keySet().toArray();
+		
+		String choice = gui.getUserSelection("Vælg den spiller du vil købe fra.", choices);
+		
+		Player seller = players.get(choice);
+		
+		Map<String,Property> buyableProperties = new HashMap<String,Property>();
+		for (Property property: seller.getOwnedProperties()) {
+			if (property instanceof RealEstate) {
+				if (((RealEstate)property).getHouses() == 0)
+					buyableProperties.put(property.getName(),property);
 			}
-			
-			String[] choices = (String[]) players.keySet().toArray();
-			
-			String choice = gui.getUserSelection("Vælg den spiller du vil sælge til.", choices);
-			
-			Player buyer = players.get(choice);
-			
-			Map<String,Property> sellableProperties = new HashMap<String,Property>();
-			for (Property property: seller.getOwnedProperties()) {
-				if (property instanceof RealEstate) {
-					//TODO tjek for om der er huse på RealEstate og tilføj kun hvis der ikke er nogle.
-					sellableProperties.put(property.getName(),property);
-				}
-				else {
-					sellableProperties.put(property.getName(),property);
-				}	
-			}
-			
-			Property chosenProperty = pickProperty(sellableProperties, "Vælg den grund du vil sælge.");
-			
+			else {
+				buyableProperties.put(property.getName(),property);
+			}	
+		}
+		
+		Property chosenProperty = pickProperty(buyableProperties, "Vælg den grund du vil købe.");
+		
+		if (chosenProperty != null) {
 			Integer price = gui.getUserInteger("Indtast din pris.");
 			
-			
+			moveOwnership(buyer, chosenProperty, price, seller);
+		}
+	}
+	
+	/**
+	 * Starts sell house dialogue.
+	 * @param seller selling player
+	 */
+	private void tradeSellHouse(Player seller) {
+		Map<String,Property> undevelopableProperties = new HashMap<String,Property>();
+		for (Property property: seller.getOwnedProperties()) {
+			if (property instanceof RealEstate) {
+				if (((RealEstate)property).getHouses() > 0)
+					undevelopableProperties.put(property.getName(),property);
+			}	
+		}
+		
+		RealEstate chosenProperty = (RealEstate)pickProperty(undevelopableProperties, "Vælg den grund du vil uudvikle.");
+		
+		if (chosenProperty != null) {
+			chosenProperty.removeHouse();
+			paymentFromBank(seller, chosenProperty.getHousePrice());
+		}
+		
+	}
+	
+	/**
+	 * Starts a sell Property dialogue.
+	 * @param seller the selling player
+	 */
+	private void tradeSellProperty(Player seller) {
+		Map<String, Player> players = new HashMap<String, Player>();
+		
+		for (Player player: game.getPlayers()) {
+			//Skal lige testes
+			if (!player.equals(seller)) {
+				players.put(player.getName(), player);
+			}
+		}
+		
+		String[] choices = (String[]) players.keySet().toArray();
+		
+		String choice = gui.getUserSelection("Vælg den spiller du vil sælge til.", choices);
+		
+		Player buyer = players.get(choice);
+		
+		Map<String,Property> sellableProperties = new HashMap<String,Property>();
+		for (Property property: seller.getOwnedProperties()) {
+			if (property instanceof RealEstate) {
+				if (((RealEstate)property).getHouses() == 0)
+					sellableProperties.put(property.getName(),property);
+			}
+			else {
+				sellableProperties.put(property.getName(),property);
+			}	
+		}
+		
+		Property chosenProperty = pickProperty(sellableProperties, "Vælg den grund du vil sælge.");
+		
+		if (chosenProperty != null) {
+			Integer price = gui.getUserInteger("Indtast din pris.");
 			
 			moveOwnership(buyer, chosenProperty, price, seller);
 		}
@@ -737,9 +776,23 @@ public class GameController {
 	private Property pickProperty(Map<String, Property> properties, String msg) {
 		String[] choices = (String[]) properties.keySet().toArray();
 		
-		String choice = gui.getUserSelection(msg, choices);
+		String choice;
+		Property pickedProperty;
 		
-		return properties.get(choice);
+		do {
+			choice = gui.getUserSelection(msg, choices);
+			
+			pickedProperty = properties.get(choice);
+			
+			choice = gui.getUserButtonPressed("Er du sikker?", "Ja","Vælg anden","Anuller");
+		}
+		while(choice.equals("Vælg anden"));
+		
+		if (!choice.equals("Ja")) {
+			pickedProperty = null;
+		}
+		
+		return pickedProperty;
 	}
 
 }

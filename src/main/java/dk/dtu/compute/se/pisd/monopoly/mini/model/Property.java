@@ -14,16 +14,23 @@ public class Property extends Space {
 	private int cost;
 	private int rent;
 	
-	private int house = 0;
-	private int hotel = 0;
+	private boolean mortaged;
+	private int mortageValue;
 	
 	private Player owner;
 	
-	public int getHotel() {
-		return hotel;
+	
+	public boolean isMortaged() {
+		return mortaged;
 	}
-	public int getHouse() {
-		return house;
+	public void setMortaged(boolean mortaged) {
+		this.mortaged = mortaged;
+	}
+	public int getMortageValue() {
+		return mortageValue;
+	}
+	public void setMortageValue(int mortageValue) {
+		this.mortageValue = mortageValue;
 	}
 	
 
@@ -52,6 +59,9 @@ public class Property extends Space {
 	 * @return the rent for this property
 	 */
 	public int getRent() {
+		if (mortaged) {
+			return 0;
+		}
 		return rent;
 	}
 

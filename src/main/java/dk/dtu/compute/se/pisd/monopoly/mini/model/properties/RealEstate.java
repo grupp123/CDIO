@@ -18,12 +18,50 @@ public class RealEstate extends Property{
 	
 	private Color color;
 	
+	private int houses = 0;
+	private final int MAX_HOUSES = 5;
+	private int housePrice;
+	
+	public int getMAX_HOUSES() {
+		return MAX_HOUSES;
+	}
+
+	public int getHousePrice() {
+		return housePrice;
+	}
+
+	public void setHousePrice(int housePrice) {
+		this.housePrice = housePrice;
+	}
+
+	public int getHouses() {
+		return houses;
+	}
+
 	public void setColor(Color color) {
 		this.color=color;
 	}
 	
 	public Color getColor() {
 		return this.color;
+	}
+	
+	public void addHouse() {
+		houses++;
+		if (houses > MAX_HOUSES) {
+			//TODO evt en exception?
+			houses = MAX_HOUSES;
+		}
+		notify();
+	}
+	
+	public void removeHouse() {
+		houses--;
+		if (houses < 0) {
+			//TODO exception
+			houses = 0;
+		}
+		notify();
 	}
 
 }

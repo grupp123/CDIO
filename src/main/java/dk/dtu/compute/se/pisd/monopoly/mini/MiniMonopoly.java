@@ -60,6 +60,8 @@ public class MiniMonopoly {
 		r.setName("Rødovrevej");
 		r.setCost(1200);
 		r.setRent(50);
+		r.setRentLevels(new int[] {50,250,750,2250,4000,6000});
+		r.setHousePrice(1000);
 		r.setColor(Color.darkGray);
 		game.addSpace(r);
 		
@@ -72,6 +74,8 @@ public class MiniMonopoly {
 		r.setName("Hvidovrevej");
 		r.setCost(1200);
 		r.setRent(50);
+		r.setRentLevels(new int[] {50,250,750,2250,4000,6000});
+		r.setHousePrice(1000);
 		r.setColor(Color.darkGray);
 		game.addSpace(r);
 		
@@ -91,6 +95,8 @@ public class MiniMonopoly {
 		r.setName("Roskildevej");
 		r.setCost(2000);
 		r.setRent(100);
+		r.setRentLevels(new int[] {100,600,1800,5400,8000,11000});
+		r.setHousePrice(1000);
 		r.setColor(Color.BLUE);
 		game.addSpace(r);
 		
@@ -103,6 +109,8 @@ public class MiniMonopoly {
 		r.setName("Valby Langgade");
 		r.setCost(2000);
 		r.setRent(100);
+		r.setRentLevels(new int[] {100,600,1800,5400,8000,11000});
+		r.setHousePrice(1000);
 		r.setColor(Color.BLUE);
 		game.addSpace(r);
 		
@@ -110,6 +118,8 @@ public class MiniMonopoly {
 		r.setName("Allégade");
 		r.setCost(2400);
 		r.setRent(150);
+		r.setRentLevels(new int[] {150,800,2000,6000,9000,12000});
+		r.setHousePrice(1000);
 		r.setColor(Color.BLUE);
 		game.addSpace(r);
 		
@@ -121,10 +131,12 @@ public class MiniMonopoly {
 		r.setName("Frederiksberg Allé");
 		r.setCost(2800);
 		r.setRent(200);
+		r.setRentLevels(new int[] {200,1000,3000,9000,12500,15000});
+		r.setHousePrice(2000);
 		r.setColor(Color.pink);
 		game.addSpace(r);
 		
-Utility u = new Utility();
+		Utility u = new Utility();
 		u.setName("Coca-Cola");
 		u.setCost(3000);
 		u.setRent(300);
@@ -134,6 +146,8 @@ Utility u = new Utility();
 		r.setName("Bülowsvej");
 		r.setCost(2800);
 		r.setRent(200);
+		r.setRentLevels(new int[] {200,1000,3000,9000,12500,15000});
+		r.setHousePrice(2000);
 		r.setColor(Color.pink);
 		game.addSpace(r);
 		
@@ -141,10 +155,12 @@ Utility u = new Utility();
 		r.setName("Gl. Kongevej");
 		r.setCost(3200);
 		r.setRent(250);
+		r.setRentLevels(new int[] {250,1250,3750,10000,14000,18000});
+		r.setHousePrice(2000);
 		r.setColor(Color.pink);
 		game.addSpace(r);
 		
-s = new Shipping();
+		s = new Shipping();
 		s.setName("Grenaa-Hundested");
 		s.setCost(4000);
 		s.setRent(500);
@@ -154,6 +170,8 @@ s = new Shipping();
 		r.setName("Bernstorffsvej");
 		r.setCost(3600);
 		r.setRent(300);
+		r.setRentLevels(new int[] {300,1400,4000,11000,15000,19000});
+		r.setHousePrice(2000);
 		r.setColor(Color.ORANGE);
 		game.addSpace(r);
 		
@@ -166,6 +184,8 @@ s = new Shipping();
 		r.setName("Hellerupvej");
 		r.setCost(3600);
 		r.setRent(300);
+		r.setRentLevels(new int[] {300,1400,4000,11000,15000,19000});
+		r.setHousePrice(2000);
 		r.setColor(Color.ORANGE);
 		game.addSpace(r);
 		
@@ -173,10 +193,12 @@ s = new Shipping();
 		r.setName("Strandvej");
 		r.setCost(4000);
 		r.setRent(400);
+		r.setRentLevels(new int[] {350,1600,4400,12000,16000,20000});
+		r.setHousePrice(2000);
 		r.setColor(Color.ORANGE);
 		game.addSpace(r);
 		
-Space Parkering = new Space();
+		Space Parkering = new Space();
 		Parkering.setName("Helle");
 		game.addSpace(Parkering);
 		
@@ -184,6 +206,8 @@ Space Parkering = new Space();
 		r.setName("Trianglen");
 		r.setCost(4400);
 		r.setRent(350);
+		r.setRentLevels(new int[] {350,1800,5000,14000,17500,21000});
+		r.setHousePrice(3000);
 		r.setColor(Color.red);
 		game.addSpace(r);	
 		
@@ -196,6 +220,8 @@ Space Parkering = new Space();
 		r.setName("Østerbrogade");
 		r.setCost(4400);
 		r.setRent(350);
+		r.setRentLevels(new int[] {350,1800,5000,14000,17500,21000});
+		r.setHousePrice(3000);
 		r.setColor(Color.red);
 		game.addSpace(r);
 		
@@ -203,6 +229,8 @@ Space Parkering = new Space();
 		r.setName("Grønningen");
 		r.setCost(4800);
 		r.setRent(400);
+		r.setRentLevels(new int[] {400,2000,6000,15000,18500,22000});
+		r.setHousePrice(3000);
 		r.setColor(Color.red);
 		game.addSpace(r);
 		
@@ -213,9 +241,11 @@ s = new Shipping();
 		game.addSpace(s);
 		
 		r = new RealEstate();
-		r.setName("Bredegade");
+		r.setName("Bredgade");
 		r.setCost(5200);
 		r.setRent(450);
+		r.setRentLevels(new int[] {450,2200,6600,16000,19500,23000});
+		r.setHousePrice(3000);
 		r.setColor(Color.yellow);
 		game.addSpace(r);
 		
@@ -223,6 +253,8 @@ s = new Shipping();
 		r.setName("Kgs. Nytorv");
 		r.setCost(5200);
 		r.setRent(450);
+		r.setRentLevels(new int[] {450,2200,6600,16000,19500,23000});
+		r.setHousePrice(3000);
 		r.setColor(Color.yellow);
 		game.addSpace(r);
 		
@@ -236,6 +268,8 @@ u = new Utility();
 		r.setName("Østergade");
 		r.setCost(5600);
 		r.setRent(500);
+		r.setRentLevels(new int[] {500,2400,7200,17000,20500,24000});
+		r.setHousePrice(3000);
 		r.setColor(Color.yellow);
 		game.addSpace(r);
 		
@@ -247,6 +281,8 @@ u = new Utility();
 		r.setName("Amagertorv");
 		r.setCost(6000);
 		r.setRent(400);
+		r.setRentLevels(new int[] {550,2600,7800,18000,22000,25000});
+		r.setHousePrice(4000);
 		r.setColor(Color.GREEN);
 		game.addSpace(r);
 	
@@ -254,6 +290,8 @@ u = new Utility();
 		r.setName("Vimmelskaftet");
 		r.setCost(6000);
 		r.setRent(550);
+		r.setRentLevels(new int[] {550,2600,7800,18000,22000,25000});
+		r.setHousePrice(4000);
 		r.setColor(Color.green);
 		game.addSpace(r);
 		
@@ -266,10 +304,12 @@ u = new Utility();
 		r.setName("Nygade");
 		r.setCost(6400);
 		r.setRent(600);
+		r.setRentLevels(new int[] {600,3000,9000,20000,24000,28000});
+		r.setHousePrice(4000);
 		r.setColor(Color.green);
 		game.addSpace(r);
 		
-s = new Shipping();
+		s = new Shipping();
 		s.setName("Skandinavisk Linietrafik");
 		s.setCost(4000);
 		s.setRent(350);
@@ -284,6 +324,8 @@ s = new Shipping();
 		r.setName("Frederiksberggade");
 		r.setCost(7000);
 		r.setRent(700);
+		r.setRentLevels(new int[] {700,3500,10000,22000,26000,30000});
+		r.setHousePrice(4000);
 		r.setColor(Color.pink);
 		game.addSpace(r);
 		
@@ -297,6 +339,8 @@ s = new Shipping();
 		r.setName("Rådhuspladsen");
 		r.setCost(8000);
 		r.setRent(1000);
+		r.setRentLevels(new int[] {1000,4000,12000,28000,34000,40000});
+		r.setHousePrice(4000);
 		r.setColor(Color.pink);
 		game.addSpace(r);
 

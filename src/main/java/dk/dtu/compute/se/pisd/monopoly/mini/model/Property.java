@@ -50,6 +50,7 @@ public class Property extends Space {
 	 */
 	public void setCost(int cost) {
 		this.cost = cost;
+		setMortageValue(cost/2);
 		notifyChange();
 	}
 

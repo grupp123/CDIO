@@ -17,7 +17,8 @@ public class RealEstate extends Property{
 	// TODO to be implemented
 	
 	private Color color;
-	
+	private int[] rentLevels;
+
 	private int houses = 0;
 	private final int MAX_HOUSES = 5;
 	private int housePrice;
@@ -54,6 +55,7 @@ public class RealEstate extends Property{
 			//TODO evt en exception?
 			houses = MAX_HOUSES;
 		}
+		setRent(rentLevels[houses]);
 		notify();
 	}
 	
@@ -65,7 +67,7 @@ public class RealEstate extends Property{
 		}
 		if (houses == 0)
 			developped = false;
-		
+		setRent(rentLevels[houses]);
 		notify();
 	}
 	
@@ -77,5 +79,10 @@ public class RealEstate extends Property{
 		houses = 0;
 		developped = false;
 	}
+	
+	public void setRentLevels(int[] rentLevels) {
+		this.rentLevels = rentLevels;
+	}
 
+	
 }

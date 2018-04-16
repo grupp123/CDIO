@@ -22,6 +22,9 @@ import dk.dtu.compute.se.pisd.designpatterns.Subject;
  */
 public class Player extends Subject {
 	
+	private int _throw;
+	
+	
 	private int id;
 	
 	private String name;
@@ -273,6 +276,14 @@ public class Player extends Subject {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public int get_throw() {
+		return _throw;
+	}
+
+	public void set_throw(int _throw) {
+		this._throw = _throw;
 	}
 
 }

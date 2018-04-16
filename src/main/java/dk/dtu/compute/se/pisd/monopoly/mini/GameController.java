@@ -226,6 +226,7 @@ public class GameController {
 		do {
 			int die1 = (int) (1 + 6.0*Math.random());
 			int die2 = (int) (1 + 6.0*Math.random());
+			player.set_throw(die1+die2);
 			castDouble = (die1 == die2);
 			gui.setDice(die1, die2);
 
@@ -867,7 +868,7 @@ public class GameController {
 	 * Starts a list picking dialog with the given properties from the Map.
 	 * @param properties Map with the properties and names as key value
 	 * @param msg the dialog message shown to the player
-	 * @return the picked property.
+	 * @return the picked property or <code>null</code> if pick is aborted.
 	 */
 	private Property pickProperty(Map<String, Property> properties, String msg) {
 		String[] choices = properties.keySet().toArray(new String[0]);

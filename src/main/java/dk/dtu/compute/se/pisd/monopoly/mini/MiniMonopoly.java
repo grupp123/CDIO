@@ -139,7 +139,6 @@ public class MiniMonopoly {
 		Utility u = new Utility();
 		u.setName("Coca-Cola");
 		u.setCost(3000);
-		u.setRent(300);
 		game.addSpace(u);
 		
 		r = new RealEstate();
@@ -234,7 +233,7 @@ public class MiniMonopoly {
 		r.setColor(Color.red);
 		game.addSpace(r);
 		
-s = new Shipping();
+		s = new Shipping();
 		s.setName("Mols-Linien A/S");
 		s.setCost(4000);
 		s.setRent(350);
@@ -258,10 +257,9 @@ s = new Shipping();
 		r.setColor(Color.yellow);
 		game.addSpace(r);
 		
-u = new Utility();
+		u = new Utility();
 		u.setName("Faxe Bryggeri");
 		u.setCost(3000);
-		u.setRent(150);
 		game.addSpace(u);
 		
 		r = new RealEstate();

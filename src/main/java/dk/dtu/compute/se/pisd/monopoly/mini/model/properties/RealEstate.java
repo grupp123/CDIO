@@ -68,5 +68,14 @@ public class RealEstate extends Property{
 		
 		notify();
 	}
+	
+	public boolean isDevelopped() {
+		return developped;
+	}
+	
+	public void clearHouses() {
+		houses = 0;
+		developped = false;
+	}
 
 }

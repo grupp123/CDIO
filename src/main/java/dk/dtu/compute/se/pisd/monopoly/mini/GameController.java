@@ -423,9 +423,6 @@ public class GameController {
 	 * @throws PlayerBrokeException when the player chooses to buy but could not afford it
 	 */
 	public void offerToBuy(Property property, Player player) throws PlayerBrokeException {
-		// TODO We might also allow the player to obtainCash before
-		// the actual offer, to see whether he can free enough cash
-		// for the sale.
 
 		String choice = gui.getUserSelection(
 				"Player " + player.getName() +
@@ -538,11 +535,15 @@ public class GameController {
 		brokePlayer.setBalance(0);
 		brokePlayer.setBroke(true);
 
-		// We assume here, that the broke player has already sold all his houses! But, if
-		// not, we could make sure at this point that all houses are removed from
-		// properties (properties with houses on are not supposed to be transferred, neither
-		// in a trade between players, nor when  player goes broke to another player)
+
 		for (Property property: brokePlayer.getOwnedProperties()) {
+			//Check for houses and remove them all
+			if (property instanceof RealEstate) {
+				if (((RealEstate)property).isDevelopped()) {
+					((RealEstate)property).clearHouses();
+				}
+			}
+			
 			property.setOwner(benificiary);
 			benificiary.addOwnedProperty(property);
 		}	
@@ -566,9 +567,17 @@ public class GameController {
 		player.setBalance(0);
 		player.setBroke(true);
 
-		// TODO we also need to remove the houses and the mortgage from the properties 
-
 		for (Property property: player.getOwnedProperties()) {
+			//Check for houses and remove them all
+			if (property instanceof RealEstate) {
+				if (((RealEstate)property).isDevelopped()) {
+					((RealEstate)property).clearHouses();
+				}
+			}
+			//Check if there is mortgage and remove if so
+			if (property.isMortaged()) {
+				property.setMortaged(false);
+			}
 			property.setOwner(null);
 		}
 		player.removeAllProperties();
@@ -630,7 +639,7 @@ public class GameController {
 		for (Property property: player.getOwnedProperties()) {
 			if (!property.isMortaged()) {
 				if (property instanceof RealEstate) {
-					if (((RealEstate)property).getHouses() == 0)
+					if (!((RealEstate)property).isDevelopped())
 						mortgageableProperties.put(property.getName(),property);
 				}
 				else {
@@ -680,7 +689,6 @@ public class GameController {
 			try {
 				paymentToBank(player, amount);
 			} catch (PlayerBrokeException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			chosenProperty.setMortaged(false);
@@ -712,7 +720,6 @@ public class GameController {
 			try {
 				paymentToBank(buyer, chosenProperty.getHousePrice());
 			} catch (PlayerBrokeException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			chosenProperty.addHouse();
@@ -742,7 +749,7 @@ public class GameController {
 		Map<String,Property> buyableProperties = new HashMap<String,Property>();
 		for (Property property: seller.getOwnedProperties()) {
 			if (property instanceof RealEstate) {
-				if (((RealEstate)property).getHouses() == 0)
+				if (!((RealEstate)property).isDevelopped())
 					buyableProperties.put(property.getName(),property);
 			}
 			else {
@@ -772,7 +779,7 @@ public class GameController {
 		Map<String,Property> undevelopableProperties = new HashMap<String,Property>();
 		for (Property property: seller.getOwnedProperties()) {
 			if (property instanceof RealEstate) {
-				if (((RealEstate)property).getHouses() > 0)
+				if (((RealEstate)property).isDevelopped())
 					undevelopableProperties.put(property.getName(),property);
 				//TODO tjek for om man har alle grunde af samme farve.
 			}	
@@ -815,7 +822,7 @@ public class GameController {
 		Map<String,Property> sellableProperties = new HashMap<String,Property>();
 		for (Property property: seller.getOwnedProperties()) {
 			if (property instanceof RealEstate) {
-				if (((RealEstate)property).getHouses() == 0)
+				if (!((RealEstate)property).isDevelopped())
 					sellableProperties.put(property.getName(),property);
 			}
 			else {
@@ -846,7 +853,6 @@ public class GameController {
 		try {
 			payment(buyer, price, seller);
 		} catch (PlayerBrokeException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

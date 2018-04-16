@@ -24,6 +24,18 @@ public class Game extends Subject {
 	private List<Player> players = new ArrayList<Player>();
 	
 	private Player current;
+	
+	private final int passedStartMoney = 2000;
+	
+	
+	/**
+	 * Returns a list of all the games spaces.
+	 * 
+	 * @return an int with the value 2000 (money when you passing start)
+	 */	
+	public int getPassesStartMoney() {
+		return passedStartMoney;
+	}
 
 	/**
 	 * Returns a list of all the games spaces.

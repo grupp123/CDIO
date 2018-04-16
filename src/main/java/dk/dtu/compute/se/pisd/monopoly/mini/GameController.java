@@ -302,9 +302,9 @@ public class GameController {
 		if (posOld > player.getCurrentPosition().getIndex()) {
 			// Note that this assumes that the game has more than 12 spaces here!
 			// TODO: the amount of 2000$ should not be a fixed constant here (could also
-			//       be configured in the Game class.
+			//       be configured in the Game class.DONE JJ
 			gui.showMessage("Player " + player.getName() + " receives 2000$ for passing Go!");
-			this.paymentFromBank(player, 2000);
+			this.paymentFromBank(player, game.getPassesStartMoney());
 		}		
 		gui.showMessage("Player " + player.getName() + " arrives at " + space.getIndex() + ": " +  space.getName() + ".");
 

@@ -5,6 +5,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Card;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Property;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeException;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 
 public class CardPayForAmountPropertiesHotel extends Card {
 	private int amountPerHouse;
@@ -31,8 +32,19 @@ public class CardPayForAmountPropertiesHotel extends Card {
 					
 			for(Property property : player.getOwnedProperties())
 			{
-				payment = payment + property.getHotel() * amountPerHotel;
-				payment = payment + property.getHouse() * amountPerHouse;
+				if (property instanceof RealEstate) {
+					RealEstate estate = (RealEstate) property;
+					int houses = estate.getHouses();
+					if (houses == estate.getMAX_HOUSES()) {
+						payment += (houses-1) * amountPerHouse;
+						payment += amountPerHotel;
+					}
+					else {
+						payment += houses * amountPerHouse;
+					}
+					
+				}
+				
 			}
 
 			controller.paymentToBank(player, payment);

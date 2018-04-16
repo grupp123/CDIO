@@ -80,17 +80,17 @@ public class GameController {
 	 * the user.
 	 */
 	public void createPlayers() {
-		// TODO the players should be created interactively
+		
 		int numberofplayers ;
 		String valg = gui.getUserSelection("Vælg antal spillere", "2","3","4","5","6");
 		numberofplayers = Integer.parseInt(valg);
 
-		
 		ArrayList<String> names = new ArrayList<String>();
-		ArrayList<Color> choosenColor = new ArrayList<Color>();
+		ArrayList<Color> chosenColors = new ArrayList<Color>();
 		ArrayList<Color> colorList = new ArrayList<Color>(Arrays.asList(Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW,
                 Color.BLACK, Color.WHITE));
         ArrayList<String> colorString = new ArrayList<String>(Arrays.asList("Blå", "Rød", "Grøn", "Gul", "Sort", "Hvid"));
+        
 		for (int i = 0; i < numberofplayers; i++) {
 			String name = gui.getUserString("Indtast navn: ");
 			
@@ -100,22 +100,22 @@ public class GameController {
 				name += " "+(i+1);
 			names.add(name);
 			
-			String chooceColor = gui.getUserSelection("Vælg din bils farve", colorString.toArray(new String[0]));
+			String pickedColor = gui.getUserSelection("Vælg din bils farve", colorString.toArray(new String[0]));
 
-            int k = colorString.indexOf(chooceColor);
-            Color color_1 = colorList.get(k);
-            choosenColor.add(color_1);
+            int colorIndex = colorString.indexOf(pickedColor);
+            Color color = colorList.get(colorIndex);
+            chosenColors.add(color);
 
-            colorString.remove(k);
-            colorList.remove(k);
+            colorString.remove(colorIndex);
+            colorList.remove(colorIndex);
 			
 		}
-		Player[] players = new Player[numberofplayers];;
+		Player[] players = new Player[numberofplayers];
 		for (int i = 0; i < numberofplayers; i++) {
 			players[i] = new Player();
 			players[i].setName(names.get(i)); 
 			players[i].setCurrentPosition(game.getSpaces().get(0));
-			players[i].setColor(choosenColor.get(i));
+			players[i].setColor(chosenColors.get(i));
 			game.addPlayer(players[i]);
 		}
 
@@ -356,7 +356,60 @@ public class GameController {
 	 * @param amount the amount the player should have available after the act
 	 */
 	public void obtainCash(Player player, int amount) {
-		// TODO implement
+		int oldBalance, newBalance, needed, earned;
+		oldBalance = player.getBalance();
+		needed = amount-oldBalance;
+		gui.showMessage(player.getName()+", du mangler "+needed+"kr. du får nu mulighed for at handle.");
+		do {
+			obtainCash(player);
+			newBalance = player.getBalance();
+			earned = newBalance-oldBalance;
+		}
+		while (!gui.getUserLeftButtonPressed("Du har optjent "+earned+"kr. hvad vil du?", "Fortsæt", "Sælg mere"));
+		
+		if (needed <= earned) {
+			gui.showMessage(player.getName()+", du har fået optjent nok!");
+			return;
+		}
+		needed = amount-newBalance;
+		gui.showMessage(player.getName()+", du fik ikke optjent nok penge og mangler "+needed+"kr.");
+
+	}
+	
+	/**
+	 * The activity that gives the player the opportunity to sell houses, properties and mortgage properties.
+	 * @param player the player
+	 */
+	public void obtainCash(Player player) {
+		String selection = gui.getUserSelection("Hvad vil du optjene penge med?","Bolig","Grund","Pantsæt");
+		
+		if (selection.equals("Bolig")) {
+			tradeSellHouse(player);
+		}
+		else if (selection.equals("Grund")) {
+			tradeSellProperty(player);
+		}
+		else {
+			tradeCashInMortgage(player);
+		}
+	}
+	
+	/**
+	 * The activity that gives the player the opportunity to buy houses, properties and pay mortgage.
+	 * @param player the player
+	 */
+	public void spendCash(Player player) {
+		String selection = gui.getUserSelection("Hvad vil du bruge penge på?","Hus","Spillers grund","Pant");
+		
+		if (selection.equals("Hus")) {
+			tradeBuyHouse(player);
+		}
+		else if (selection.equals("Pant")) {
+			tradePayMortgage(player);
+		}
+		else {
+			tradeBuyProperty(player);
+		}
 	}
 
 	/**
@@ -546,65 +599,53 @@ public class GameController {
 	
 	/**
 	 * Starts a trade dialogue.
-	 * @param trader the trading player
+	 * @param player the trading player
 	 */
-	public void trade(Player trader) {
-		boolean choice = gui.getUserLeftButtonPressed(trader.getName()+"har du lyst til at handle?", "Ja", "Nej");
+	public void trade(Player player) {
+		boolean choice = gui.getUserLeftButtonPressed(player.getName()+" har du lyst til at handle?", "Ja", "Nej");
 		//If the user chooses no, no trade action will happen...	
 		while (choice) {
-			String selection = gui.getUserSelection("Vælg handelstype.","Køb", "Sælg", "Pantsæt");
+			String selection = gui.getUserSelection("Hvad vil du?", "Optjene penge", "Spendere penge");
 			
-			//If user chooses to buy
-			if (selection.equals("Køb")) {
-				selection = gui.getUserSelection("Hvad vil du købe?","Hus","Spillers grund");
-				
-				if (selection.equals("Hus")) {
-					tradeBuyHouse(trader);
-				}
-				else {
-					tradeBuyProperty(trader);
-				}
+			//If user chooses to spend money
+			if (selection.equals("Spendere penge")) {
+				spendCash(player);
 			}
-			//If user chooses to sell
-			else if (selection.equals("Sælg")) {
-				selection = gui.getUserSelection("Hvad vil du sælge?","Bolig","Grund");
-				
-				if (selection.equals("Bolig")) {
-					tradeSellHouse(trader);
-				}
-				else {
-					tradeSellProperty(trader);
-				}
-			}
-			//If user chooses to mortage
+			//If user chooses to obtain money
 			else {
-				tradeMortage(trader);
+				obtainCash(player);
 			}
-			choice = gui.getUserLeftButtonPressed(trader.getName()+"har du lyst til at handle, igen?", "Ja", "Nej");
+			
+			choice = gui.getUserLeftButtonPressed(player.getName()+" har du lyst til at handle, igen?", "Ja", "Nej");
 		}
 		
 	}
 	
 	/**
-	 * Starts the mortage dialogue
-	 * @param player the mortaging player
+	 * Starts the mortgage dialogue
+	 * @param player the mortgaging player
 	 */
-	private void tradeMortage(Player player) {
-		Map<String,Property> mortageableProperties = new HashMap<String,Property>();
+	private void tradeCashInMortgage(Player player) {
+		Map<String,Property> mortgageableProperties = new HashMap<String,Property>();
 		for (Property property: player.getOwnedProperties()) {
 			if (!property.isMortaged()) {
 				if (property instanceof RealEstate) {
 					if (((RealEstate)property).getHouses() == 0)
-						mortageableProperties.put(property.getName(),property);
+						mortgageableProperties.put(property.getName(),property);
 				}
 				else {
-					mortageableProperties.put(property.getName(),property);
+					mortgageableProperties.put(property.getName(),property);
 				}	
 			}
 			
 		}
 		
-		Property chosenProperty = pickProperty(mortageableProperties, "Vælg den grund du vil pantsætte");
+		if (mortgageableProperties.isEmpty()) {
+			gui.showMessage("Du har ingen grunde der kan pantsættes.");
+			return;
+		}
+		
+		Property chosenProperty = pickProperty(mortgageableProperties, "Vælg den grund du vil pantsætte");
 		
 		if (chosenProperty != null) {
 			chosenProperty.setMortaged(true);
@@ -613,6 +654,39 @@ public class GameController {
 		
 		
 	}
+	
+	/**
+	 * Starts the pay mortgage dialogue
+	 * @param player the paying player
+	 */
+	private void tradePayMortgage(Player player) {
+		Map<String,Property> demortgageableProperties = new HashMap<String,Property>();
+		for (Property property: player.getOwnedProperties()) {
+			if (property.isMortaged()) {
+				demortgageableProperties.put(property.getName(),property);
+			}
+			
+		}
+		
+		if (demortgageableProperties.isEmpty()) {
+			gui.showMessage("Du har ingen pantsatte grunde.");
+			return;
+		}
+		
+		Property chosenProperty = pickProperty(demortgageableProperties, "Vælg den grund du vil betale pant for.");
+		
+		if (chosenProperty != null) {
+			int amount = (int) (chosenProperty.getMortageValue()*1.1f);
+			try {
+				paymentToBank(player, amount);
+			} catch (PlayerBrokeException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			chosenProperty.setMortaged(false);
+		}
+	}
+	
 
 	/**
 	 * Starts a buy house dialogue.
@@ -625,6 +699,11 @@ public class GameController {
 				if (((RealEstate)property).getHouses() < ((RealEstate)property).getMAX_HOUSES())
 					developableProperties.put(property.getName(),property);
 			}	
+		}
+		
+		if (developableProperties.isEmpty()) {
+			gui.showMessage("Du har ingen grunde at bygge på.");
+			return;
 		}
 		
 		RealEstate chosenProperty = (RealEstate)pickProperty(developableProperties, "Vælg den grund du vil udvikle.");
@@ -671,6 +750,11 @@ public class GameController {
 			}	
 		}
 		
+		if (buyableProperties.isEmpty()) {
+			gui.showMessage(seller.getName()+", har ingen salgsbare grunde.");
+			return;
+		}
+		
 		Property chosenProperty = pickProperty(buyableProperties, "Vælg den grund du vil købe.");
 		
 		if (chosenProperty != null) {
@@ -690,7 +774,13 @@ public class GameController {
 			if (property instanceof RealEstate) {
 				if (((RealEstate)property).getHouses() > 0)
 					undevelopableProperties.put(property.getName(),property);
+				//TODO tjek for om man har alle grunde af samme farve.
 			}	
+		}
+		
+		if (undevelopableProperties.isEmpty()) {
+			gui.showMessage("Du har ingen grunde med huse.");
+			return;
 		}
 		
 		RealEstate chosenProperty = (RealEstate)pickProperty(undevelopableProperties, "Vælg den grund du vil uudvikle.");
@@ -732,7 +822,10 @@ public class GameController {
 				sellableProperties.put(property.getName(),property);
 			}	
 		}
-		
+		if (sellableProperties.isEmpty()) {
+			gui.showMessage("Du har ingen salgsbare grunde.");
+			return;
+		}
 		Property chosenProperty = pickProperty(sellableProperties, "Vælg den grund du vil sælge.");
 		
 		if (chosenProperty != null) {
@@ -755,11 +848,12 @@ public class GameController {
 		} catch (PlayerBrokeException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			seller.removeOwnedProperty(property);
-			buyer.addOwnedProperty(property);
-			property.setOwner(buyer);
 		}
+		
+		seller.removeOwnedProperty(property);
+		buyer.addOwnedProperty(property);
+		property.setOwner(buyer);
+		
 		
 	}
 	

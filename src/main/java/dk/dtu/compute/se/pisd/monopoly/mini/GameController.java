@@ -175,8 +175,8 @@ public class GameController {
 			}
 			if (countActive == 1) {
 				gui.showMessage(
-						"Player " + winner.getName() +
-						" has won with " + winner.getBalance() +"$.");
+						"Spiller " + winner.getName() +
+						" har vundet med " + winner.getBalance() +"kr.");
 				break;
 			} else if (countActive < 1) {
 				// This can actually happen in very rare conditions and only
@@ -184,7 +184,7 @@ public class GameController {
 				// in an auction in the same round when the last but one player went
 				// bankrupt)
 				gui.showMessage(
-						"All players are broke.");
+						"Alle spillerne er gået fallit.");
 				break;
 
 			}
@@ -196,10 +196,10 @@ public class GameController {
 			game.setCurrentPlayer(players.get(current));
 			if (current == 0) {
 				String selection = gui.getUserSelection(
-						"A round is finished. Do you want to continue the game?",
-						"yes",
-						"no");
-				if (selection.equals("no")) {
+						"Runden er slut. Vil I fortsætte med at spille?",
+						"ja",
+						"nej");
+				if (selection.equals("nej")) {
 					terminated = true;
 				}
 			}
@@ -231,25 +231,25 @@ public class GameController {
 
 			if (player.isInPrison() && castDouble) {
 				player.setInPrison(false);
-				gui.showMessage("Player " + player.getName() + " leaves prison now since he cast a double!");
+				gui.showMessage("Spiller " + player.getName() + " forlader fængslet da han har kastet to ens!");
 			} else if (player.isInPrison()) {
-				gui.showMessage("Player " + player.getName() + " stays in prison since he did not cast a double!");
+				gui.showMessage("Spiller " + player.getName() + " forbliver i fængslet da han ikke har kastet to ens!");
 			}
 
 			if (player.isInPrison()) {
 				if (player.getBalance () >= 1000) {
 					player.payMoney(1000);
-					gui.showMessage("Player " + player.getName() + " leaves prison now since he pay 1000!");
+					gui.showMessage("Spiller " + player.getName() + " forlader fængslet imod en betaling af 1.000kr.!");
 					player.setInPrison (false);
 				}else {
-					gui.showMessage("Player " + player.getName() + " stays in prison since he did not pay 1000!");
+					gui.showMessage("Spiller " + player.getName() + " forbliver i fængslet da han ikke har betalt!");
 				}
 			}
 
 			if (castDouble) {
 				doublesCount++;
 				if (doublesCount > 2) {
-					gui.showMessage("Player " + player.getName() + " has cast the third double and goes to jail!");
+					gui.showMessage("Spiller " + player.getName() + " har kastet to ens tre gange nu og havner derfor i fængslet!");
 					gotoJail(player);
 					return;
 				}
@@ -273,7 +273,7 @@ public class GameController {
 				Space space = spaces.get(newPos);
 				moveToSpace(player, space);
 				if (castDouble) {
-					gui.showMessage("Player " + player.getName() + " cast a double and makes another move.");
+					gui.showMessage("Spiller " + player.getName() + " kastet to ens og får en ekstra tur.");
 				}
 			}
 		} while (castDouble);
@@ -295,12 +295,12 @@ public class GameController {
 			// Note that this assumes that the game has more than 12 spaces here!
 			// TODO: the amount of 4000$ should not be a fixed constant here (could also
 			//       be configured in the Game class.
-			gui.showMessage("Player " + player.getName() + " receives 4000Kr. for passing Go!");
+			gui.showMessage("Spiller " + player.getName() + " modtager 4.000kr. for at passere Start!");
 			this.paymentFromBank(player, 4000);
 		}		
-		gui.showMessage("Player " + player.getName() + " arrives at " + space.getIndex() + ": " +  space.getName() + ".");
+		gui.showMessage("Spiller " + player.getName() + " lander på " + space.getIndex() + ": " +  space.getName() + ".");
 
-		// If the space is the Tax one, we give 2 choices for payment
+		// If the space is the IncomeTax one, we give 2 choices for payment
 		if (space instanceof IncomeTax) {
 			String msg = player.getName()+", du skal betale indkomstskat af 4.000kr. eller 10% af alle dine værdier (huse, hoteller, grunde og balance)";
 			((IncomeTax)space).setPayByPercent(gui.getUserLeftButtonPressed(msg, "Betal 10%", "Betal 4.000kr.")); 
@@ -316,7 +316,7 @@ public class GameController {
 	 * @param player the player going to jail
 	 */
 	public void gotoJail(Player player) {
-		gui.showMessage("Player " + player.getName() + "Go directly to the jail without passing the start");
+		gui.showMessage("Spiller " + player.getName() + "Gå direkte i fængslet uden at passere Start");
 		player.setCurrentPosition(game.getSpaces().get(10));
 		player.setInPrison(true);
 	}
@@ -330,7 +330,7 @@ public class GameController {
 	public  void takeChanceCard(Player player) throws PlayerBrokeException{
 		Card card = game.drawCardFromDeck();
 		gui.displayChanceCard(card.getText());
-		gui.showMessage("Player " + player.getName() + " draws a chance card.");
+		gui.showMessage("Spiller " + player.getName() + " trækker et chancekort.");
 
 		try {
 			card.doAction(this, player);
@@ -430,13 +430,13 @@ public class GameController {
 	public void offerToBuy(Property property, Player player) throws PlayerBrokeException {
 
 		String choice = gui.getUserSelection(
-				"Player " + player.getName() +
-				": Do you want to buy " + property.getName() +
-				" for " + property.getCost() + "$?",
-				"yes",
-				"no");
+				"Spiller " + player.getName() +
+				": Vil du købe " + property.getName() +
+				" for " + property.getCost() + "kr.?",
+				"ja",
+				"nej");
 
-		if (choice.equals("yes")) {
+		if (choice.equals("ja")) {
 			try {
 				paymentToBank(player, property.getCost());
 			} catch (PlayerBrokeException e) {
@@ -476,7 +476,7 @@ public class GameController {
 				throw new PlayerBrokeException(payer);
 			}
 		}
-		gui.showMessage("Player " + payer.getName() + " pays " +  amount + "$ to player " + receiver.getName() + ".");
+		gui.showMessage("Spiller " + payer.getName() + " betaler " +  amount + "kr. til spiller " + receiver.getName() + ".");
 		payer.payMoney(amount);
 		receiver.receiveMoney(amount);
 	}
@@ -511,7 +511,7 @@ public class GameController {
 			}
 
 		}
-		gui.showMessage("Player " + player.getName() + " pays " +  amount + "$ to the bank.");
+		gui.showMessage("Spiller " + player.getName() + " betaler " +  amount + "kr. til banken.");
 		player.payMoney(amount);
 	}
 
@@ -558,8 +558,8 @@ public class GameController {
 			game.returnCardToDeck(brokePlayer.getOwnedCards().get(0));
 		}
 
-		gui.showMessage("Player " + brokePlayer.getName() + "went broke and transfered all"
-				+ "assets to " + benificiary.getName());
+		gui.showMessage("Spiller " + brokePlayer.getName() + "gik fallit og overfører alle hans "
+				+ "likvider til " + benificiary.getName());
 	}
 
 	/**
@@ -587,7 +587,7 @@ public class GameController {
 		}
 		player.removeAllProperties();
 
-		gui.showMessage("Player " + player.getName() + " went broke");
+		gui.showMessage("Spiller " + player.getName() + " gik fallit.");
 
 		while (!player.getOwnedCards().isEmpty()) {
 			game.returnCardToDeck(player.getOwnedCards().get(0));

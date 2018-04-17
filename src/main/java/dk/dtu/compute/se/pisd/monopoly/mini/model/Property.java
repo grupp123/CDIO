@@ -20,17 +20,17 @@ public class Property extends Space {
 	private Player owner;
 	
 	
-	public boolean isMortaged() {
+	public boolean isMortgaged() {
 		return mortgaged;
 	}
-	public void setMortaged(boolean mortaged) {
+	public void setMortgaged(boolean mortaged) {
 		this.mortgaged = mortaged;
 		notifyChange();
 	}
-	public int getMortageValue() {
+	public int getMortgageValue() {
 		return mortageValue;
 	}
-	public void setMortageValue(int mortageValue) {
+	public void setMortgageValue(int mortageValue) {
 		this.mortageValue = mortageValue;
 	}
 	
@@ -51,7 +51,7 @@ public class Property extends Space {
 	 */
 	public void setCost(int cost) {
 		this.cost = cost;
-		setMortageValue(cost/2);
+		setMortgageValue(cost/2);
 		notifyChange();
 	}
 

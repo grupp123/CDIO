@@ -13,12 +13,14 @@ public class CardLegat extends Card{
 
 	public int getAmount() {
 		return amount;
-	}public void setAmount(int amount) {
+	}
+	
+	public void setAmount(int amount) {
 		this.amount = amount;
 	}
+	
 	@Override
 	public void doAction(GameController controller, Player player) throws PlayerBrokeException {
-		
 		
 		if(player.getAssetsValue()<15000) {
 			player.receiveMoney(amount);

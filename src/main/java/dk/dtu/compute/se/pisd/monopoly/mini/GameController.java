@@ -300,7 +300,7 @@ public class GameController {
 			// TODO: the amount of 4000$ should not be a fixed constant here (could also
 			//       be configured in the Game class.
 			gui.showMessage("Spiller " + player.getName() + " modtager 4.000kr. for at passere Start!");
-			this.paymentFromBank(player, 4000);
+		this.paymentFromBank(player, game.getPassesStartMoney());
 		}		
 		gui.showMessage("Spiller " + player.getName() + " lander på " + space.getIndex() + ": " +  space.getName() + ".");
 

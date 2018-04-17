@@ -23,7 +23,45 @@ public class Game extends Subject {
 	
 	private List<Player> players = new ArrayList<Player>();
 	
+	
 	private Player current;
+	
+	private final int passedStartMoney = 4000;
+	
+
+	public final int MAX_HOUSES = 40;
+	
+	public final int MAX_HOTELS = 12;
+	
+	private int houses;
+	
+	private int hotels;
+	
+	
+
+	public int getHotels() {
+		return hotels;
+	}
+
+	public void setHotels(int hotels) {
+		if (this.hotels + hotels <= MAX_HOTELS) {
+			this.hotels += hotels;
+		}
+		else {
+			//TODO exception ved for mange hoteller
+		}
+		
+
+	}
+	
+	/**
+	 * Returns the amount players receive upon passing start
+	 * 
+	 * @return an int with the value 4000 (money when you passing start)
+	 */	
+	public int getPassesStartMoney() {
+		return passedStartMoney;
+	}
 
 	/**
 	 * Returns a list of all the games spaces.
@@ -171,5 +209,20 @@ public class Game extends Subject {
 		}
 		notifyChange();
 	}
+
+	public int getHouses() {
+		return houses;
+	}
+
+	public void setHouses(int houses) {
+		if (this.houses + houses <= MAX_HOUSES) {
+			this.houses += houses;
+		}
+		else {
+			//TODO exception ved for mange huse
+		}
+	}
+	
+	
 
 }

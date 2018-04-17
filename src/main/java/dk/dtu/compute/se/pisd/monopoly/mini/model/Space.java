@@ -1,5 +1,7 @@
 package dk.dtu.compute.se.pisd.monopoly.mini.model;
 
+import java.awt.Color;
+
 import dk.dtu.compute.se.pisd.designpatterns.Subject;
 import dk.dtu.compute.se.pisd.monopoly.mini.GameController;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeException;
@@ -21,6 +23,8 @@ public class Space extends Subject {
 	private String name;
 	
 	private int index;
+	
+	private Color color = Color.gray;
 	
 	/**
 	 * Returns the space's name.
@@ -70,5 +74,12 @@ public class Space extends Subject {
 	public void doAction(GameController controller, Player player) throws PlayerBrokeException {
 		// per default there is no action for a space
 	};
+	
+	public Color getColor() {
+		return color;
+	}
+	public void setColor(Color color) {
+		this.color = color;
+	}
 
 }

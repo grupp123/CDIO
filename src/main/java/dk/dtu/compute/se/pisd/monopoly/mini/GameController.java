@@ -3,16 +3,25 @@ package dk.dtu.compute.se.pisd.monopoly.mini;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.swing.event.ListSelectionEvent;
 
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Card;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.IncomeTax;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Property;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.OutOfJail;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeException;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 import gui_main.GUI;
+//dhdsk
 
+//YOLOOSS
 /**
  * The overall controller of a Monopoly game. It provides access
  * to all basic actions and activities for the game. All other
@@ -45,15 +54,15 @@ import gui_main.GUI;
  *
  */
 public class GameController {
-	
+
 	private Game game;
-	
+
 	private GUI gui;
-	
+
 	private View view;
-	
-    private boolean disposed = false;
-	
+
+	private boolean disposed = false;
+
 	/**
 	 * Constructor for a controller of a game.
 	 * 
@@ -62,10 +71,9 @@ public class GameController {
 	public GameController(Game game) {
 		super();
 		this.game = game;
-		
-		gui = new GUI();
+
 	}
-	
+
 	/**
 	 * This method will be called when the game is started to create
 	 * the participating players. Right now, the creation of players
@@ -73,59 +81,48 @@ public class GameController {
 	 * the user.
 	 */
 	public void createPlayers() {
-		// TODO the players should be created interactively
+		
 		int numberofplayers ;
 		String valg = gui.getUserSelection("Vælg antal spillere", "2","3","4","5","6");
 		numberofplayers = Integer.parseInt(valg);
-		ArrayList<Color> colorList = new ArrayList<Color>(Arrays.asList(Color.BLUE, Color.RED, Color.GREEN, Color.PINK, Color.YELLOW,
-				Color.BLACK, Color.WHITE));
-		ArrayList<String> colorString = new ArrayList<String>(Arrays.asList("Blå", "Rød", "Grøn", "Pink", "Gul", "Sort", "Hvid"));
-		
-		ArrayList<Color> choosenColor = new ArrayList<Color>();
+
 		ArrayList<String> names = new ArrayList<String>();
+		ArrayList<Color> chosenColors = new ArrayList<Color>();
+		ArrayList<Color> colorList = new ArrayList<Color>(Arrays.asList(Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW,
+                Color.BLACK, Color.WHITE));
+        ArrayList<String> colorString = new ArrayList<String>(Arrays.asList("Blå", "Rød", "Grøn", "Gul", "Sort", "Hvid"));
+        
 		for (int i = 0; i < numberofplayers; i++) {
 			String name = gui.getUserString("Indtast navn: ");
-			if (name.equals("")) name = "Spiller "+(i+1);
-			else if (names.contains(name)) name += " "+(i+1);
+			
+			if (name.equals("")) 
+				name = "Spiller "+(i+1);
+			else if (names.contains(name)) 
+				name += " "+(i+1);
 			names.add(name);
 			
-			String chooceColor = gui.getUserSelection("Vælg din bils farve", colorString.toArray(new String[0]));
+			String pickedColor = gui.getUserSelection("Vælg din bils farve", colorString.toArray(new String[0]));
 
-			int k = colorString.indexOf(chooceColor);
-			Color color_1 = colorList.get(k);
-			choosenColor.add(color_1);
+            int colorIndex = colorString.indexOf(pickedColor);
+            Color color = colorList.get(colorIndex);
+            chosenColors.add(color);
+
+            colorString.remove(colorIndex);
+            colorList.remove(colorIndex);
 			
-			colorString.remove(k);
-			colorList.remove(k);
 		}
-		Player[] players = new Player[numberofplayers];;
+		Player[] players = new Player[numberofplayers];
 		for (int i = 0; i < numberofplayers; i++) {
 			players[i] = new Player();
 			players[i].setName(names.get(i)); 
 			players[i].setCurrentPosition(game.getSpaces().get(0));
-			players[i].setColor(choosenColor.get(i));
+			players[i].setColor(chosenColors.get(i));
 			game.addPlayer(players[i]);
 		}
+
+		view.playerUpdate();
+
 	}
-		
-//		Player p = new Player();
-//		p.setName("Player 1");
-//		p.setCurrentPosition(game.getSpaces().get(0));
-//		p.setColor(Color.RED);
-//		game.addPlayer(p);
-//		
-//		p = new Player();
-//		p.setName("Player 2");
-//		p.setCurrentPosition(game.getSpaces().get(0));
-//		p.setColor(Color.YELLOW);
-//		game.addPlayer(p);
-//		
-//		p = new Player();
-//		p.setName("Player 9999");
-//		p.setCurrentPosition(game.getSpaces().get(0));
-//		p.setColor(Color.GREEN);
-//		game.addPlayer(p);
-//	}
 	
 	/**
 	 * This method will initialize the GUI. It should be called after
@@ -135,9 +132,11 @@ public class GameController {
 	 * based on the underlying game's spaces (fields).
 	 */
 	public void initializeGUI() {		
-		this. view = new View(game, gui);
+		this. view = new View(game);
+
+		gui = view.createGUI(game);
 	}
-	
+
 	/**
 	 * The main method to start the game with the given player.
 	 * The game is started with the current player of the game;
@@ -146,7 +145,7 @@ public class GameController {
 	public void play() {
 		List<Player> players =  game.getPlayers();
 		Player c = game.getCurrentPlayer();
-		
+
 		int current = 0;
 		for (int i=0; i<players.size(); i++) {
 			Player p = players.get(i);
@@ -154,18 +153,19 @@ public class GameController {
 				current = i;
 			}
 		}
-		
+
 		boolean terminated = false;
 		while (!terminated) {
 			Player player = players.get(current);
 			if (!player.isBroke()) {
+				gui.getUserButtonPressed("Klik ok for at kaste","Kast");
 				try {
 					this.makeMove(player);
 				} catch (PlayerBrokeException e) {
 					// We could react to the player having gone broke
 				}
 			}
-			
+
 			// Check whether we have a winner
 			Player winner = null;
 			int countActive = 0;
@@ -177,8 +177,8 @@ public class GameController {
 			}
 			if (countActive == 1) {
 				gui.showMessage(
-						"Player " + winner.getName() +
-						" has won with " + winner.getBalance() +"$.");
+						"Spiller " + winner.getName() +
+						" har vundet med " + winner.getBalance() +"kr.");
 				break;
 			} else if (countActive < 1) {
 				// This can actually happen in very rare conditions and only
@@ -186,31 +186,34 @@ public class GameController {
 				// in an auction in the same round when the last but one player went
 				// bankrupt)
 				gui.showMessage(
-						"All players are broke.");
+						"Alle spillerne er gået fallit.");
 				break;
-				
+
 			}
 
 			// TODO offer all players the options to trade etc.
+			if (!player.isBroke()) {
+				trade(player);
+			}
 
 			current = (current + 1) % players.size();
 			game.setCurrentPlayer(players.get(current));
 			if (current == 0) {
 				String selection = gui.getUserSelection(
-						"A round is finished. Do you want to continue the game?",
-						"yes",
-						"no");
-				if (selection.equals("no")) {
+						"Runden er slut. Vil I fortsætte med at spille?",
+						"ja",
+						"nej");
+				if (selection.equals("nej")) {
 					terminated = true;
 				}
 			}
 		}
-		
+
 		dispose();
 	}
 
 	/**
-	 * This method implements a activity of asingle move of the given player.
+	 * This method implements a activity of a single move of the given player.
 	 * It throws a {@link dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeException}
 	 * if the player goes broke in this move. Note that this is still a very
 	 * basic implementation of the move of a player; many aspects are still
@@ -224,27 +227,47 @@ public class GameController {
 		boolean castDouble;
 		int doublesCount = 0;
 		do {
-			int die1 = (int) (1 + 3.0*Math.random());
-			int die2 = (int) (1 + 3.0*Math.random());
+			int die1 = (int) (1 + 6.0*Math.random());
+			int die2 = (int) (1 + 6.0*Math.random());
+			player.set_throw(die1+die2);
 			castDouble = (die1 == die2);
 			gui.setDice(die1, die2);
-			
+
 			if (player.isInPrison() && castDouble) {
 				player.setInPrison(false);
-				gui.showMessage("Player " + player.getName() + " leaves prison now since he cast a double!");
+				gui.showMessage("Spiller " + player.getName() + " forlader fængslet da han har kastet to ens!");
 			} else if (player.isInPrison()) {
-				gui.showMessage("Player " + player.getName() + " stays in prison since he did not cast a double!");
+				gui.showMessage("Spiller " + player.getName() + " forbliver i fængslet da han ikke har kastet to ens!");
 			}
-			// TODO note that the player could also pay to get out of prison,
-			//      which is not yet implemented 
+
+			if (player.isInPrison()) {
+				if (player.getBalance () >= 1000) {
+					player.payMoney(1000);
+					gui.showMessage("Spiller " + player.getName() + " forlader fængslet imod en betaling af 1.000kr.!");
+					player.setInPrison (false);
+				}else {
+					gui.showMessage("Spiller " + player.getName() + " forbliver i fængslet da han ikke har betalt!");
+				}
+			}
+
 			if (castDouble) {
 				doublesCount++;
 				if (doublesCount > 2) {
-					gui.showMessage("Player " + player.getName() + " has cast the third double and goes to jail!");
+					gui.showMessage("Spiller " + player.getName() + " har kastet to ens tre gange nu og havner derfor i fængslet!");
 					gotoJail(player);
 					return;
 				}
 			}
+
+			for(Card card : player.getOwnedCards()){
+				if(card instanceof OutOfJail)
+				{
+					player.setInPrison(false);
+					player.removeOwnedCard(card);
+					break;
+				}
+			}
+
 			if (!player.isInPrison()) {
 				// make the actual move by computing the new position and then
 				// executing the action moving the player to that space
@@ -254,12 +277,12 @@ public class GameController {
 				Space space = spaces.get(newPos);
 				moveToSpace(player, space);
 				if (castDouble) {
-					gui.showMessage("Player " + player.getName() + " cast a double and makes another move.");
+					gui.showMessage("Spiller " + player.getName() + " kastet to ens og får en ekstra tur.");
 				}
 			}
 		} while (castDouble);
 	}
-	
+
 	/**
 	 * This method implements the activity of moving the player to the new position,
 	 * including all actions associated with moving the player to the new position.
@@ -274,13 +297,18 @@ public class GameController {
 
 		if (posOld > player.getCurrentPosition().getIndex()) {
 			// Note that this assumes that the game has more than 12 spaces here!
-			// TODO: the amount of 2000$ should not be a fixed constant here (could also
+			// TODO: the amount of 4000$ should not be a fixed constant here (could also
 			//       be configured in the Game class.
-			gui.showMessage("Player " + player.getName() + " receives 2000$ for passing Go!");
-			this.paymentFromBank(player, 2000);
+			gui.showMessage("Spiller " + player.getName() + " modtager 4.000kr. for at passere Start!");
+		this.paymentFromBank(player, game.getPassesStartMoney());
 		}		
-		gui.showMessage("Player " + player.getName() + " arrives at " + space.getIndex() + ": " +  space.getName() + ".");
-		
+		gui.showMessage("Spiller " + player.getName() + " lander på " + space.getIndex() + ": " +  space.getName() + ".");
+
+		// If the space is the IncomeTax one, we give 2 choices for payment
+		if (space instanceof IncomeTax) {
+			String msg = player.getName()+", du skal betale indkomstskat af 4.000kr. eller 10% af alle dine værdier (huse, hoteller, grunde og balance)";
+			((IncomeTax)space).setPayByPercent(gui.getUserLeftButtonPressed(msg, "Betal 10%", "Betal 4.000kr.")); 
+		}
 		// Execute the action associated with the respective space. Note
 		// that this is delegated to the field, which implements this action
 		space.doAction(this, player);
@@ -292,11 +320,11 @@ public class GameController {
 	 * @param player the player going to jail
 	 */
 	public void gotoJail(Player player) {
-		// TODO the 10 should not be hard coded
+		gui.showMessage("Spiller " + player.getName() + "Gå direkte i fængslet uden at passere Start");
 		player.setCurrentPosition(game.getSpaces().get(10));
 		player.setInPrison(true);
 	}
-	
+
 	/**
 	 * The method implementing the activity of taking a chance card.
 	 * 
@@ -306,7 +334,7 @@ public class GameController {
 	public  void takeChanceCard(Player player) throws PlayerBrokeException{
 		Card card = game.drawCardFromDeck();
 		gui.displayChanceCard(card.getText());
-		gui.showMessage("Player " + player.getName() + " draws a chance card.");
+		gui.showMessage("Spiller " + player.getName() + " trækker et chancekort.");
 
 		try {
 			card.doAction(this, player);
@@ -314,7 +342,7 @@ public class GameController {
 			gui.displayChanceCard("done");
 		}
 	}
-	
+
 	/**
 	 * This method implements the action returning a drawn card to the
 	 * bottom of the deck.
@@ -324,7 +352,7 @@ public class GameController {
 	public void returnChanceCardToDeck(Card card) {
 		game.returnCardToDeck(card);
 	}
-	
+
 	/**
 	 * This method implements the activity where a player can obtain
 	 * cash by selling houses back to the bank, by mortgaging own properties,
@@ -337,9 +365,62 @@ public class GameController {
 	 * @param amount the amount the player should have available after the act
 	 */
 	public void obtainCash(Player player, int amount) {
-		// TODO implement
+		int oldBalance, newBalance, needed, earned;
+		oldBalance = player.getBalance();
+		needed = amount-oldBalance;
+		gui.showMessage(player.getName()+", du mangler "+needed+"kr. du får nu mulighed for at handle.");
+		do {
+			obtainCash(player);
+			newBalance = player.getBalance();
+			earned = newBalance-oldBalance;
+		}
+		while (!gui.getUserLeftButtonPressed("Du har optjent "+earned+"kr. hvad vil du?", "Fortsæt", "Sælg mere"));
+		
+		if (needed <= earned) {
+			gui.showMessage(player.getName()+", du har fået optjent nok!");
+			return;
+		}
+		needed = amount-newBalance;
+		gui.showMessage(player.getName()+", du fik ikke optjent nok penge og mangler "+needed+"kr.");
+
 	}
 	
+	/**
+	 * The activity that gives the player the opportunity to sell houses, properties and mortgage properties.
+	 * @param player the player
+	 */
+	public void obtainCash(Player player) {
+		String selection = gui.getUserSelection("Hvad vil du optjene penge med?","Bolig","Grund","Pantsæt");
+		
+		if (selection.equals("Bolig")) {
+			tradeSellHouse(player);
+		}
+		else if (selection.equals("Grund")) {
+			tradeSellProperty(player);
+		}
+		else {
+			tradeCashInMortgage(player);
+		}
+	}
+	
+	/**
+	 * The activity that gives the player the opportunity to buy houses, properties and pay mortgage.
+	 * @param player the player
+	 */
+	public void spendCash(Player player) {
+		String selection = gui.getUserSelection("Hvad vil du bruge penge på?","Bolig","Spillers grund","Pant");
+		
+		if (selection.equals("Bolig")) {
+			tradeBuyHouse(player);
+		}
+		else if (selection.equals("Pant")) {
+			tradePayMortgage(player);
+		}
+		else {
+			tradeBuyProperty(player);
+		}
+	}
+
 	/**
 	 * This method implements the activity of offering a player to buy
 	 * a property. This is typically triggered by a player arriving on
@@ -351,38 +432,35 @@ public class GameController {
 	 * @throws PlayerBrokeException when the player chooses to buy but could not afford it
 	 */
 	public void offerToBuy(Property property, Player player) throws PlayerBrokeException {
-		// TODO We might also allow the player to obtainCash before
-		// the actual offer, to see whether he can free enough cash
-		// for the sale.
-	
-		String choice = gui.getUserSelection(
-				"Player " + player.getName() +
-				": Do you want to buy " + property.getName() +
-				" for " + property.getCost() + "$?",
-				"yes",
-				"no");
 
-        if (choice.equals("yes")) {
-    		try {
-    			paymentToBank(player, property.getCost());
-    		} catch (PlayerBrokeException e) {
-    			// if the payment fails due to the player being broke,
-    			// the an auction (among the other players is started
-    			auction(property);
-    			// then the current move is aborted by casting the
-    			// PlayerBrokeException again
-    			throw e;
-    		}
-    		player.addOwnedProperty(property);
-    		property.setOwner(player);
-    		return;
-        }
-        
+		String choice = gui.getUserSelection(
+				"Spiller " + player.getName() +
+				": Vil du købe " + property.getName() +
+				" for " + property.getCost() + "kr.?",
+				"ja",
+				"nej");
+
+		if (choice.equals("ja")) {
+			try {
+				paymentToBank(player, property.getCost());
+			} catch (PlayerBrokeException e) {
+				// if the payment fails due to the player being broke,
+				// the an auction (among the other players is started
+				auction(property);
+				// then the current move is aborted by casting the
+				// PlayerBrokeException again
+				throw e;
+			}
+			player.addOwnedProperty(property);
+			property.setOwner(player);
+			return;
+		}
+
 		// In case the player does not buy the property an auction
-        // is started
+		// is started
 		auction(property);
 	}
-	
+
 	/**
 	 * This method implements a payment activity to another player,
 	 * which involves the player to obtain some cash on the way, in case he does
@@ -402,11 +480,11 @@ public class GameController {
 				throw new PlayerBrokeException(payer);
 			}
 		}
-		gui.showMessage("Player " + payer.getName() + " pays " +  amount + "$ to player " + receiver.getName() + ".");
+		gui.showMessage("Spiller " + payer.getName() + " betaler " +  amount + "kr. til spiller " + receiver.getName() + ".");
 		payer.payMoney(amount);
 		receiver.receiveMoney(amount);
 	}
-	
+
 	/**
 	 * This method implements the action of a player receiving money from
 	 * the bank.
@@ -435,22 +513,72 @@ public class GameController {
 				playerBrokeToBank(player);
 				throw new PlayerBrokeException(player);
 			}
-			
+
 		}
-		gui.showMessage("Player " + player.getName() + " pays " +  amount + "$ to the bank.");
+		gui.showMessage("Spiller " + player.getName() + " betaler " +  amount + "kr. til banken.");
 		player.payMoney(amount);
 	}
-	
+
 	/**
 	 * This method implements the activity of auctioning a property.
 	 * 
 	 * @param property the property which is for auction
 	 */
 	public void auction(Property property) {
-		// TODO auction needs to be implemented
-		gui.showMessage("Now, there would be an auction of " + property.getName() + ".");
+		int currentBid = property.getCost()/2;
+		int minNextBid = 100;
+		boolean isABid = false;
+		Player auctionWinner;
+		List<Player> bidders = new ArrayList<Player>();
+		gui.showMessage("Der afholdes en auktion for: "+property.getName());
+		//Loops through all the players
+		for (Player player : game.getPlayers()) {
+			if (!player.isBroke()) {
+				String msg = "Spiller "+player.getName()+" vil du deltage i auktionen?";
+				//Ask if the player wants to bid if not he is removed from the list.
+				if (gui.getUserLeftButtonPressed(msg, "ja", "nej")) {
+					bidders.add(player);
+				}
+			}
+		}
+		
+		while (bidders.size() > 1)
+		{
+			for(Player player : bidders.toArray(new Player[0])) {
+				String msg = "Det nuværende bud er "+currentBid+"kr. "+player.getName()+", vil du byde over?";
+				if (bidders.size() <= 1) {
+					break;
+				}
+				else if (gui.getUserLeftButtonPressed(msg, "ja", "nej")) {
+					currentBid = gui.getUserInteger("Indtast dit bud. Det skal være minimum "
+								+minNextBid+"kr. højere end "+currentBid, currentBid+minNextBid, Integer.MAX_VALUE);
+				}
+				else {
+					//Player is removed from the auction if he chooses no
+					bidders.remove(player);
+				}
+			}
+		}
+		
+		if (bidders.size() > 0) {
+			auctionWinner = bidders.get(0);
+			
+			gui.showMessage("Tillykke "+auctionWinner.getName()+", du har vundet auktionen! "+
+			"Du har købt: "+property.getName()+" for "+currentBid+"kr.");
+			
+			try {
+				paymentToBank(auctionWinner, currentBid);
+			} catch (PlayerBrokeException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		else {
+			gui.showMessage("Ingen deltager i auktionen, denne annulleres derfor.");
+		}
+		
 	}
-	
+
 	/**
 	 * Action handling the situation when one player is broke to another
 	 * player. All money and properties are the other player.
@@ -464,24 +592,28 @@ public class GameController {
 		brokePlayer.setBalance(0);
 		brokePlayer.setBroke(true);
 
-		// We assume here, that the broke player has already sold all his houses! But, if
-		// not, we could make sure at this point that all houses are removed from
-		// properties (properties with houses on are not supposed to be transferred, neither
-		// in a trade between players, nor when  player goes broke to another player)
+
 		for (Property property: brokePlayer.getOwnedProperties()) {
+			//Check for houses and remove them all
+			if (property instanceof RealEstate) {
+				if (((RealEstate)property).isDevelopped()) {
+					((RealEstate)property).clearHouses();
+				}
+			}
+			
 			property.setOwner(benificiary);
 			benificiary.addOwnedProperty(property);
 		}	
 		brokePlayer.removeAllProperties();
-		
+
 		while (!brokePlayer.getOwnedCards().isEmpty()) {
 			game.returnCardToDeck(brokePlayer.getOwnedCards().get(0));
 		}
-		
-		gui.showMessage("Player " + brokePlayer.getName() + "went broke and transfered all"
-				+ "assets to " + benificiary.getName());
+
+		gui.showMessage("Spiller " + brokePlayer.getName() + "gik fallit og overfører alle hans "
+				+ "likvider til " + benificiary.getName());
 	}
-	
+
 	/**
 	 * Action handling the situation when a player is broke to the bank.
 	 * 
@@ -491,21 +623,33 @@ public class GameController {
 
 		player.setBalance(0);
 		player.setBroke(true);
-		
-		// TODO we also need to remove the houses and the mortgage from the properties 
 
 		for (Property property: player.getOwnedProperties()) {
+			//Check for houses and remove them all
+			if (property instanceof RealEstate) {
+				if (((RealEstate)property).isDevelopped()) {
+					((RealEstate)property).clearHouses();
+				}
+			}
+			//Check if there is mortgage and remove if so
+			if (property.isMortaged()) {
+				property.setMortaged(false);
+			}
 			property.setOwner(null);
 		}
 		player.removeAllProperties();
-		
-		gui.showMessage("Player " + player.getName() + " went broke");
-		
+
+		gui.showMessage("Spiller " + player.getName() + " gik fallit.");
+
 		while (!player.getOwnedCards().isEmpty()) {
 			game.returnCardToDeck(player.getOwnedCards().get(0));
 		}
 	}
-	
+
+	public List<Player> getPlayers(){
+		return game.getPlayers();
+	}
+
 	/**
 	 * Method for disposing of this controller and cleaning up its resources.
 	 */
@@ -518,5 +662,291 @@ public class GameController {
 			//      deployed via Maven (or other  official versions)
 		}
 	}
+	
+	/**
+	 * Starts a trade dialogue.
+	 * @param player the trading player
+	 */
+	public void trade(Player player) {
+		boolean choice = gui.getUserLeftButtonPressed(player.getName()+" har du lyst til at handle?", "Ja", "Nej");
+		//If the user chooses no, no trade action will happen...	
+		while (choice) {
+			String selection = gui.getUserSelection("Hvad vil du?", "Optjene penge", "Spendere penge");
+			
+			//If user chooses to spend money
+			if (selection.equals("Spendere penge")) {
+				spendCash(player);
+			}
+			//If user chooses to obtain money
+			else {
+				obtainCash(player);
+			}
+			
+			choice = gui.getUserLeftButtonPressed(player.getName()+" har du lyst til at handle, igen?", "Ja", "Nej");
+		}
+		
+	}
+	
+	/**
+	 * Starts the mortgage dialogue
+	 * @param player the mortgaging player
+	 */
+	private void tradeCashInMortgage(Player player) {
+		Map<String,Property> mortgageableProperties = new HashMap<String,Property>();
+		for (Property property: player.getOwnedProperties()) {
+			if (!property.isMortaged()) {
+				if (property instanceof RealEstate) {
+					if (!((RealEstate)property).isDevelopped())
+						mortgageableProperties.put(property.getName(),property);
+				}
+				else {
+					mortgageableProperties.put(property.getName(),property);
+				}	
+			}
+			
+		}
+		
+		if (mortgageableProperties.isEmpty()) {
+			gui.showMessage("Du har ingen grunde der kan pantsættes.");
+			return;
+		}
+		
+		Property chosenProperty = pickProperty(mortgageableProperties, "Vælg den grund du vil pantsætte");
+		
+		if (chosenProperty != null) {
+			chosenProperty.setMortaged(true);
+			paymentFromBank(player, chosenProperty.getMortageValue());
+		}
+		
+		
+	}
+	
+	/**
+	 * Starts the pay mortgage dialogue
+	 * @param player the paying player
+	 */
+	private void tradePayMortgage(Player player) {
+		Map<String,Property> demortgageableProperties = new HashMap<String,Property>();
+		for (Property property: player.getOwnedProperties()) {
+			if (property.isMortaged()) {
+				demortgageableProperties.put(property.getName(),property);
+			}
+			
+		}
+		
+		if (demortgageableProperties.isEmpty()) {
+			gui.showMessage("Du har ingen pantsatte grunde.");
+			return;
+		}
+		
+		Property chosenProperty = pickProperty(demortgageableProperties, "Vælg den grund du vil betale pant for.");
+		
+		if (chosenProperty != null) {
+			int amount = (int) (chosenProperty.getMortageValue()*1.1f);
+			try {
+				paymentToBank(player, amount);
+			} catch (PlayerBrokeException e) {
+				e.printStackTrace();
+			}
+			chosenProperty.setMortaged(false);
+		}
+	}
+	
+
+	/**
+	 * Starts a buy house dialogue.
+	 * @param buyer the buying player
+	 */
+	private void tradeBuyHouse(Player buyer) {
+		Map<String,Property> developableProperties = new HashMap<String,Property>();
+		for (Property property: buyer.getOwnedProperties()) {
+			if (property instanceof RealEstate) {
+				if (((RealEstate)property).getHouses() < ((RealEstate)property).getMAX_HOUSES())
+					developableProperties.put(property.getName(),property);
+			}	
+		}
+		
+		if (developableProperties.isEmpty()) {
+			gui.showMessage("Du har ingen grunde at bygge på.");
+			return;
+		}
+		
+		RealEstate chosenProperty = (RealEstate)pickProperty(developableProperties, "Vælg den grund du vil udvikle.");
+		
+		if (chosenProperty != null) {
+			try {
+				paymentToBank(buyer, chosenProperty.getHousePrice());
+			} catch (PlayerBrokeException e) {
+				e.printStackTrace();
+			}
+			chosenProperty.addHouse();
+		}
+	}
+	
+	/**
+	 * Starts a buy property dialogue.
+	 * @param buyer the buying player
+	 */
+	private void tradeBuyProperty(Player buyer) {
+		Map<String, Player> players = new HashMap<String, Player>();
+		
+		for (Player player: game.getPlayers()) {
+			//Skal lige testes
+			if (!player.equals(buyer)) {
+				players.put(player.getName(), player);
+			}
+		}
+		
+		String[] choices = players.keySet().toArray(new String[0]);
+		
+		String choice = gui.getUserSelection("Vælg den spiller du vil købe fra.", choices);
+		
+		Player seller = players.get(choice);
+		
+		Map<String,Property> buyableProperties = new HashMap<String,Property>();
+		for (Property property: seller.getOwnedProperties()) {
+			if (property instanceof RealEstate) {
+				if (!((RealEstate)property).isDevelopped())
+					buyableProperties.put(property.getName(),property);
+			}
+			else {
+				buyableProperties.put(property.getName(),property);
+			}	
+		}
+		
+		if (buyableProperties.isEmpty()) {
+			gui.showMessage(seller.getName()+", har ingen salgsbare grunde.");
+			return;
+		}
+		
+		Property chosenProperty = pickProperty(buyableProperties, "Vælg den grund du vil købe.");
+		
+		if (chosenProperty != null) {
+			Integer price = gui.getUserInteger("Indtast din pris.");
+			
+			moveOwnership(buyer, chosenProperty, price, seller);
+		}
+	}
+	
+	/**
+	 * Starts sell house dialogue.
+	 * @param seller selling player
+	 */
+	private void tradeSellHouse(Player seller) {
+		Map<String,Property> undevelopableProperties = new HashMap<String,Property>();
+		for (Property property: seller.getOwnedProperties()) {
+			if (property instanceof RealEstate) {
+				if (((RealEstate)property).isDevelopped())
+					undevelopableProperties.put(property.getName(),property);
+				//TODO tjek for om man har alle grunde af samme farve.
+			}	
+		}
+		
+		if (undevelopableProperties.isEmpty()) {
+			gui.showMessage("Du har ingen grunde med huse.");
+			return;
+		}
+		
+		RealEstate chosenProperty = (RealEstate)pickProperty(undevelopableProperties, "Vælg den grund du vil uudvikle.");
+		
+		if (chosenProperty != null) {
+			chosenProperty.removeHouse();
+			paymentFromBank(seller, chosenProperty.getHousePrice());
+		}
+		
+	}
+	
+	/**
+	 * Starts a sell Property dialogue.
+	 * @param seller the selling player
+	 */
+	private void tradeSellProperty(Player seller) {
+		Map<String, Player> players = new HashMap<String, Player>();
+		
+		for (Player player: game.getPlayers()) {
+			//Skal lige testes
+			if (!player.equals(seller)) {
+				players.put(player.getName(), player);
+			}
+		}
+		
+		String[] choices = players.keySet().toArray(new String[0]);
+		
+		String choice = gui.getUserSelection("Vælg den spiller du vil sælge til.", choices);
+		
+		Player buyer = players.get(choice);
+		
+		Map<String,Property> sellableProperties = new HashMap<String,Property>();
+		for (Property property: seller.getOwnedProperties()) {
+			if (property instanceof RealEstate) {
+				if (!((RealEstate)property).isDevelopped())
+					sellableProperties.put(property.getName(),property);
+			}
+			else {
+				sellableProperties.put(property.getName(),property);
+			}	
+		}
+		if (sellableProperties.isEmpty()) {
+			gui.showMessage("Du har ingen salgsbare grunde.");
+			return;
+		}
+		Property chosenProperty = pickProperty(sellableProperties, "Vælg den grund du vil sælge.");
+		
+		if (chosenProperty != null) {
+			Integer price = gui.getUserInteger("Indtast din pris.");
+			
+			moveOwnership(buyer, chosenProperty, price, seller);
+		}
+	}
+	
+	/**
+	 * Handles the transaction of the ownership of a property from the seller to the buyer at the given prices.
+	 * @param buyer player buying the property
+	 * @param property the asset
+	 * @param price the agreed price
+	 * @param seller player selling the property
+	 */
+	private void moveOwnership(Player buyer, Property property, int price, Player seller) {
+		try {
+			payment(buyer, price, seller);
+		} catch (PlayerBrokeException e) {
+			e.printStackTrace();
+		}
+		
+		seller.removeOwnedProperty(property);
+		buyer.addOwnedProperty(property);
+		property.setOwner(buyer);
+		
+		
+	}
+	
+	/**
+	 * Starts a list picking dialog with the given properties from the Map.
+	 * @param properties Map with the properties and names as key value
+	 * @param msg the dialog message shown to the player
+	 * @return the picked property or <code>null</code> if pick is aborted.
+	 */
+	private Property pickProperty(Map<String, Property> properties, String msg) {
+		String[] choices = properties.keySet().toArray(new String[0]);
+		
+		String choice;
+		Property pickedProperty;
+		
+		do {
+			choice = gui.getUserSelection(msg, choices);
+			
+			pickedProperty = properties.get(choice);
+			
+			choice = gui.getUserButtonPressed("Er du sikker?", "Ja","Vælg anden","Anuller");
+		}
+		while(choice.equals("Vælg anden"));
+		
+		if (!choice.equals("Ja")) {
+			pickedProperty = null;
+		}
+		
+		return pickedProperty;
+	}
+	
 
 }

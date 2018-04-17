@@ -17,7 +17,29 @@ public class RealEstate extends Property{
 	// TODO to be implemented
 	
 	private Color color;
+	private int[] rentLevels;
+
+	private int houses = 0;
+	private final int MAX_HOUSES = 5;
+	private int housePrice;
+	private boolean developped = false;
 	
+	public int getMAX_HOUSES() {
+		return MAX_HOUSES;
+	}
+
+	public int getHousePrice() {
+		return housePrice;
+	}
+
+	public void setHousePrice(int housePrice) {
+		this.housePrice = housePrice;
+	}
+
+	public int getHouses() {
+		return houses;
+	}
+
 	public void setColor(Color color) {
 		this.color=color;
 	}
@@ -25,5 +47,42 @@ public class RealEstate extends Property{
 	public Color getColor() {
 		return this.color;
 	}
+	
+	public void addHouse() {
+		houses++;
+		developped = true;
+		if (houses > MAX_HOUSES) {
+			//TODO evt en exception?
+			houses = MAX_HOUSES;
+		}
+		setRent(rentLevels[houses]);
+		notifyChange();
+	}
+	
+	public void removeHouse() {
+		houses--;
+		if (houses < 0) {
+			//TODO exception
+			houses = 0;
+		}
+		if (houses == 0)
+			developped = false;
+		setRent(rentLevels[houses]);
+		notifyChange();
+	}
+	
+	public boolean isDevelopped() {
+		return developped;
+	}
+	
+	public void clearHouses() {
+		houses = 0;
+		developped = false;
+	}
+	
+	public void setRentLevels(int[] rentLevels) {
+		this.rentLevels = rentLevels;
+	}
 
+	
 }

@@ -5,6 +5,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Card;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Property;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeException;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 
 public class CardLegat extends Card{
 
@@ -17,17 +18,9 @@ public class CardLegat extends Card{
 	}
 	@Override
 	public void doAction(GameController controller, Player player) throws PlayerBrokeException {
-		int totalAmount = 0;
-
-		for(Property property : player.getOwnedProperties())
-		{
-			totalAmount = totalAmount + property.getHouse() * property.getCost();
-			totalAmount = totalAmount + property.getHotel() * property.getCost()*5;
-			totalAmount = totalAmount + property.getCost();
-		}
-		totalAmount = totalAmount + player.getBalance();
 		
-		if(totalAmount<15000) {
+		
+		if(player.getAssetsValue()<15000) {
 			player.receiveMoney(amount);
 		}
 		

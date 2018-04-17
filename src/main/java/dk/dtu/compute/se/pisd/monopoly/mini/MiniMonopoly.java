@@ -8,7 +8,8 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Card;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Chance;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
-import dk.dtu.compute.se.pisd.monopoly.mini.model.Tax;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.StateTax;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.IncomeTax;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardLegat;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardMove;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardMoveBack;
@@ -26,6 +27,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.differentSpaces.Jail;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Brewery;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Shipping;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Utility;
 
 /**
  * Main class for setting up and running a (Mini-)Monoploy game.
@@ -50,33 +52,39 @@ public class MiniMonopoly {
 		// of creating it programmatically.
 		Game game = new Game();
 		
-		Go go = new Go();
+		Space go = new Space();
 		go.setName("Start");
-		go.setText("Du får 2000 ved at passere start!");
+		go.setColor(Color.red);
 		game.addSpace(go);
 		
 		RealEstate r = new RealEstate();
 		r.setName("Rødovrevej");
 		r.setCost(1200);
 		r.setRent(50);
+		r.setRentLevels(new int[] {50,250,750,2250,4000,6000});
+		r.setHousePrice(1000);
+		r.setColor(Color.darkGray);
 		game.addSpace(r);
-		r.setColor(Color.cyan);
 		
 		Chance chance = new Chance();
 		chance.setName("Chance");
+		chance.setColor(Color.white);
 		game.addSpace(chance);
 		
 		r = new RealEstate();
 		r.setName("Hvidovrevej");
 		r.setCost(1200);
 		r.setRent(50);
+		r.setRentLevels(new int[] {50,250,750,2250,4000,6000});
+		r.setHousePrice(1000);
+		r.setColor(Color.darkGray);
 		game.addSpace(r);
-		r.setColor(Color.cyan);
 		
-		Tax t = new Tax();
-		t.setName("betal inkomstskat eller 10% eller 4000kr");
-		game.addSpace(t);
+		IncomeTax t = new IncomeTax();
+		t.setName("betal inkomstskat 10% eller 4000kr");
 		t.setText("10% eller 4000");
+		t.setTax(4000);
+		game.addSpace(t);
 		
 
 		Shipping s = new Shipping();
@@ -89,26 +97,33 @@ public class MiniMonopoly {
 		r.setName("Roskildevej");
 		r.setCost(2000);
 		r.setRent(100);
+		r.setRentLevels(new int[] {100,600,1800,5400,8000,11000});
+		r.setHousePrice(1000);
+		r.setColor(Color.cyan);
 		game.addSpace(r);
-		r.setColor(Color.pink);
 		
 		chance = new Chance();
 		chance.setName("Chance");
+		chance.setColor(Color.white);
 		game.addSpace(chance);
 		
 		r = new RealEstate();
 		r.setName("Valby Langgade");
 		r.setCost(2000);
 		r.setRent(100);
+		r.setRentLevels(new int[] {100,600,1800,5400,8000,11000});
+		r.setHousePrice(1000);
+		r.setColor(Color.cyan);
 		game.addSpace(r);
-		r.setColor(Color.pink);
 		
 		r = new RealEstate();
 		r.setName("Allégade");
 		r.setCost(2400);
 		r.setRent(150);
+		r.setRentLevels(new int[] {150,800,2000,6000,9000,12000});
+		r.setHousePrice(1000);
+		r.setColor(Color.cyan);
 		game.addSpace(r);
-		r.setColor(Color.pink);
 		
 		Jail prison = new Jail();
 		prison.setName("på besøg");
@@ -118,123 +133,145 @@ public class MiniMonopoly {
 		r.setName("Frederiksberg Allé");
 		r.setCost(2800);
 		r.setRent(200);
+		r.setRentLevels(new int[] {200,1000,3000,9000,12500,15000});
+		r.setHousePrice(2000);
+		r.setColor(Color.pink);
 		game.addSpace(r);
-		r.setColor(Color.green);
 		
-		Brewery p = new Brewery();
-		p.setName("Tuborg");
-		p.setCost(3000);
-		p.setRent(300);
-		game.addSpace(p);
+		Utility u = new Utility();
+		u.setName("Coca-Cola");
+		u.setCost(3000);
+		game.addSpace(u);
 		
 		r = new RealEstate();
 		r.setName("Bülowsvej");
 		r.setCost(2800);
 		r.setRent(200);
+		r.setRentLevels(new int[] {200,1000,3000,9000,12500,15000});
+		r.setHousePrice(2000);
+		r.setColor(Color.pink);
 		game.addSpace(r);
-		r.setColor(Color.green);
 		
 		r = new RealEstate();
 		r.setName("Gl. Kongevej");
 		r.setCost(3200);
 		r.setRent(250);
+		r.setRentLevels(new int[] {250,1250,3750,10000,14000,18000});
+		r.setHousePrice(2000);
+		r.setColor(Color.pink);
 		game.addSpace(r);
-		r.setColor(Color.green);
 		
-		Shipping util = new Shipping();
-		util.setName("Grenaa-Hundested A/S");
-		util.setCost(4000);
-		util.setRent(500);
-		game.addSpace(util);
-
+		s = new Shipping();
+		s.setName("Grenaa-Hundested");
+		s.setCost(4000);
+		s.setRent(500);
+		game.addSpace(s);
 
 		r = new RealEstate();
 		r.setName("Bernstorffsvej");
 		r.setCost(3600);
 		r.setRent(300);
+		r.setRentLevels(new int[] {300,1400,4000,11000,15000,19000});
+		r.setHousePrice(2000);
+		r.setColor(Color.ORANGE);
 		game.addSpace(r);
-		r.setColor(Color.LIGHT_GRAY);
 		
 		chance = new Chance();
 		chance.setName("Chance");
+		chance.setColor(Color.white);
 		game.addSpace(chance);
 		 
 		r = new RealEstate();
 		r.setName("Hellerupvej");
 		r.setCost(3600);
 		r.setRent(300);
+		r.setRentLevels(new int[] {300,1400,4000,11000,15000,19000});
+		r.setHousePrice(2000);
+		r.setColor(Color.ORANGE);
 		game.addSpace(r);
-		r.setColor(Color.LIGHT_GRAY);
 		
 		r = new RealEstate();
 		r.setName("Strandvej");
 		r.setCost(4000);
 		r.setRent(400);
+		r.setRentLevels(new int[] {350,1600,4400,12000,16000,20000});
+		r.setHousePrice(2000);
+		r.setColor(Color.ORANGE);
 		game.addSpace(r);
-		r.setColor(Color.LIGHT_GRAY);
 		
-		FreeParking Parkering = new FreeParking();
-		Parkering.setName("Fri parkering");
+		Space Parkering = new Space();
+		Parkering.setName("Helle");
 		game.addSpace(Parkering);
 		
 		r = new RealEstate();
 		r.setName("Trianglen");
 		r.setCost(4400);
 		r.setRent(350);
-		game.addSpace(r);
-		r.setColor(Color.orange);
-	
+		r.setRentLevels(new int[] {350,1800,5000,14000,17500,21000});
+		r.setHousePrice(3000);
+		r.setColor(Color.magenta);
+		game.addSpace(r);	
 		
 		chance = new Chance();
 		chance.setName("Chance");
+		chance.setColor(Color.white);
 		game.addSpace(chance);
 		
 		r = new RealEstate();
 		r.setName("Østerbrogade");
 		r.setCost(4400);
 		r.setRent(350);
+		r.setRentLevels(new int[] {350,1800,5000,14000,17500,21000});
+		r.setHousePrice(3000);
+		r.setColor(Color.magenta);
 		game.addSpace(r);
-		r.setColor(Color.orange);
 		
 		r = new RealEstate();
 		r.setName("Grønningen");
 		r.setCost(4800);
 		r.setRent(400);
+		r.setRentLevels(new int[] {400,2000,6000,15000,18500,22000});
+		r.setHousePrice(3000);
+		r.setColor(Color.magenta);
 		game.addSpace(r);
-		r.setColor(Color.orange);
 		
-		util = new Shipping();
-		util.setName("Mols-Linien A/S");
-		util.setCost(4000);
-		util.setRent(350);
-		game.addSpace(util);
+		s = new Shipping();
+		s.setName("Mols-Linien A/S");
+		s.setCost(4000);
+		s.setRent(350);
+		game.addSpace(s);
 		
 		r = new RealEstate();
-		r.setName("Bredegade");
+		r.setName("Bredgade");
 		r.setCost(5200);
 		r.setRent(450);
+		r.setRentLevels(new int[] {450,2200,6600,16000,19500,23000});
+		r.setHousePrice(3000);
+		r.setColor(new Color(255,250,205));
 		game.addSpace(r);
-		r.setColor(Color.white);
 		
 		r = new RealEstate();
 		r.setName("Kgs. Nytorv");
 		r.setCost(5200);
 		r.setRent(450);
+		r.setRentLevels(new int[] {450,2200,6600,16000,19500,23000});
+		r.setHousePrice(3000);
+		r.setColor(new Color(255,250,205));
 		game.addSpace(r);
-		r.setColor(Color.white);
 		
-		p = new Brewery();
-		p.setName("Carlsberg");
-		p.setCost(3000);
-		p.setRent(150);
-		game.addSpace(p);
+		u = new Utility();
+		u.setName("Faxe Bryggeri");
+		u.setCost(3000);
+		game.addSpace(u);
 		
 		r = new RealEstate();
 		r.setName("Østergade");
 		r.setCost(5600);
 		r.setRent(500);
+		r.setRentLevels(new int[] {500,2400,7200,17000,20500,24000});
+		r.setHousePrice(3000);
+		r.setColor(new Color(255,250,205));
 		game.addSpace(r);
-		r.setColor(Color.white);
 		
 		Jail prison2 = new Jail();
 		prison2.setName("De Fængsles");
@@ -244,56 +281,69 @@ public class MiniMonopoly {
 		r.setName("Amagertorv");
 		r.setCost(6000);
 		r.setRent(400);
+		r.setRentLevels(new int[] {550,2600,7800,18000,22000,25000});
+		r.setHousePrice(4000);
+		r.setColor(new Color(154,205,50));
 		game.addSpace(r);
-		r.setColor(Color.yellow);
 	
 		r = new RealEstate();
 		r.setName("Vimmelskaftet");
 		r.setCost(6000);
 		r.setRent(550);
+		r.setRentLevels(new int[] {550,2600,7800,18000,22000,25000});
+		r.setHousePrice(4000);
+		r.setColor(new Color(154,205,50));
 		game.addSpace(r);
-		r.setColor(Color.yellow);
 		
 		chance = new Chance();
 		chance.setName("Chance");
+		chance.setColor(Color.white);
 		game.addSpace(chance);
 		
 		r = new RealEstate();
 		r.setName("Nygade");
 		r.setCost(6400);
 		r.setRent(600);
+		r.setRentLevels(new int[] {600,3000,9000,20000,24000,28000});
+		r.setHousePrice(4000);
+		r.setColor(new Color(154,205,50));
 		game.addSpace(r);
-		r.setColor(Color.yellow);
 		
-		util = new Shipping();
-		util.setName("Skandinavisk Linietrafik");
-		util.setCost(4000);
-		util.setRent(350);
-		game.addSpace(util);
+		s = new Shipping();
+		s.setName("Skandinavisk Linietrafik");
+		s.setCost(4000);
+		s.setRent(350);
+		game.addSpace(s);
 		
 		chance = new Chance();
 		chance.setName("Chance");
+		chance.setColor(Color.white);
 		game.addSpace(chance);
 		
 		r = new RealEstate();
 		r.setName("Frederiksberggade");
 		r.setCost(7000);
 		r.setRent(700);
+		r.setRentLevels(new int[] {700,3500,10000,22000,26000,30000});
+		r.setHousePrice(4000);
+		r.setColor(new Color(160, 32, 240));
 		game.addSpace(r);
-		r.setColor(Color.magenta);
 		
-		t = new Tax();
-		t.setName("Ekstraordinær statsskat betal kr. 2.000");
-		game.addSpace(t);
-		t.setText("2000");
+		StateTax st = new StateTax();
+		st.setName("Ekstraordinær statsskat betal kr. 2.000");
+		st.setText("2000");
+		st.setTax(2000);
+		game.addSpace(st);
 		
 		
 		r = new RealEstate();
 		r.setName("Rådhuspladsen");
 		r.setCost(8000);
 		r.setRent(1000);
+		r.setRentLevels(new int[] {1000,4000,12000,28000,34000,40000});
+		r.setHousePrice(4000);
+		r.setColor(new Color(160, 32, 240));
 		game.addSpace(r);
-		r.setColor(Color.magenta);
 
 		
 		List<Card> cards = new ArrayList<Card>();
@@ -460,6 +510,7 @@ public class MiniMonopoly {
 		game.shuffleCardDeck();
 		
 		GameController controller = new GameController(game);
+		
 		
 		controller.initializeGUI();
 		controller.createPlayers();

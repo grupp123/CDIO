@@ -14,16 +14,24 @@ public class Property extends Space {
 	private int cost;
 	private int rent;
 	
-	private int house = 0;
-	private int hotel = 0;
+	private boolean mortgaged;
+	private int mortageValue;
 	
 	private Player owner;
 	
-	public int getHotel() {
-		return hotel;
+	
+	public boolean isMortaged() {
+		return mortgaged;
 	}
-	public int getHouse() {
-		return house;
+	public void setMortaged(boolean mortaged) {
+		this.mortgaged = mortaged;
+		notifyChange();
+	}
+	public int getMortageValue() {
+		return mortageValue;
+	}
+	public void setMortageValue(int mortageValue) {
+		this.mortageValue = mortageValue;
 	}
 	
 
@@ -43,6 +51,7 @@ public class Property extends Space {
 	 */
 	public void setCost(int cost) {
 		this.cost = cost;
+		setMortageValue(cost/2);
 		notifyChange();
 	}
 
@@ -52,6 +61,9 @@ public class Property extends Space {
 	 * @return the rent for this property
 	 */
 	public int getRent() {
+		if (mortgaged) {
+			return 0;
+		}
 		return rent;
 	}
 
@@ -88,17 +100,14 @@ public class Property extends Space {
 
 	@Override
 	public void doAction(GameController controller, Player player) throws PlayerBrokeException {
-		if (owner == null) {
-			controller.offerToBuy(this, player);
-		} else if (!owner.equals(player)) {
-			// TODO also check whether the property is mortgaged
-			// TODO the computation of the actual rent could be delegated
-			//      the subclasses of Property, which can take the specific
-			//      individual conditions into account. Note that the
-			//      groups of properties (which are not part of the model
-			//      yet also need to be taken into account).
-			controller.payment(player, rent, owner);
+		if (!mortgaged) {
+			if (owner == null) {
+				controller.offerToBuy(this, player);
+			} else if (!owner.equals(player)) {
+				controller.payment(player, rent, owner);
+			}
 		}
+		
 	}
 
 }

@@ -23,6 +23,7 @@ public class Game extends Subject {
 	
 	private List<Player> players = new ArrayList<Player>();
 	
+	
 	private Player current;
 	
 	private final int passedStartMoney = 2000;
@@ -35,6 +36,30 @@ public class Game extends Subject {
 	 */	
 	public int getPassesStartMoney() {
 		return passedStartMoney;
+
+	public final int MAX_HOUSES = 40;
+	
+	public final int MAX_HOTELS = 12;
+	
+	private int houses;
+	
+	private int hotels;
+	
+	
+
+	public int getHotels() {
+		return hotels;
+	}
+
+	public void setHotels(int hotels) {
+		if (this.hotels + hotels <= MAX_HOTELS) {
+			this.hotels += hotels;
+		}
+		else {
+			//TODO exception ved for mange hoteller
+		}
+		
+
 	}
 
 	/**
@@ -183,5 +208,20 @@ public class Game extends Subject {
 		}
 		notifyChange();
 	}
+
+	public int getHouses() {
+		return houses;
+	}
+
+	public void setHouses(int houses) {
+		if (this.houses + houses <= MAX_HOUSES) {
+			this.houses += houses;
+		}
+		else {
+			//TODO exception ved for mange huse
+		}
+	}
+	
+	
 
 }

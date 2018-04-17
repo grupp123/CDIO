@@ -1,4 +1,4 @@
-package dtu.cdio;
+package dtu.database;
 
 import java.awt.Color;
 import java.sql.PreparedStatement;
@@ -25,20 +25,18 @@ public void start() throws Exception {
 	
 	gui.getUserButtonPressed("gem spil", "start nyt spil", "fortsæt gamle spil");
 	Connector c = new Connector();
-	DAO dao = new DAO(c);
-	DTO dto = new DTO(c);
-	
+	DAO dao = new DAO(c);	
 	//dao.deleteTable("fields");
 	//dao.deleteTable("player");
 	
 	
-	dto.createPlayerTable();
-	dto.createFieldsTable();
+	dao.createPlayerTable();
+	dao.createFieldsTable();
 	Player p = new Player();
 	p.setName(gui.getUserString("select name"));
 	p.setBalance(gui.getUserInteger("how much money?"));
 	p.setId(1);
-	dto.insert(p);
+	dao.insert(p);
 	
 	System.out.println(dao.toString("1"));
 	

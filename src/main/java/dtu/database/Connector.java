@@ -1,4 +1,4 @@
-package dtu.cdio;
+package dtu.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -1,4 +1,4 @@
-package dtu.cdio;
+package dtu.database;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -98,4 +98,29 @@ public class DAO {
 			System.out.println(e);
 		}
 	}
+	
+	public void insert(Player p) throws Exception {
+		try {
+			c.doUpdate("INSERT INTO Player(ID, name, account) "
+					+ "VALUES(" +p.getId()+ ", '" + p.getName() + "', " + p.getBalance() + ")" );
+		}
+		catch (SQLException e) {throw new Exception(e); }
+	}
+	
+	public void createPlayerTable() throws Exception {
+		try {
+			c.doUpdate("CREATE TABLE player ( id INTEGER PRIMARY KEY, name TEXT, account int(10))");
+		}
+		catch (SQLException e) {throw new Exception(e); }
+	}
+	
+	public void createFieldsTable() throws Exception {
+		try {
+			c.doUpdate("CREATE TABLE fields ( number INTEGER, title TEXT, player INTEGER, FOREIGN KEY(player) REFERENCES player (id))");
+		}
+		catch (SQLException e) {throw new Exception(e); }
+	}
+	
+	
+	
 }

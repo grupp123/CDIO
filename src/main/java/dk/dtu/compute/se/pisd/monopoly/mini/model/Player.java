@@ -287,6 +287,10 @@ public class Player extends Subject {
 		this._throw = _throw;
 	}
 	
+	/**
+	 * Returns the total value of all the player's assets (houses, hotels, properties, cash).
+	 * @return total value of assets.
+	 */
 	public int getAssetsValue() {
 		int totalAmount = balance;
 		for(Property property : ownedProperties)

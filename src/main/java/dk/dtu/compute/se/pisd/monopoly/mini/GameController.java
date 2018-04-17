@@ -630,8 +630,8 @@ public class GameController {
 				}
 			}
 			//Check if there is mortgage and remove if so
-			if (property.isMortaged()) {
-				property.setMortaged(false);
+			if (property.isMortgaged()) {
+				property.setMortgaged(false);
 			}
 			property.setOwner(null);
 		}
@@ -692,7 +692,7 @@ public class GameController {
 	private void tradeCashInMortgage(Player player) {
 		Map<String,Property> mortgageableProperties = new HashMap<String,Property>();
 		for (Property property: player.getOwnedProperties()) {
-			if (!property.isMortaged()) {
+			if (!property.isMortgaged()) {
 				if (property instanceof RealEstate) {
 					if (!((RealEstate)property).isDevelopped())
 						mortgageableProperties.put(property.getName(),property);
@@ -712,8 +712,8 @@ public class GameController {
 		Property chosenProperty = pickProperty(mortgageableProperties, "Vælg den grund du vil pantsætte");
 		
 		if (chosenProperty != null) {
-			chosenProperty.setMortaged(true);
-			paymentFromBank(player, chosenProperty.getMortageValue());
+			chosenProperty.setMortgaged(true);
+			paymentFromBank(player, chosenProperty.getMortgageValue());
 		}
 		
 		
@@ -726,7 +726,7 @@ public class GameController {
 	private void tradePayMortgage(Player player) {
 		Map<String,Property> demortgageableProperties = new HashMap<String,Property>();
 		for (Property property: player.getOwnedProperties()) {
-			if (property.isMortaged()) {
+			if (property.isMortgaged()) {
 				demortgageableProperties.put(property.getName(),property);
 			}
 			
@@ -740,13 +740,13 @@ public class GameController {
 		Property chosenProperty = pickProperty(demortgageableProperties, "Vælg den grund du vil betale pant for.");
 		
 		if (chosenProperty != null) {
-			int amount = (int) (chosenProperty.getMortageValue()*1.1f);
+			int amount = (int) (chosenProperty.getMortgageValue()*1.1f);
 			try {
 				paymentToBank(player, amount);
 			} catch (PlayerBrokeException e) {
 				e.printStackTrace();
 			}
-			chosenProperty.setMortaged(false);
+			chosenProperty.setMortgaged(false);
 		}
 	}
 	

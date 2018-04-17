@@ -19,9 +19,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.OutOfJail;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeException;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 import gui_main.GUI;
-//dhdsk
-
-//YOLOOSS
+//opret branch
 /**
  * The overall controller of a Monopoly game. It provides access
  * to all basic actions and activities for the game. All other

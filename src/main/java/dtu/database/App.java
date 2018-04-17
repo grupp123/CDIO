@@ -23,30 +23,44 @@ new App().start();
 
 public void start() throws Exception {
 	
-	gui.getUserButtonPressed("gem spil", "start nyt spil", "fortsæt gamle spil");
+	gui.getUserButtonPressed("vælg", "start nyt spil", "fortsæt gamle spil");
+	
+	
 	Connector c = new Connector();
-	DAO dao = new DAO(c);	
-	//dao.deleteTable("fields");
-	//dao.deleteTable("player");
+	DAOdemo d = new DAOdemo(c);
+	
+	d.useMatadorDemo();
+	
+	System.out.println(d.activeGames());
 	
 	
-	dao.createPlayerTable();
-	dao.createFieldsTable();
-	Player p = new Player();
-	p.setName(gui.getUserString("select name"));
-	p.setBalance(gui.getUserInteger("how much money?"));
-	p.setId(1);
-	dao.insert(p);
+	int i = gui.getUserInteger("følgende spil kan spilles: \n" + d.activeGames());
+	String s = gui.getUserString("skriv dit navn");
+	d.createPlayerInGame(i, s);
+	int o = gui.getUserInteger("følgende spiller uploades: \n" + d.activePlayers());
 	
-	System.out.println(dao.toString("1"));
-	
-	
-	String q = dao.getPlayerName(1);
-	int i = dao.getPlayerBalance(1);
+	System.out.println(d.getPlayerName(o));
+	GUI_Player p = new GUI_Player(d.getPlayerName(o));
+	gui.addPlayer(p);
 	
 	
-	gui.getUserButtonPressed("sdf", q, "" + i);
-
+	
+//	Player p = new Player();
+//	p.setName(gui.getUserString("select name"));
+//	p.setBalance(gui.getUserInteger("how much money?"));
+//	p.setId(1);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
 
 

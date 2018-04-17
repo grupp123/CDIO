@@ -12,6 +12,7 @@ public class DAO {
 	public DAO(Connector c) {
 		this.c = c;
 	}
+	
 
 	public String getPlayerName(int id) throws Exception {
 		ResultSet rs = c.doQuery("SELECT * FROM player WHERE id = " + id);

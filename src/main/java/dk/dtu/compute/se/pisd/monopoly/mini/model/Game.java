@@ -26,16 +26,8 @@ public class Game extends Subject {
 	
 	private Player current;
 	
-	private final int passedStartMoney = 2000;
+	private final int passedStartMoney = 4000;
 	
-	
-	/**
-	 * Returns a list of all the games spaces.
-	 * 
-	 * @return an int with the value 2000 (money when you passing start)
-	 */	
-	public int getPassesStartMoney() {
-		return passedStartMoney;
 
 	public final int MAX_HOUSES = 40;
 	
@@ -60,6 +52,15 @@ public class Game extends Subject {
 		}
 		
 
+	}
+	
+	/**
+	 * Returns the amount players receive upon passing start
+	 * 
+	 * @return an int with the value 4000 (money when you passing start)
+	 */	
+	public int getPassesStartMoney() {
+		return passedStartMoney;
 	}
 
 	/**

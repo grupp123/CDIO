@@ -25,6 +25,7 @@ public class Property extends Space {
 	}
 	public void setMortaged(boolean mortaged) {
 		this.mortgaged = mortaged;
+		notifyChange();
 	}
 	public int getMortageValue() {
 		return mortageValue;

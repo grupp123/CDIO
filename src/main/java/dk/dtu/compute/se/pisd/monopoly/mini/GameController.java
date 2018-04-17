@@ -404,9 +404,9 @@ public class GameController {
 	 * @param player the player
 	 */
 	public void spendCash(Player player) {
-		String selection = gui.getUserSelection("Hvad vil du bruge penge på?","Hus","Spillers grund","Pant");
+		String selection = gui.getUserSelection("Hvad vil du bruge penge på?","Bolig","Spillers grund","Pant");
 		
-		if (selection.equals("Hus")) {
+		if (selection.equals("Bolig")) {
 			tradeBuyHouse(player);
 		}
 		else if (selection.equals("Pant")) {

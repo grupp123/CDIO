@@ -56,7 +56,7 @@ public class RealEstate extends Property{
 			houses = MAX_HOUSES;
 		}
 		setRent(rentLevels[houses]);
-		notify();
+		notifyChange();
 	}
 	
 	public void removeHouse() {
@@ -68,7 +68,7 @@ public class RealEstate extends Property{
 		if (houses == 0)
 			developped = false;
 		setRent(rentLevels[houses]);
-		notify();
+		notifyChange();
 	}
 	
 	public boolean isDevelopped() {

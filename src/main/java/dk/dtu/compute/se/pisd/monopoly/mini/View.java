@@ -8,17 +8,13 @@ import dk.dtu.compute.se.pisd.designpatterns.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.Subject;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Chance;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
-import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
-import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.IncomeTax;
-import dk.dtu.compute.se.pisd.monopoly.mini.model.differentSpaces.FreeParking;
-import dk.dtu.compute.se.pisd.monopoly.mini.model.differentSpaces.Go;
-import dk.dtu.compute.se.pisd.monopoly.mini.model.differentSpaces.Jail;
-import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Brewery;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.Property;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Shipping;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Utility;
-import gui_codebehind.GUI_FieldFactory;
 import gui_fields.GUI_Brewery;
 import gui_fields.GUI_Car;
 import gui_fields.GUI_Car.Pattern;
@@ -26,6 +22,7 @@ import gui_fields.GUI_Car.Type;
 import gui_fields.GUI_Chance;
 import gui_fields.GUI_Field;
 import gui_fields.GUI_Jail;
+import gui_fields.GUI_Ownable;
 import gui_fields.GUI_Player;
 import gui_fields.GUI_Refuge;
 import gui_fields.GUI_Shipping;
@@ -105,6 +102,12 @@ public class View implements Observer {
 			if (subject instanceof Player) {
 				updatePlayer((Player) subject);
 			}
+			else if (subject instanceof Property) {
+				if (subject instanceof RealEstate) {
+					updateRealEstate((RealEstate)subject);
+				}
+				updateProperty((Property)subject);
+			}
 
 			// TODO update other subjects in the GUI
 			//      in particular properties (sold, houses, ...)
@@ -137,12 +140,54 @@ public class View implements Observer {
 			}
 
 			if (player.isBroke()) {
-				guiPlayer.setName(player.getName() + " (broke)");
+				guiPlayer.setName(player.getName() + " (fallit)");
 			} else if (player.isInPrison()) {
-				guiPlayer.setName(player.getName() + " (in prison)");
+				guiPlayer.setName(player.getName() + " (i fængsel)");
 			} else {
 				guiPlayer.setName(player.getName());
 			}
+		}
+	}
+	
+	/**
+	 * Updates the realestate's state in the GUI (houses, hotel)
+	 * @param realEstate the realestate which is to be updated.
+	 */
+	private void updateRealEstate(RealEstate realEstate) {
+		GUI_Street guiEstate = (GUI_Street) this.space2GuiField.get(realEstate);
+		if (guiEstate != null) {
+			int houses = realEstate.getHouses();
+			if (houses == realEstate.getMAX_HOUSES()) {
+				guiEstate.setHotel(true);
+				houses--;
+			} else {
+				guiEstate.setHotel(false);
+			}
+			guiEstate.setHouses(houses);
+		}
+	}
+	
+	/**
+	 * Updates the property's state in the GUI (Owner name and color and if mortgaged)
+	 * @param property the property which is to be updated.
+	 */
+	private void updateProperty(Property property) {
+		GUI_Ownable guiProperty = (GUI_Ownable) this.space2GuiField.get(property);
+		Player owner = property.getOwner();
+		if (owner != null) {
+			guiProperty.setOwnerName(owner.getName());
+			if (property.isMortaged()) {
+				guiProperty.setBorder(owner.getColor(), Color.white);
+				guiProperty.setOwnableLabel("(Pantsat)");
+			}
+			else {
+				guiProperty.setBorder(owner.getColor());
+				guiProperty.setOwnableLabel("");
+			}
+		}
+		else {
+			guiProperty.setOwnerName("");
+			guiProperty.setBorder(Color.black);
 		}
 	}
 
@@ -219,6 +264,7 @@ public class View implements Observer {
 				// TODO we should also register with the properties as observer; but
 				// the current version does not update anything for the spaces, so we do not
 				// register the view as an observer for now
+				space.attach(this);
 			}
 
 			gui = new GUI(guiFields);

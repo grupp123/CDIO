@@ -12,6 +12,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.IncomeTax;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Property;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.StateTax;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Shipping;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Utility;
@@ -144,6 +145,7 @@ public class View implements Observer {
 			} else if (player.isInPrison()) {
 				guiPlayer.setName(player.getName() + " (i fængsel)");
 			} else {
+				
 				guiPlayer.setName(player.getName());
 			}
 		}
@@ -159,11 +161,12 @@ public class View implements Observer {
 			int houses = realEstate.getHouses();
 			if (houses == realEstate.getMAX_HOUSES()) {
 				guiEstate.setHotel(true);
-				houses--;
 			} else {
 				guiEstate.setHotel(false);
+				guiEstate.setHouses(houses);
 			}
-			guiEstate.setHouses(houses);
+			
+			guiEstate.setRent(Integer.toString(realEstate.getRent()));
 		}
 	}
 	
@@ -230,13 +233,6 @@ public class View implements Observer {
 				gui_brewery.setSubText("" + utility.getCost() + "");
 				gui_brewery.setDescription("Prisen er : " + utility.getCost() + " \n\r Lejen er : " + utility.getRent());
 				guiFields[i] = gui_brewery;						
-			} else if (space instanceof IncomeTax){
-				IncomeTax tax = (IncomeTax) space;
-				GUI_Tax gui_tax = new GUI_Tax();
-				gui_tax.setTitle("SKAT");
-				gui_tax.setSubText("" + space.getName() + "");
-				gui_tax.setDescription("" + space.getName() + "");
-				guiFields[i] = gui_tax;
 			} else if (space instanceof Shipping) {
 				Shipping shipping = (Shipping) space;
 				GUI_Shipping gui_shipping = new GUI_Shipping();
@@ -244,7 +240,21 @@ public class View implements Observer {
 				gui_shipping.setSubText(shipping.getName());
 				gui_shipping.setDescription("Pris: " + shipping.getCost() + "\n\r leje: " + shipping.getRent());
 				guiFields[i] = gui_shipping;
-			} else if(space instanceof Space){
+			} else if (space instanceof IncomeTax){
+				IncomeTax tax = (IncomeTax) space;
+				GUI_Tax gui_tax = new GUI_Tax();
+				gui_tax.setTitle("SKAT");
+				gui_tax.setSubText("" + space.getName() + "");
+				gui_tax.setDescription("" + space.getName() + "");
+				guiFields[i] = gui_tax;
+			} else if (space instanceof StateTax){
+				StateTax tax = (StateTax) space;
+				GUI_Tax gui_tax = new GUI_Tax();
+				gui_tax.setTitle("SKAT");
+				gui_tax.setSubText("" + space.getName() + "");
+				gui_tax.setDescription("" + space.getName() + "");
+				guiFields[i] = gui_tax;
+			} else {
 				if(space.getIndex() == 10 || space.getIndex() == 30) {
 					GUI_Jail gui_jail = new GUI_Jail();
 					guiFields[i] = gui_jail;

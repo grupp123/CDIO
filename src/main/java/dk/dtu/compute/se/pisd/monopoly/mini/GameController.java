@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.event.ListSelectionEvent;
+
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Card;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.IncomeTax;
@@ -190,7 +192,9 @@ public class GameController {
 			}
 
 			// TODO offer all players the options to trade etc.
-			trade(player);
+			if (!player.isBroke()) {
+				trade(player);
+			}
 
 			current = (current + 1) % players.size();
 			game.setCurrentPlayer(players.get(current));
@@ -521,10 +525,58 @@ public class GameController {
 	 * @param property the property which is for auction
 	 */
 	public void auction(Property property) {
-		// TODO auction needs to be implemented
-		//når auktion sker, skal hver spiller byde 
-		//(0 svarer til nej), den højeste bydende "vinder" grunden.
-		gui.showMessage("Now, there would be an auction of " + property.getName() + ".");
+		int currentBid = property.getCost()/2;
+		int minNextBid = 100;
+		boolean isABid = false;
+		Player auctionWinner;
+		List<Player> bidders = new ArrayList<Player>();
+		gui.showMessage("Der afholdes en auktion for: "+property.getName());
+		//Loops through all the players
+		for (Player player : game.getPlayers()) {
+			if (!player.isBroke()) {
+				String msg = "Spiller "+player.getName()+" vil du deltage i auktionen?";
+				//Ask if the player wants to bid if not he is removed from the list.
+				if (gui.getUserLeftButtonPressed(msg, "ja", "nej")) {
+					bidders.add(player);
+				}
+			}
+		}
+		
+		while (bidders.size() > 1)
+		{
+			for(Player player : bidders.toArray(new Player[0])) {
+				String msg = "Det nuværende bud er "+currentBid+"kr. "+player.getName()+", vil du byde over?";
+				if (bidders.size() <= 1) {
+					break;
+				}
+				else if (gui.getUserLeftButtonPressed(msg, "ja", "nej")) {
+					currentBid = gui.getUserInteger("Indtast dit bud. Det skal være minimum "
+								+minNextBid+"kr. højere end "+currentBid, currentBid+minNextBid, Integer.MAX_VALUE);
+				}
+				else {
+					//Player is removed from the auction if he chooses no
+					bidders.remove(player);
+				}
+			}
+		}
+		
+		if (bidders.size() > 0) {
+			auctionWinner = bidders.get(0);
+			
+			gui.showMessage("Tillykke "+auctionWinner.getName()+", du har vundet auktionen! "+
+			"Du har købt: "+property.getName()+" for "+currentBid+"kr.");
+			
+			try {
+				paymentToBank(auctionWinner, currentBid);
+			} catch (PlayerBrokeException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		else {
+			gui.showMessage("Ingen deltager i auktionen, denne annulleres derfor.");
+		}
+		
 	}
 
 	/**

@@ -99,7 +99,7 @@ public class MiniMonopoly {
 		r.setRent(100);
 		r.setRentLevels(new int[] {100,600,1800,5400,8000,11000});
 		r.setHousePrice(1000);
-		r.setColor(Color.BLUE);
+		r.setColor(Color.cyan);
 		game.addSpace(r);
 		
 		chance = new Chance();
@@ -113,7 +113,7 @@ public class MiniMonopoly {
 		r.setRent(100);
 		r.setRentLevels(new int[] {100,600,1800,5400,8000,11000});
 		r.setHousePrice(1000);
-		r.setColor(Color.BLUE);
+		r.setColor(Color.cyan);
 		game.addSpace(r);
 		
 		r = new RealEstate();
@@ -122,7 +122,7 @@ public class MiniMonopoly {
 		r.setRent(150);
 		r.setRentLevels(new int[] {150,800,2000,6000,9000,12000});
 		r.setHousePrice(1000);
-		r.setColor(Color.BLUE);
+		r.setColor(Color.cyan);
 		game.addSpace(r);
 		
 		Jail prison = new Jail();
@@ -209,7 +209,7 @@ public class MiniMonopoly {
 		r.setRent(350);
 		r.setRentLevels(new int[] {350,1800,5000,14000,17500,21000});
 		r.setHousePrice(3000);
-		r.setColor(Color.red);
+		r.setColor(Color.magenta);
 		game.addSpace(r);	
 		
 		chance = new Chance();
@@ -223,7 +223,7 @@ public class MiniMonopoly {
 		r.setRent(350);
 		r.setRentLevels(new int[] {350,1800,5000,14000,17500,21000});
 		r.setHousePrice(3000);
-		r.setColor(Color.red);
+		r.setColor(Color.magenta);
 		game.addSpace(r);
 		
 		r = new RealEstate();
@@ -232,7 +232,7 @@ public class MiniMonopoly {
 		r.setRent(400);
 		r.setRentLevels(new int[] {400,2000,6000,15000,18500,22000});
 		r.setHousePrice(3000);
-		r.setColor(Color.red);
+		r.setColor(Color.magenta);
 		game.addSpace(r);
 		
 		s = new Shipping();
@@ -247,7 +247,7 @@ public class MiniMonopoly {
 		r.setRent(450);
 		r.setRentLevels(new int[] {450,2200,6600,16000,19500,23000});
 		r.setHousePrice(3000);
-		r.setColor(Color.yellow);
+		r.setColor(new Color(255,250,205));
 		game.addSpace(r);
 		
 		r = new RealEstate();
@@ -256,7 +256,7 @@ public class MiniMonopoly {
 		r.setRent(450);
 		r.setRentLevels(new int[] {450,2200,6600,16000,19500,23000});
 		r.setHousePrice(3000);
-		r.setColor(Color.yellow);
+		r.setColor(new Color(255,250,205));
 		game.addSpace(r);
 		
 		u = new Utility();
@@ -270,7 +270,7 @@ public class MiniMonopoly {
 		r.setRent(500);
 		r.setRentLevels(new int[] {500,2400,7200,17000,20500,24000});
 		r.setHousePrice(3000);
-		r.setColor(Color.yellow);
+		r.setColor(new Color(255,250,205));
 		game.addSpace(r);
 		
 		Jail prison2 = new Jail();
@@ -283,7 +283,7 @@ public class MiniMonopoly {
 		r.setRent(400);
 		r.setRentLevels(new int[] {550,2600,7800,18000,22000,25000});
 		r.setHousePrice(4000);
-		r.setColor(Color.GREEN);
+		r.setColor(new Color(154,205,50));
 		game.addSpace(r);
 	
 		r = new RealEstate();
@@ -292,7 +292,7 @@ public class MiniMonopoly {
 		r.setRent(550);
 		r.setRentLevels(new int[] {550,2600,7800,18000,22000,25000});
 		r.setHousePrice(4000);
-		r.setColor(Color.green);
+		r.setColor(new Color(154,205,50));
 		game.addSpace(r);
 		
 		chance = new Chance();
@@ -306,7 +306,7 @@ public class MiniMonopoly {
 		r.setRent(600);
 		r.setRentLevels(new int[] {600,3000,9000,20000,24000,28000});
 		r.setHousePrice(4000);
-		r.setColor(Color.green);
+		r.setColor(new Color(154,205,50));
 		game.addSpace(r);
 		
 		s = new Shipping();
@@ -326,7 +326,7 @@ public class MiniMonopoly {
 		r.setRent(700);
 		r.setRentLevels(new int[] {700,3500,10000,22000,26000,30000});
 		r.setHousePrice(4000);
-		r.setColor(Color.pink);
+		r.setColor(new Color(160, 32, 240));
 		game.addSpace(r);
 		
 		StateTax st = new StateTax();
@@ -342,7 +342,7 @@ public class MiniMonopoly {
 		r.setRent(1000);
 		r.setRentLevels(new int[] {1000,4000,12000,28000,34000,40000});
 		r.setHousePrice(4000);
-		r.setColor(Color.pink);
+		r.setColor(new Color(160, 32, 240));
 		game.addSpace(r);
 
 		

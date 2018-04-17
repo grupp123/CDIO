@@ -18,19 +18,9 @@ public class CardLegat extends Card{
 	}
 	@Override
 	public void doAction(GameController controller, Player player) throws PlayerBrokeException {
-		int totalAmount = 0;
-
-		for(Property property : player.getOwnedProperties())
-		{
-			totalAmount += property.getCost();
-			if (property instanceof RealEstate) {
-				RealEstate estate = (RealEstate) property;
-				totalAmount += estate.getHouses()*estate.getHousePrice();
-			}
-		}
-		totalAmount += player.getBalance();
 		
-		if(totalAmount<15000) {
+		
+		if(player.getAssetsValue()<15000) {
 			player.receiveMoney(amount);
 		}
 		

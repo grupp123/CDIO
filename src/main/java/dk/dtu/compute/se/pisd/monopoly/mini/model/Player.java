@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import dk.dtu.compute.se.pisd.designpatterns.Subject;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 
 /**
  * Represents a player and his current state in a Monopoly game.
@@ -284,6 +285,19 @@ public class Player extends Subject {
 
 	public void set_throw(int _throw) {
 		this._throw = _throw;
+	}
+	
+	public int getAssetsValue() {
+		int totalAmount = balance;
+		for(Property property : ownedProperties)
+		{
+			totalAmount += property.getCost();
+			if (property instanceof RealEstate) {
+				RealEstate estate = (RealEstate) property;
+				totalAmount += estate.getHouses()*estate.getHousePrice();
+			}
+		}
+		return totalAmount;
 	}
 
 }

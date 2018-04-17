@@ -4,13 +4,12 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Card;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.IncomeTax;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Property;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
@@ -301,6 +300,11 @@ public class GameController {
 		}		
 		gui.showMessage("Player " + player.getName() + " arrives at " + space.getIndex() + ": " +  space.getName() + ".");
 
+		// If the space is the Tax one, we give 2 choices for payment
+		if (space instanceof IncomeTax) {
+			String msg = player.getName()+", du skal betale indkomstskat af 4.000kr. eller 10% af alle dine værdier (huse, hoteller, grunde og balance)";
+			((IncomeTax)space).setPayByPercent(gui.getUserLeftButtonPressed(msg, "Betal 10%", "Betal 4.000kr.")); 
+		}
 		// Execute the action associated with the respective space. Note
 		// that this is delegated to the field, which implements this action
 		space.doAction(this, player);
@@ -891,5 +895,6 @@ public class GameController {
 		
 		return pickedProperty;
 	}
+	
 
 }

@@ -8,7 +8,8 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Card;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Chance;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
-import dk.dtu.compute.se.pisd.monopoly.mini.model.Tax;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.StateTax;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.IncomeTax;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardLegat;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardMove;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardMoveBack;
@@ -79,10 +80,11 @@ public class MiniMonopoly {
 		r.setColor(Color.darkGray);
 		game.addSpace(r);
 		
-		Tax t = new Tax();
+		IncomeTax t = new IncomeTax();
 		t.setName("betal inkomstskat 10% eller 4000kr");
-		game.addSpace(t);
 		t.setText("10% eller 4000");
+		t.setTax(4000);
+		game.addSpace(t);
 		
 
 		Shipping s = new Shipping();
@@ -327,10 +329,11 @@ public class MiniMonopoly {
 		r.setColor(Color.pink);
 		game.addSpace(r);
 		
-		t = new Tax();
-		t.setName("Ekstraordinær statsskat betal kr. 2.000");
-		game.addSpace(t);
-		t.setText("2000");
+		StateTax st = new StateTax();
+		st.setName("Ekstraordinær statsskat betal kr. 2.000");
+		st.setText("2000");
+		st.setTax(2000);
+		game.addSpace(st);
 		
 		
 		r = new RealEstate();

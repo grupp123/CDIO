@@ -10,7 +10,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Chance;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
-import dk.dtu.compute.se.pisd.monopoly.mini.model.Tax;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.IncomeTax;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.differentSpaces.FreeParking;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.differentSpaces.Go;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.differentSpaces.Jail;
@@ -185,8 +185,8 @@ public class View implements Observer {
 				gui_brewery.setSubText("" + utility.getCost() + "");
 				gui_brewery.setDescription("Prisen er : " + utility.getCost() + " \n\r Lejen er : " + utility.getRent());
 				guiFields[i] = gui_brewery;						
-			} else if (space instanceof Tax){
-				Tax tax = (Tax) space;
+			} else if (space instanceof IncomeTax){
+				IncomeTax tax = (IncomeTax) space;
 				GUI_Tax gui_tax = new GUI_Tax();
 				gui_tax.setTitle("SKAT");
 				gui_tax.setSubText("" + space.getName() + "");

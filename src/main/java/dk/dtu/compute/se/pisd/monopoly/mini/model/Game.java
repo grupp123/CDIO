@@ -26,7 +26,7 @@ public class Game extends Subject {
 	
 	private Player current;
 	
-	private final int passedStartMoney = 4000;
+	private final int PASSED_START_MONEY = 4000;
 	
 
 	public final int MAX_HOUSES = 40;
@@ -60,7 +60,7 @@ public class Game extends Subject {
 	 * @return an int with the value 4000 (money when you passing start)
 	 */	
 	public int getPassesStartMoney() {
-		return passedStartMoney;
+		return PASSED_START_MONEY;
 	}
 
 	/**

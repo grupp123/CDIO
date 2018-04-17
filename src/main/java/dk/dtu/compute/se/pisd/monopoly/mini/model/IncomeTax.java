@@ -12,12 +12,26 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeExceptio
  *
  */
 public class IncomeTax extends Space {
-	
+
 	boolean payByPercent = false;
 	int tax;
+	private String text;
 
-	
+	public void setText(String text ) {
+		this.text=text;
+	}
 
+	public String getText() {
+		return this.text;
+	}
+
+	public int getTax() {
+		return tax;
+	}
+
+	public void setTax(int tax) {
+		this.tax = tax;
+	}
 	@Override
 	public void doAction(GameController controller, Player player) throws PlayerBrokeException {
 		if (payByPercent) {
@@ -27,31 +41,13 @@ public class IncomeTax extends Space {
 		else {
 			controller.paymentToBank(player, tax);
 		}
-
-		
 	}
-	
+
 	public void setPayByPercent(boolean payByPercent) {
 		this.payByPercent = payByPercent;
 	}
 
-	private String text;
-	
-	public void setText(String text ) {
-		this.text=text;
-	}
-	
-	public String getText() {
-		return this.text;
-	}
-	
-	public int getTax() {
-		return tax;
-	}
 
-	public void setTax(int tax) {
-		this.tax = tax;
-	}
 
 
 }

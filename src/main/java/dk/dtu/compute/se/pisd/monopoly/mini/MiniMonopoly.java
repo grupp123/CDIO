@@ -475,22 +475,22 @@ public class MiniMonopoly {
 		
 		CardMovePassStart mols = new CardMovePassStart();
 		mols.setText("Tag med Mols-Linien - Flyt brikken frem, og hvis De passerer “Start”, inkassér da kr. 4.000.");
-		mols.setGoToIndex(4);
+		mols.setGoToIndex(25);
 		cards.add(mols);
 		
 		CardMove rHusPladsen = new CardMove();
 		rHusPladsen.setText("Tag ind på Rådhuspladsen");
-		rHusPladsen.setTarget(game.getSpaces().get(10)); //det skal være 39 men jeg venter på at de sidste felter bliver lavet
+		rHusPladsen.setTarget(game.getSpaces().get(39));
 		cards.add(rHusPladsen);
 		
 		CardMovePassStart gronning = new CardMovePassStart();
 		gronning.setText("Ryk frem til Grønningen. Hvis De passerer Start, indkassér da kr. 4.000.");
-		gronning.setGoToIndex(13);
+		gronning.setGoToIndex(24);
 		cards.add(gronning);
 		
 		CardMovePassStart frederiksberg = new CardMovePassStart();
 		frederiksberg.setText("Ryk frem til Frederiksberg Allé. Hvis De passerer “Start, indkassér kr. 4.000.");
-		frederiksberg.setGoToIndex(37);
+		frederiksberg.setGoToIndex(11);
 		cards.add(frederiksberg);
 		
 		game.setCardDeck(cards);

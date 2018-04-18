@@ -29,9 +29,9 @@ public class DAOdemo {
 			System.out.println("game ikke oprettet" + e);		
 		}
 	}
-	
+
 	public String activePlayers() throws SQLException{
-		
+
 		String q = "";
 		try {
 			ResultSet rs = c.doQuery("SELECT playerid, playername FROM player");
@@ -40,17 +40,14 @@ public class DAOdemo {
 			while (rs.next()) {
 				for (int j = 1; j <= columnsNumber; j++) {
 					if (j > 1) {
-						System.out.print(" - ");
 						q += " - ";
 					}
 					String columnValue = rs.getString(j);
 					//System.out.print(columnValue + " " + rsmd.getColumnName(j));
 					q += columnValue;// + " " + rsmd.getColumnName(j);
 				}
-				System.out.println("");
 				q += "\n";
 			}
-			System.out.println("");
 			q += "\n";
 			return q;
 		}catch (Exception e) {
@@ -60,12 +57,87 @@ public class DAOdemo {
 
 	}
 
-		
-		
-		
-		
-	
-	
+
+
+	public String activePlayersInGame(int i) throws SQLException{
+
+		String q = "";
+		try {
+			ResultSet rs = c.doQuery("SELECT playerid, playername FROM player where gameid = " + i);
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int columnsNumber = rsmd.getColumnCount();
+			while (rs.next()) {
+				for (int j = 1; j <= columnsNumber; j++) {
+					if (j > 1) {
+						q += " - ";
+					}
+					String columnValue = rs.getString(j);
+					//System.out.print(columnValue + " " + rsmd.getColumnName(j));
+					q += columnValue;// + " " + rsmd.getColumnName(j);
+				}
+				q += "\n";
+			}
+			q += "\n";
+			return q;
+		}catch (Exception e) {
+			System.out.println(e);
+			return "error";
+		}
+
+	}
+
+	public String allInfoActivePlayersInGame(int i) throws SQLException{
+
+		String q = "";
+		try {
+			ResultSet rs = c.doQuery("SELECT * FROM player where gameid = " + i);
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int columnsNumber = rsmd.getColumnCount();
+			while (rs.next()) {
+				for (int j = 1; j <= columnsNumber; j++) {
+					if (j > 1) {
+						q += " - ";
+					}
+					String columnValue = rs.getString(j);
+					//System.out.print(columnValue + " " + rsmd.getColumnName(j));
+					q += columnValue;// + " " + rsmd.getColumnName(j);
+				}
+				q += "\n";
+			}
+			q += "\n";
+			return q;
+		}catch (Exception e) {
+			System.out.println(e);
+			return "error";
+		}
+
+	}
+
+	public String[] getInfoArrayPlayer(int i) throws SQLException{
+
+		String[] q = new String[8];
+		try {
+			ResultSet rs = c.doQuery("SELECT * FROM player where playerid = " + i);
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int columnsNumber = rsmd.getColumnCount();
+				for (int j = 1; j <= columnsNumber; j++) {
+					q[j-1] = rs.getString(j);
+					System.out.print(columnsNumber); //Value + " " + rsmd.getColumnName(j));
+					//q += columnValue;// + " " + rsmd.getColumnName(j);
+			}
+			return q;
+		}catch (Exception e) {
+			System.out.println(e);
+			return null;
+		}
+
+	}
+
+
+
+
+
+
 	public String activeGames() throws SQLException {
 
 		String q = "";
@@ -76,18 +148,17 @@ public class DAOdemo {
 			while (rs.next()) {
 				for (int j = 1; j <= columnsNumber; j++) {
 					if (j > 1) {
-						System.out.print(" - ");
+
 						q += " - ";
 					}
 					String columnValue = rs.getString(j);
 					//System.out.print(columnValue + " " + rsmd.getColumnName(j));
 					q += columnValue;// + " " + rsmd.getColumnName(j);
 				}
-				System.out.println("");
-				q += "\n";
+
+				q += ", ";
 			}
-			System.out.println("");
-			q += "\n";
+			//q += "\n";
 			return q;
 		}catch (Exception e) {
 			System.out.println(e);
@@ -96,7 +167,7 @@ public class DAOdemo {
 
 	}
 
-	public void createPlayerInGame(int i, String s) {
+	public void createPlayerInGame (int i, String s) throws SQLException{
 
 		try {
 			c.doUpdate("insert into player(gameid, playername) values (" + i + ", '" + s + "')" );
@@ -105,35 +176,79 @@ public class DAOdemo {
 		}
 	} 
 
+
+	public void deleteGame(int i) throws SQLException {
+
+		try {
+			c.doUpdate("delete from game where gameid = " + i);
+		} catch (Exception e) {
+			System.out.println("error game dosent exist " + e);
+		}
+	} 
+
+	public void deletePlayer(int i) throws SQLException {
+		try {
+			c.doUpdate("delete from player where playerid = " + i);
+		} catch (Exception e) {
+			System.out.println("error game dosent exist " + e);
+		}
+	} 
+
+
+
 	public String getPlayerName(int i) throws SQLException{
 
 		String q = "";
 		try {
 			ResultSet rs = c.doQuery("select playername from player where playerID = " + i);
-			ResultSetMetaData rsmd = rs.getMetaData();
-			int columnsNumber = rsmd.getColumnCount();
 			while (rs.next()) {
-				for (int j = 1; j <= columnsNumber; j++) {
-					if (j > 1) {
-						System.out.print(" - ");
-						q += " - ";
-					}
-					String columnValue = rs.getString(j);
-					System.out.print(columnValue + " " + rsmd.getColumnName(j));
-					q += columnValue + " " + rsmd.getColumnName(j);
-				}
-				System.out.println("");
-				q += "\n";
+					String columnValue = rs.getString(1);
+					q += columnValue;
 			}
-			System.out.println("");
-			q += "\n";
 			return q;
 		}catch (Exception e) {
 			System.out.println(e);
 			return "error";
 		}
+	}
 
-	} 
+	public int getPlayerBalance(int i) throws SQLException{
+
+		int q = 0;
+		try {
+			ResultSet rs = c.doQuery("select balance from player where playerID = " + i);
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int columnsNumber = rsmd.getColumnCount();
+			while (rs.next()) {
+				int columnValue = rs.getInt(1);
+				q = columnValue;
+			}
+			return q;
+		} catch (Exception e) {
+			System.out.println(e);
+			return 0;
+		}
+	}
+	
+	
+	public int getPlayerPosition(int i) throws SQLException{
+
+		int q = 0;
+		try {
+			ResultSet rs = c.doQuery("select position from player where playerID = " + i);
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int columnsNumber = rsmd.getColumnCount();
+			while (rs.next()) {
+				int columnValue = rs.getInt(1);
+				q = columnValue;
+			}
+			return q;
+		} catch (Exception e) {
+			System.out.println(e);
+			return -1;
+		}
+	}
+
 
 
 }

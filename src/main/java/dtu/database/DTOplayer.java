@@ -14,9 +14,19 @@ public class DTOplayer {
 		this.position = position;
 		this.balance = balance;		
 	}
-
-	public void name() {
-		//getPlayerName(1);
+	
+	public int getBalance() {
+		return balance;
+	}public String getName() {
+		return name;
+	}public void setBalance(int balance) {
+		this.balance = balance;
+	}public int getPosition() {
+		return position;
+	}public void setName(String name) {
+		this.name = name;
+	}public void setPosition(int position) {
+		this.position = position;
 	}
 
 }

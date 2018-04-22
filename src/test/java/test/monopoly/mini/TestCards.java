@@ -27,9 +27,7 @@ public class TestCards {
 	
 	@Before
 	public void setUp() throws Exception {
-		//set en current position
-		//teste hvilken rederi som er tætest på spilleren
-		//det han skal rykke til når han trækker kortet
+		
 		game = MiniMonopoly.createGame();
 		
 		player = new Player();
@@ -51,6 +49,9 @@ public class TestCards {
 		
 	}
 
+	//set en current position
+	//teste hvilken rederi som er tættest på spilleren
+	//det han skal rykke til når han trækker kortet
 	@Test
 	public void testCardNearestShip() {
 		nearestShip = new CardNearestShip();

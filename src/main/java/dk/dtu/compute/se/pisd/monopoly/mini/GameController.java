@@ -133,7 +133,7 @@ public class GameController {
 	public void initializeGUI() {		
 		this. view = new View(game);
 
-		gui = view.createGUI(game);
+		gui = view.createGUI();
 	}
 
 	/**
@@ -157,7 +157,7 @@ public class GameController {
 		while (!terminated) {
 			Player player = players.get(current);
 			if (!player.isBroke()) {
-				gui.getUserButtonPressed("Klik ok for at kaste","Kast");
+				gui.getUserButtonPressed(player.getName()+", klik ok for at kaste","Kast");
 				try {
 					this.makeMove(player);
 				} catch (PlayerBrokeException e) {
@@ -309,6 +309,10 @@ public class GameController {
 		// that this is delegated to the field, which implements this action
 		space.doAction(this, player);
 	}	
+	
+	public void moveToIndex(Player player, int index) throws PlayerBrokeException {
+		moveToSpace(player,game.getSpaces().get(index));
+	}
 
 	/**
 	 * The method implements the action of a player going directly to jail.
@@ -757,9 +761,11 @@ public class GameController {
 		Map<String,Property> developableProperties = new HashMap<String,Property>();
 		for (Property property: buyer.getOwnedProperties()) {
 			if (property instanceof RealEstate) {
-				if (isColorgroupComplete(buyer.getOwnedProperties(), property.getColor())){
-					if (((RealEstate)property).getHouses() < ((RealEstate)property).getMAX_HOUSES())
-						developableProperties.put(property.getName(),property);
+				if (!property.isMortgaged()) {
+					if (isColorgroupComplete(buyer.getOwnedProperties(), property.getColor())){
+						if (((RealEstate)property).getHouses() < ((RealEstate)property).getMAX_HOUSES())
+							developableProperties.put(property.getName(),property);
+					}
 				}
 			}	
 		}

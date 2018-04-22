@@ -204,7 +204,7 @@ public class View implements Observer {
 		}
 	}
 
-	public GUI createGUI(Game game2) {
+	public GUI createGUI() {
 
 		GUI_Field[] guiFields = new GUI_Field[game.getSpaces().size()];
 

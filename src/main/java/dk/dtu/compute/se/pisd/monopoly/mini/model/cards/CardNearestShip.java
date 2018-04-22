@@ -25,19 +25,19 @@ public class CardNearestShip extends Card{
 		try {
 			int tar = 5;
 			int pos = player.getCurrentPosition().getIndex();
-			if(pos > 5) {
+			
+			if(pos < 5) {
 				tar = 5;
-			} else if (pos > 15) {
+			} else if (pos < 15) {
 				tar = 15;
-			} else if (pos > 25) {
+			} else if (pos < 25) {
 				tar = 25;
-			} else if (pos > 35) {
+			} else if (pos < 35) {
 				tar = 35;
-			} else if (pos <= 35) {
+			} else if (pos >= 35) {
 				tar = 5;
 			}
-			target.setIndex(tar);
-			controller.moveToSpace(player, target);	
+			controller.moveToIndex(player, tar);	
 		} finally {
 			super.doAction(controller, player);
 		}

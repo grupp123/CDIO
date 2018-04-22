@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.event.ListSelectionEvent;
 
@@ -756,8 +757,10 @@ public class GameController {
 		Map<String,Property> developableProperties = new HashMap<String,Property>();
 		for (Property property: buyer.getOwnedProperties()) {
 			if (property instanceof RealEstate) {
-				if (((RealEstate)property).getHouses() < ((RealEstate)property).getMAX_HOUSES())
-					developableProperties.put(property.getName(),property);
+				if (isColorgroupComplete(buyer.getOwnedProperties(), property.getColor())){
+					if (((RealEstate)property).getHouses() < ((RealEstate)property).getMAX_HOUSES())
+						developableProperties.put(property.getName(),property);
+				}
 			}	
 		}
 		
@@ -943,5 +946,32 @@ public class GameController {
 		return pickedProperty;
 	}
 	
+	/**
+	 * Used to check weather 
+	 * @param properties
+	 * @param colorGroup
+	 * @return
+	 */
+	private boolean isColorgroupComplete (Set<Property> properties, Color colorGroup) {
+		int count = 0;
+		
+		for (Property property : properties) {
+			if (property instanceof RealEstate) {
+				if (property.getColor().equals(colorGroup)) {
+					count++;
+				}
+			}
+		}
+		
+		if (count == 3) {
+			return true;
+		}
+		else if (count == 2) {
+			if (colorGroup.equals(Color.darkGray)||colorGroup.equals(Color.cyan)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 }

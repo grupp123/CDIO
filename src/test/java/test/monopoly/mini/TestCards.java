@@ -42,11 +42,7 @@ public class TestCards {
 		
 		controller.initializeGUI();
 		
-		nearestShip = new CardNearestShip();
-		nearestShip.setText("Ryk brikken frem til det nærmeste rederi og betal ejeren to gange den leje, han ellers er berettiget til. Hvis selskabet ikke ejes af nogen kan De købe det af banken");
-		List<Card> cards = new ArrayList<Card>();
-		cards.add(nearestShip);
-		game.setCardDeck(cards);
+		
 		
 	}
 
@@ -56,7 +52,13 @@ public class TestCards {
 	}
 
 	@Test
-	public void test() {
+	public void testCardNearestShip() {
+		nearestShip = new CardNearestShip();
+		nearestShip.setText("Ryk brikken frem til det nærmeste rederi og betal ejeren to gange den leje, han ellers er berettiget til. Hvis selskabet ikke ejes af nogen kan De købe det af banken");
+		List<Card> cards = new ArrayList<Card>();
+		cards.add(nearestShip);
+		game.setCardDeck(cards);
+		
 		int[] expecteds = new int[] {5,15,25,25,35,5};
 		int[] actuals = new int[expecteds.length];
 		

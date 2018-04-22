@@ -27,7 +27,6 @@ public class Game extends Subject {
 	private Player current;
 	
 	private final int PASSEDSTARTMONEY = 4000;
-	
 
 	public final int MAX_HOUSES = 40;
 	

@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.event.ListSelectionEvent;
 
@@ -294,10 +295,7 @@ public class GameController {
 		player.setCurrentPosition(space);
 
 		if (posOld > player.getCurrentPosition().getIndex()) {
-			// Note that this assumes that the game has more than 12 spaces here!
-			// TODO: the amount of 4000$ should not be a fixed constant here (could also
-			//       be configured in the Game class.
-			gui.showMessage("Spiller " + player.getName() + " modtager 4.000kr. for at passere Start!");
+			gui.showMessage("Spiller " + player.getName() + " modtager 4.000kr. for at lande på eller passere Start!");
 		this.paymentFromBank(player, game.getPassesStartMoney());
 		}		
 		gui.showMessage("Spiller " + player.getName() + " lander på " + space.getIndex() + ": " +  space.getName() + ".");
@@ -630,8 +628,8 @@ public class GameController {
 				}
 			}
 			//Check if there is mortgage and remove if so
-			if (property.isMortaged()) {
-				property.setMortaged(false);
+			if (property.isMortgaged()) {
+				property.setMortgaged(false);
 			}
 			property.setOwner(null);
 		}
@@ -692,7 +690,7 @@ public class GameController {
 	private void tradeCashInMortgage(Player player) {
 		Map<String,Property> mortgageableProperties = new HashMap<String,Property>();
 		for (Property property: player.getOwnedProperties()) {
-			if (!property.isMortaged()) {
+			if (!property.isMortgaged()) {
 				if (property instanceof RealEstate) {
 					if (!((RealEstate)property).isDevelopped())
 						mortgageableProperties.put(property.getName(),property);
@@ -712,8 +710,8 @@ public class GameController {
 		Property chosenProperty = pickProperty(mortgageableProperties, "Vælg den grund du vil pantsætte");
 		
 		if (chosenProperty != null) {
-			chosenProperty.setMortaged(true);
-			paymentFromBank(player, chosenProperty.getMortageValue());
+			chosenProperty.setMortgaged(true);
+			paymentFromBank(player, chosenProperty.getMortgageValue());
 		}
 		
 		
@@ -726,7 +724,7 @@ public class GameController {
 	private void tradePayMortgage(Player player) {
 		Map<String,Property> demortgageableProperties = new HashMap<String,Property>();
 		for (Property property: player.getOwnedProperties()) {
-			if (property.isMortaged()) {
+			if (property.isMortgaged()) {
 				demortgageableProperties.put(property.getName(),property);
 			}
 			
@@ -740,13 +738,13 @@ public class GameController {
 		Property chosenProperty = pickProperty(demortgageableProperties, "Vælg den grund du vil betale pant for.");
 		
 		if (chosenProperty != null) {
-			int amount = (int) (chosenProperty.getMortageValue()*1.1f);
+			int amount = (int) (chosenProperty.getMortgageValue()*1.1f);
 			try {
 				paymentToBank(player, amount);
 			} catch (PlayerBrokeException e) {
 				e.printStackTrace();
 			}
-			chosenProperty.setMortaged(false);
+			chosenProperty.setMortgaged(false);
 		}
 	}
 	
@@ -759,8 +757,10 @@ public class GameController {
 		Map<String,Property> developableProperties = new HashMap<String,Property>();
 		for (Property property: buyer.getOwnedProperties()) {
 			if (property instanceof RealEstate) {
-				if (((RealEstate)property).getHouses() < ((RealEstate)property).getMAX_HOUSES())
-					developableProperties.put(property.getName(),property);
+				if (isColorgroupComplete(buyer.getOwnedProperties(), property.getColor())){
+					if (((RealEstate)property).getHouses() < ((RealEstate)property).getMAX_HOUSES())
+						developableProperties.put(property.getName(),property);
+				}
 			}	
 		}
 		
@@ -946,5 +946,32 @@ public class GameController {
 		return pickedProperty;
 	}
 	
+	/**
+	 * Used to check weather 
+	 * @param properties
+	 * @param colorGroup
+	 * @return
+	 */
+	private boolean isColorgroupComplete (Set<Property> properties, Color colorGroup) {
+		int count = 0;
+		
+		for (Property property : properties) {
+			if (property instanceof RealEstate) {
+				if (property.getColor().equals(colorGroup)) {
+					count++;
+				}
+			}
+		}
+		
+		if (count == 3) {
+			return true;
+		}
+		else if (count == 2) {
+			if (colorGroup.equals(Color.darkGray)||colorGroup.equals(Color.cyan)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 }

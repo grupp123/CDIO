@@ -179,7 +179,7 @@ public class View implements Observer {
 		Player owner = property.getOwner();
 		if (owner != null) {
 			guiProperty.setOwnerName(owner.getName());
-			if (property.isMortaged()) {
+			if (property.isMortgaged()) {
 				guiProperty.setBorder(owner.getColor(), Color.white);
 				guiProperty.setOwnableLabel("(Pantsat)");
 			}

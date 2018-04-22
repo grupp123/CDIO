@@ -10,7 +10,7 @@ public class Shipping extends Property{
 	@Override
 	public void doAction(GameController controller, Player player) throws PlayerBrokeException {
 		Player owner = super.getOwner();
-		boolean mortgaged = super.isMortaged();
+		boolean mortgaged = super.isMortgaged();
 		int rent, count = 0;
 		if (!mortgaged) {
 			if (owner == null) {

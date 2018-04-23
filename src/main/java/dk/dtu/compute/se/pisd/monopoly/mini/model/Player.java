@@ -304,4 +304,12 @@ public class Player extends Subject {
 		return totalAmount;
 	}
 
+	@Override
+	public String toString() {
+		String st = getName()+" : "+getAssetsValue()+"kr.";
+		return st;
+	}
+	
+	
+
 }

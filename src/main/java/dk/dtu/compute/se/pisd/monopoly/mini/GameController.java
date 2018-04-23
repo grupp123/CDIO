@@ -203,6 +203,7 @@ public class GameController {
 						"ja",
 						"nej");
 				if (selection.equals("nej")) {
+					gui.showMessage(playerRanking(game.getPlayers()).toString());
 					terminated = true;
 				}
 			}
@@ -950,7 +951,7 @@ public class GameController {
 	}
 	
 	/**
-	 * Used to check weather 
+	 * Used to check weather the player owns all the streets of same colorgroup
 	 * @param properties
 	 * @param colorGroup
 	 * @return
@@ -975,6 +976,32 @@ public class GameController {
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * 
+	 * @param players
+	 * @return
+	 */
+	public List<Player> playerRanking(List<Player> players) {
+		List<Player> ranking = new ArrayList<Player>();
+		int max = 0;
+		Player maxPlayer = null;
+		while(ranking.size() < players.size()) {
+			for (Player player : players) {
+				if (!ranking.contains(player)) {
+					int netWorth = player.getAssetsValue();
+					if(max < netWorth) {
+						max = netWorth;
+						maxPlayer = player;
+					}
+				}
+			}
+			if (maxPlayer != null) ranking.add(maxPlayer);
+		}
+
+		return ranking;
+		
 	}
 
 }

@@ -16,7 +16,7 @@ public class DAOdemo {
 
 	public void useMatadorDemo() throws SQLException {
 		try {
-			c.doUpdate("use matadordemo");
+			c.doUpdate("use MatadorDemo");
 		} catch (Exception e) {
 			System.out.println("SQL FEJL - database ikke oprettet" + e);
 		}

@@ -10,7 +10,7 @@ import java.sql.Statement;
 public class Connector {
 	private final String HOST     = "Localhost";
 	private final int    PORT     = 3306;
-	private final String DATABASE = "university";
+	private final String DATABASE = "MatadorDemo";
 	private final String USERNAME = "root"; 
 	private final String PASSWORD = "";
 	private Connection connection;

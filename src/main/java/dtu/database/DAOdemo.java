@@ -124,12 +124,11 @@ public class DAOdemo {
 					q[j-1] = rs.getString(j);
 					System.out.print(columnsNumber); //Value + " " + rsmd.getColumnName(j));
 					//q += columnValue;// + " " + rsmd.getColumnName(j);
-			}
-			return q;
+				}
 		}catch (Exception e) {
 			System.out.println(e);
-			return null;
 		}
+		return q;
 
 	}
 

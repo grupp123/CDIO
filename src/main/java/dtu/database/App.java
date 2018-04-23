@@ -34,7 +34,7 @@ public class App {
 		System.out.println(d.getInfoArrayPlayer(2));
 		System.out.println(d.allInfoActivePlayersInGame(1));
 
-		for (int i = 2; i < 8; i++) {
+		for (int i = 1; i < 6; i++) {
 			System.out.println(d.getInfoArrayPlayer(i).toString());
 			String[] sa = d.getInfoArrayPlayer(i);
 

@@ -1,0 +1,79 @@
+create database MatadorDemo;
+use MatadorDemo;
+CREATE TABLE game(
+gameID int(3) NOT NULL UNIQUE auto_increment,
+gameName varchar(30) default ' ',
+gameStatus ENUM('active','passive') default 'active',
+PRIMARY KEY(gameID));
+
+CREATE TABLE player(
+playerID int(3) NOT NULL UNIQUE auto_increment,
+gameID int(3) NOT NULL,
+playerName varchar(10) NOT NULL,
+hasLost ENUM('lost','notlost') default 'notlost',
+position int(2) default 1 check(position between 1 and 40),
+balance int(7) NOT NULL,
+inJail ENUM('yes','no') default 'no',
+jailCard int(1) default 0,
+PRIMARY KEY(playerID),
+FOREIGN KEY(gameID) REFERENCES game(gameID));
+
+CREATE TABLE car(
+carColor ENUM('blå','grøn','rød','gul','sort','hvid','pink'),
+playerID int(3) not null,
+PRIMARY KEY(carColor),
+FOREIGN KEY (playerID) references player(playerID));
+
+CREATE TABLE ownedSpaces(
+spaceNumber int(2) check(spaceNumber between 1 and 40),
+playerID int(3) NOT NULL,
+housesOnSpace int(2) default 0 check(housesOnSpace between 0 and 5),
+Mortagaged ENUM('yes','no') default 'no',
+PRIMARY KEY(spaceNumber),
+FOREIGN KEY(playerID) REFERENCES player(playerID));
+
+insert into game(gameName) values ('Spil med nicodrengen');
+insert into game(gameName) values ('Spil med alexdrengen');
+insert into game(gameName) values ('Spil med Bjarne');
+
+insert into player(gameID, playerName, balance) values (1, 'Jacob', 30000);
+insert into player(gameID, playerName, balance) values (1, 'Nico', 30000);
+insert into player(gameID, playerName, balance) values (1, 'Alex', 30000);
+
+insert into player(gameID, playerName, balance) values (2, 'Niller', 30000);
+insert into player(gameID, playerName, balance) values (2, 'Ahad', 30000);
+insert into player(gameID, playerName, balance) values (2, 'Tahany', 30000);
+
+insert into player(gameID, playerName, balance) values (3, 'Jens', 30000);
+insert into player(gameID, playerName, balance) values (3, 'Frank', 30000);
+
+select * from player;
+select * from ownedSpaces;
+
+insert into ownedSpaces(spaceNumber, playerID) values (3,3);
+insert into ownedSpaces(spaceNumber, playerID) values (2,2);
+
+select * from game;
+
+drop view if exists game_info;
+create view game_info as
+select player.gameID as 'gameID', count(player.playerID) as 'number of players',
+game.gameName as 'GameName'
+from player natural join game
+group by gameID;
+
+delimiter //
+create procedure create_game
+(in gameName_input varchar(30))
+begin 
+insert into game(gameName)
+values (gameName_input);
+end; //
+delimiter ;
+
+select * from game;
+
+call create_game('frank');
+
+select * from game_info;
+select * from game;

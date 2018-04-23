@@ -203,7 +203,15 @@ public class GameController {
 						"ja",
 						"nej");
 				if (selection.equals("nej")) {
-					gui.showMessage(playerRanking(game.getPlayers()).toString());
+					List<Player> ranking = playerRanking(game.getPlayers());
+					gui.showMessage("Rangordning for mest velhavende: "+ ranking.toString());
+					selection = gui.getUserSelection("Vil du gemme spillet?", "ja", "nej");
+					if (selection.equals("ja")) {
+						//TODO gem spillet
+					}
+					else {
+						gui.showMessage("Vinderen er: "+ranking.get(0).toString()+". Spillet lukkes når du trykker ok.");
+					}
 					terminated = true;
 				}
 			}
@@ -233,22 +241,54 @@ public class GameController {
 			castDouble = (die1 == die2);
 			gui.setDice(die1, die2);
 
-			if (player.isInPrison() && castDouble) {
-				player.setInPrison(false);
-				gui.showMessage("Spiller " + player.getName() + " forlader fængslet da han har kastet to ens!");
-			} else if (player.isInPrison()) {
-				gui.showMessage("Spiller " + player.getName() + " forbliver i fængslet da han ikke har kastet to ens!");
-			}
-
 			if (player.isInPrison()) {
-				if (player.getBalance () >= 1000) {
-					player.payMoney(1000);
-					gui.showMessage("Spiller " + player.getName() + " forlader fængslet imod en betaling af 1.000kr.!");
-					player.setInPrison (false);
-				}else {
-					gui.showMessage("Spiller " + player.getName() + " forbliver i fængslet da han ikke har betalt!");
+				player.addPrisonTime();
+				if (castDouble) {
+					player.setInPrison(false);
+					gui.showMessage(player.getName() + " forlader fængslet da han har kastet to ens!");
+				} 
+				else {
+					String selection = gui.getUserSelection(player.getName()+", du kastede ikke to ens, hvad vil du?", "Betal kaution", "Brug frikort", "Vent til næste tur");
+					
+					if (selection.equals("Betal kaution")) {
+						paymentToBank(player, game.JAIL_BAIL_PRICE);
+						if (!player.isBroke()) {
+							player.setInPrison(false);
+						}
+					}
+					else if (selection.equals("Brug frikort")) {
+						boolean cardUsed = false;
+						for(Card card : player.getOwnedCards()){
+							if(card instanceof OutOfJail)
+							{
+								player.setInPrison(false);
+								player.removeOwnedCard(card);
+								cardUsed = true;
+								break;
+							}
+						}
+						if (cardUsed) {
+							gui.showMessage(player.getName() + " forlader fængslet da han har brugt sit frikort!");
+						}
+						else {
+							gui.showMessage(player.getName() + " forbliver i fængslet da han ikke har noget frikort!");
+						}
+					}
+					else {
+						gui.showMessage(player.getName() + " forbliver i fængslet og venter til næste tur!");
+					}
+					
+					if (player.isInPrison() && player.getPrisonTime() >= game.MAX_PRISON_TIME) {
+						gui.showMessage(player.getName() + " har været i fængselet for længe, du tvinges nu til at betale kaution af "+game.JAIL_BAIL_PRICE+"kr.");
+						paymentToBank(player, game.JAIL_BAIL_PRICE);
+						if (!player.isBroke()) {
+							player.setInPrison(false);
+						}
+					}
 				}
 			}
+			
+			
 
 			if (castDouble) {
 				doublesCount++;
@@ -256,15 +296,6 @@ public class GameController {
 					gui.showMessage("Spiller " + player.getName() + " har kastet to ens tre gange nu og havner derfor i fængslet!");
 					gotoJail(player);
 					return;
-				}
-			}
-
-			for(Card card : player.getOwnedCards()){
-				if(card instanceof OutOfJail)
-				{
-					player.setInPrison(false);
-					player.removeOwnedCard(card);
-					break;
 				}
 			}
 
@@ -573,6 +604,7 @@ public class GameController {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			auctionWinner.addOwnedProperty(property);
 		}
 		else {
 			gui.showMessage("Ingen deltager i auktionen, denne annulleres derfor.");
@@ -994,13 +1026,14 @@ public class GameController {
 			for (Player player : players) {
 				if (!ranking.contains(player)) {
 					int netWorth = player.getAssetsValue();
-					if(max < netWorth) {
+					if(max <= netWorth) {
 						max = netWorth;
 						maxPlayer = player;
 					}
 				}
 			}
 			if (maxPlayer != null) ranking.add(maxPlayer);
+			max = 0;
 		}
 
 		return ranking;

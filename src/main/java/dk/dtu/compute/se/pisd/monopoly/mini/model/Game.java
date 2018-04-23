@@ -32,6 +32,10 @@ public class Game extends Subject {
 	
 	public final int MAX_HOTELS = 12;
 	
+	public final int JAIL_BAIL_PRICE = 1000;
+	
+	public final int MAX_PRISON_TIME = 3;
+	
 	private int houses;
 	
 	private int hotels;

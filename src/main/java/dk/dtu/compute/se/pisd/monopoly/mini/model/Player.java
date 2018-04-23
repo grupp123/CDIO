@@ -38,12 +38,23 @@ public class Player extends Subject {
 	
 	private boolean inPrison = false;
 	
+	private int prisonTime = 0;
+	
 	private boolean broke = false;
 	
 	private Set<Property> ownedProperties = new HashSet<Property>();
 	
 	private List<Card> ownedCards = new ArrayList<Card>();
 
+	
+	public void addPrisonTime() {
+		prisonTime++;
+	}
+	
+	public int getPrisonTime() {
+		return this.prisonTime;
+	}
+	
 	/**
 	 * Returns the name of the player.
 	 * 
@@ -169,6 +180,7 @@ public class Player extends Subject {
 	 */
 	public void addOwnedProperty(Property property) {
 		ownedProperties.add(property);
+		property.setOwner(this);
 		notifyChange();
 	}
 	
@@ -180,6 +192,7 @@ public class Player extends Subject {
 	 */
 	public boolean removeOwnedProperty(Property property) {
 		boolean result = ownedProperties.remove(property);
+		property.setOwner(null);
 		notifyChange();
 		return result;
 	}
@@ -267,6 +280,8 @@ public class Player extends Subject {
 	public void setInPrison(boolean inPrison) {
 		boolean oldInPrison = this.inPrison;
 		this.inPrison = inPrison;
+		//Reset prisonTime when inPrison is set to false;
+		if (!inPrison) prisonTime = 0;
 		if (oldInPrison != inPrison) {
 			notifyChange();
 		}
@@ -275,6 +290,8 @@ public class Player extends Subject {
 	public int getId() {
 		return id;
 	}
+	
+
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -296,6 +313,7 @@ public class Player extends Subject {
 		for(Property property : ownedProperties)
 		{
 			totalAmount += property.getCost();
+			
 			if (property instanceof RealEstate) {
 				RealEstate estate = (RealEstate) property;
 				totalAmount += estate.getHouses()*estate.getHousePrice();

@@ -74,6 +74,10 @@ public class GameController {
 	
 	private DAOcar car = new DAOcar(c);
 	
+	private static int CurrentMaxGameID;
+	
+	private static int CurrentMaxPlayerID;
+	
 	
 
 	/**
@@ -96,10 +100,12 @@ public class GameController {
 	 */
 	public void createPlayers() throws SQLException {
 		
-		int CurrentMaxGameID = dg.getMaxGameID();
-		int CurrentMaxPlayerID = jj.getMaxPlayerID();
+//		CurrentMaxGameID = dg.getMaxGameID();
+//		CurrentMaxPlayerID = jj.getMaxPlayerID();
+		CurrentMaxGameID = 0;
+		CurrentMaxPlayerID = 0;
 		
-		System.out.println("ses " + CurrentMaxGameID);
+		//System.out.println("ses " + CurrentMaxGameID);
 		
 		String gameName = gui.getUserString("Hvad vil du kalde dit spil?");
 		dg.createGame(gameName);

@@ -34,12 +34,12 @@ public class DAOgame implements DAOInterfaceGame {
 		@Override
 	public int getMaxGameID() {
 			ResultSet max;
-			int i = 0;
+			int i = 100;
 		try {
 			String q = "select max(gameID) from game;";
 			max = c.doQuery(q);
-			i = max.getInt("max(gameID)");
-			System.out.println(i);
+			i = max.getInt("max(gameID)");	
+			
 		}
 		catch(Exception ex) {
 			ex.getMessage();

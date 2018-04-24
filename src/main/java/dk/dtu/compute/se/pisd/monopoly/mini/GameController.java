@@ -18,9 +18,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.OutOfJail;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeException;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 import dtu.database.Connector;
-import dtu.database.DAOcar;
-import dtu.database.DAOgame;
-import dtu.database.DAOplayer;
+import dtu.database.GameDAO;
 import gui_main.GUI;
 //dhdsk
 
@@ -68,11 +66,7 @@ public class GameController {
 	
 	private Connector c = new Connector();
 	
-	private DAOgame dg = new DAOgame(c);
-	
-	private DAOplayer jj = new DAOplayer(c);
-	
-	private DAOcar car = new DAOcar(c);
+	private GameDAO dao = new GameDAO(c);
 	
 	private static int CurrentMaxGameID;
 	
@@ -108,8 +102,7 @@ public class GameController {
 		//System.out.println("ses " + CurrentMaxGameID);
 		
 		String gameName = gui.getUserString("Hvad vil du kalde dit spil?");
-		dg.createGame(gameName);
-		CurrentMaxGameID++;
+		game.setGameName(gameName);		
 		
 		
 		int numberofplayers ;
@@ -124,8 +117,7 @@ public class GameController {
         
 		for (int i = 0; i < numberofplayers; i++) {
 			String name = gui.getUserString("Indtast navn: ");
-			jj.createPlayer(CurrentMaxGameID,name);
-			
+						
 			if (name.equals("")) 
 				name = "Spiller "+(i+1);
 			else if (names.contains(name)) 
@@ -134,7 +126,7 @@ public class GameController {
 			
 			String pickedColor = gui.getUserSelection("Vælg din bils farve", colorString.toArray(new String[0]));
 			CurrentMaxPlayerID++;
-			car.createCar(CurrentMaxPlayerID, pickedColor);
+			
 
             int colorIndex = colorString.indexOf(pickedColor);
             Color color = colorList.get(colorIndex);
@@ -150,10 +142,16 @@ public class GameController {
 			players[i].setName(names.get(i)); 
 			players[i].setCurrentPosition(game.getSpaces().get(0));
 			players[i].setColor(chosenColors.get(i));
+			players[i].setId(i);
+			players[i].setId(i);
 			game.addPlayer(players[i]);
 		}
 
 		view.playerUpdate();
+		dao.create(game);
+		String p = "GameID er: " + game.getGameID();
+		gui.getUserString(p);
+
 
 	}
 	

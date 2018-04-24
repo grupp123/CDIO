@@ -42,6 +42,25 @@ public class Connector {
 		Statement stmt = connection.createStatement();
 		stmt.executeUpdate(query);
 	}
+	
+	public void runProcedure(String functionName, Object... args)throws SQLException{
+		Statement stmt = connection.createStatement();
+		String query = String.format("call %s", functionName);
+		query += "(";
+		
+		for (Object o : args) {
+			if(o.getClass() == String.class) 
+				query += "'";
+			query += o.toString();
+			
+			if(o.getClass() == String.class) 
+				query += "'";
+			query += ",";
+		}
+		query = query.substring(0, query.length()-1);
+		query += ");";
+		stmt.executeUpdate(query);
+	}
 }
 
 

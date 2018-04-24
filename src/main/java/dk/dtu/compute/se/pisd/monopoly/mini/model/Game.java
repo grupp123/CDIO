@@ -23,7 +23,8 @@ public class Game extends Subject {
 	
 	private List<Player> players = new ArrayList<Player>();
 	
-	
+	private int gameID;
+
 	private Player current;
 	
 	public final int MAX_HOUSES = 40;
@@ -34,7 +35,13 @@ public class Game extends Subject {
 	
 	private int hotels;
 	
-	
+	public int getGameID() {
+		return gameID;
+	}
+
+	public void setGameID(int gameID) {
+		this.gameID = gameID;
+	}
 
 	public int getHotels() {
 		return hotels;

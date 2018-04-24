@@ -31,10 +31,10 @@ public class Connector {
 		return connection;
 	}
 
-	public ResultSet doQuery(String query) throws SQLException{
+	public void doQuery(String query) throws SQLException{
 		Statement stmt = connection.createStatement();
 		ResultSet res = stmt.executeQuery(query);
-		return res;
+		
 	}
 
 	public void doUpdate(String query) throws SQLException{

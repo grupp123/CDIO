@@ -1,6 +1,7 @@
 package dk.dtu.compute.se.pisd.monopoly.mini;
 
 import java.awt.Color;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -504,8 +505,9 @@ public class MiniMonopoly {
 	 * cards, creates players, and then starts the game.
 	 * 
 	 * @param args not used
+	 * @throws SQLException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SQLException {
 		Game game = createGame();
 		game.shuffleCardDeck();
 		

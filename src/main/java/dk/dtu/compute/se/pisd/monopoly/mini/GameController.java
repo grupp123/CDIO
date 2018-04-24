@@ -1,6 +1,7 @@
 package dk.dtu.compute.se.pisd.monopoly.mini;
 
 import java.awt.Color;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -16,6 +17,8 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.OutOfJail;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeException;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
+import dtu.database.Connector;
+import dtu.database.DAOgame;
 import gui_main.GUI;
 //dhdsk
 
@@ -60,6 +63,10 @@ public class GameController {
 	private View view;
 
 	private boolean disposed = false;
+	
+	private Connector c = new Connector();
+	
+	private DAOgame dg = new DAOgame(c);
 
 	/**
 	 * Constructor for a controller of a game.
@@ -77,8 +84,13 @@ public class GameController {
 	 * the participating players. Right now, the creation of players
 	 * is hard-coded. But this should be done by interacting with 
 	 * the user.
+	 * @throws SQLException 
 	 */
-	public void createPlayers() {
+	public void createPlayers() throws SQLException {
+		
+		String gameName = gui.getUserString("Hvad vil du kalde dit spil?");
+		dg.createGame(gameName);
+		
 		
 		int numberofplayers ;
 		String valg = gui.getUserSelection("Vælg antal spillere", "2","3","4","5","6");

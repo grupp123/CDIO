@@ -139,7 +139,7 @@ public class MiniMonopoly {
 		game.addSpace(r);
 		
 		Utility u = new Utility();
-		u.setName("Coca-Cola");
+		u.setName("Tuborg");
 		u.setCost(3000);
 		game.addSpace(u);
 		
@@ -260,7 +260,7 @@ public class MiniMonopoly {
 		game.addSpace(r);
 		
 		u = new Utility();
-		u.setName("Faxe Bryggeri");
+		u.setName("Carlsberg");
 		u.setCost(3000);
 		game.addSpace(u);
 		

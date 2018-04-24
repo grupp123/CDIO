@@ -232,12 +232,15 @@ public class View implements Observer {
 				gui_brewery.setTitle(utility.getName());
 				gui_brewery.setSubText("" + utility.getCost() + "");
 				gui_brewery.setDescription("Prisen er : " + utility.getCost() + " \n\r Lejen er : " + utility.getRent());
+				gui_brewery.setBackGroundColor(Color.BLACK);
+				gui_brewery.setForeGroundColor(Color.WHITE);
 				guiFields[i] = gui_brewery;						
 			} else if (space instanceof Shipping) {
 				Shipping shipping = (Shipping) space;
 				GUI_Shipping gui_shipping = new GUI_Shipping();
 				gui_shipping.setTitle("" + shipping.getCost() + "");
 				gui_shipping.setSubText(shipping.getName());
+				gui_shipping.setBackGroundColor(Color.white);
 				gui_shipping.setDescription("Pris: " + shipping.getCost() + "\n\r leje: " + shipping.getRent());
 				guiFields[i] = gui_shipping;
 			} else if (space instanceof IncomeTax){
@@ -257,10 +260,13 @@ public class View implements Observer {
 			} else {
 				if(space.getIndex() == 10 || space.getIndex() == 30) {
 					GUI_Jail gui_jail = new GUI_Jail();
+					gui_jail.setSubText(space.getName());
 					guiFields[i] = gui_jail;
 
 				} else if (space.getIndex() == 20) {
 					GUI_Refuge gui_refuge = new GUI_Refuge();
+					gui_refuge.setBackGroundColor(Color.WHITE);
+					gui_refuge.setSubText("");
 					guiFields[i] = gui_refuge;
 
 				} else {

@@ -18,7 +18,9 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.OutOfJail;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeException;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 import dtu.database.Connector;
+import dtu.database.DAOcar;
 import dtu.database.DAOgame;
+import dtu.database.DAOplayer;
 import gui_main.GUI;
 //dhdsk
 
@@ -67,6 +69,13 @@ public class GameController {
 	private Connector c = new Connector();
 	
 	private DAOgame dg = new DAOgame(c);
+	
+	private DAOplayer jj = new DAOplayer(c);
+	
+	private DAOcar car = new DAOcar(c);
+	
+	int gameID = 0;
+	int playerID = 0;
 
 	/**
 	 * Constructor for a controller of a game.
@@ -90,6 +99,7 @@ public class GameController {
 		
 		String gameName = gui.getUserString("Hvad vil du kalde dit spil?");
 		dg.createGame(gameName);
+		gameID++;
 		
 		
 		int numberofplayers ;
@@ -104,6 +114,7 @@ public class GameController {
         
 		for (int i = 0; i < numberofplayers; i++) {
 			String name = gui.getUserString("Indtast navn: ");
+			jj.createPlayer(gameID,name);
 			
 			if (name.equals("")) 
 				name = "Spiller "+(i+1);
@@ -112,6 +123,8 @@ public class GameController {
 			names.add(name);
 			
 			String pickedColor = gui.getUserSelection("Vælg din bils farve", colorString.toArray(new String[0]));
+			playerID++;
+			car.createCar(playerID, pickedColor);
 
             int colorIndex = colorString.indexOf(pickedColor);
             Color color = colorList.get(colorIndex);

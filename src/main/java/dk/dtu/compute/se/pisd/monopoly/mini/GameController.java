@@ -74,8 +74,7 @@ public class GameController {
 	
 	private DAOcar car = new DAOcar(c);
 	
-	int gameID = 0;
-	int playerID = 0;
+	
 
 	/**
 	 * Constructor for a controller of a game.
@@ -97,9 +96,14 @@ public class GameController {
 	 */
 	public void createPlayers() throws SQLException {
 		
+		int CurrentMaxGameID = dg.getMaxGameID();
+		int CurrentMaxPlayerID = jj.getMaxPlayerID();
+		
+		System.out.println("ses " + CurrentMaxGameID);
+		
 		String gameName = gui.getUserString("Hvad vil du kalde dit spil?");
 		dg.createGame(gameName);
-		gameID++;
+		CurrentMaxGameID++;
 		
 		
 		int numberofplayers ;
@@ -114,7 +118,7 @@ public class GameController {
         
 		for (int i = 0; i < numberofplayers; i++) {
 			String name = gui.getUserString("Indtast navn: ");
-			jj.createPlayer(gameID,name);
+			jj.createPlayer(CurrentMaxGameID,name);
 			
 			if (name.equals("")) 
 				name = "Spiller "+(i+1);
@@ -123,8 +127,8 @@ public class GameController {
 			names.add(name);
 			
 			String pickedColor = gui.getUserSelection("Vælg din bils farve", colorString.toArray(new String[0]));
-			playerID++;
-			car.createCar(playerID, pickedColor);
+			CurrentMaxPlayerID++;
+			car.createCar(CurrentMaxPlayerID, pickedColor);
 
             int colorIndex = colorString.indexOf(pickedColor);
             Color color = colorList.get(colorIndex);

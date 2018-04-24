@@ -1,5 +1,7 @@
 package dtu.database;
 
+import java.sql.ResultSet;
+
 public class DAOplayer implements DAOInterfacePlayer {
 	
 private Connector c = new Connector();
@@ -19,6 +21,21 @@ private Connector c = new Connector();
 		ex.getStackTrace();
 	}
 		
+	}
+
+	@Override
+	public int getMaxPlayerID() {
+		ResultSet max; 
+		int i = 11;
+		try {
+			String q = "select max(playerID) from player;";
+			max = c.doQuery(q);
+			i = max.getInt(1);
+		}
+		catch(Exception ex) {
+			ex.getMessage();
+		}
+		return i;
 	}
 
 	

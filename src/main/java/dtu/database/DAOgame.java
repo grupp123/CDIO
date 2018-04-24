@@ -1,6 +1,6 @@
 package dtu.database;
 
-import java.time.Instant;
+import java.sql.ResultSet;
 
 public class DAOgame implements DAOInterfaceGame {
 	
@@ -29,15 +29,25 @@ public class DAOgame implements DAOInterfaceGame {
 		{
 			ex.printStackTrace();
 		}
+	}
 		
+		@Override
+	public int getMaxGameID() {
+			ResultSet max;
+			int i = 0;
+		try {
+			String q = "select max(gameID) from game;";
+			max = c.doQuery(q);
+			i = max.getInt("max(gameID)");
+			System.out.println(i);
+		}
+		catch(Exception ex) {
+			ex.getMessage();
+		}
+		return i;
 		
 	}
-	public static void getGameID() {
-		gameID++;
-	}
-	public int getID() {
-		return gameID;
-	}
+	
 	}
 	
 

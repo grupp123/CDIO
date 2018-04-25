@@ -1,0 +1,93 @@
+create database MatadorDemo;
+use MatadorDemo;
+CREATE TABLE game(
+gameID int(3) NOT NULL UNIQUE auto_increment,
+gameName varchar(30) default ' ',
+gameStatus ENUM('active','passive') default 'active',
+PRIMARY KEY(gameID));
+
+CREATE TABLE player(
+playerID int(3) NOT NULL UNIQUE auto_increment,
+gameID int(3) NOT NULL,
+playerName varchar(10) NOT NULL,
+hasLost ENUM('lost','notlost') default 'notlost',
+position int(2) default 1 check(position between 1 and 40),
+balance int(7) NOT NULL default 30000,
+inJail ENUM('yes','no') default 'no',
+jailCard int(1) default 0,
+PRIMARY KEY(playerID),
+FOREIGN KEY(gameID) REFERENCES game(gameID));
+
+CREATE TABLE car(
+carColor ENUM('blå','grøn','rød','gul','sort','hvid','pink'),
+playerID int(3) not null,
+PRIMARY KEY(carColor),
+FOREIGN KEY (playerID) references player(playerID));
+
+CREATE TABLE ownedSpaces(
+spaceNumber int(2) check(spaceNumber between 1 and 40),
+playerID int(3) NOT NULL,
+housesOnSpace int(2) default 0 check(housesOnSpace between 0 and 5),
+Mortagaged ENUM('yes','no') default 'no',
+PRIMARY KEY(spaceNumber),
+FOREIGN KEY(playerID) REFERENCES player(playerID));
+
+drop view if exists game_info;
+create view game_info as
+select player.gameID as 'gameID', count(player.playerID) as 'number of players',
+game.gameName as 'GameName'
+from player natural join game
+group by gameID;
+
+delimiter //
+create procedure create_game
+(in gameName_input varchar(30))
+begin 
+insert into game(gameName)
+values (gameName_input);
+end; //
+delimiter ;
+
+delimiter //
+create procedure create_player
+(in game_id_input int(3),
+in player_name_input varchar(30))
+begin 
+insert into player(gameID,playerName)
+values (game_id_input, player_name_input);
+end; //
+delimiter ;
+
+delimiter //
+create procedure create_car
+(in player_id_input int(3),
+in car_color_input ENUM('blå','grøn','rød','gul','sort','hvid','pink'))
+begin 
+insert into car(playerID,carColor)
+values (player_id_input, car_color_input);
+end; //
+delimiter ;
+
+delimiter ;
+create procedure max_id_game
+as begin
+select max(gameID)
+from game
+end
+delimiter ;
+
+delimiter ;
+create procedure max_id_player
+as begin
+select max(playerID)
+from player
+end
+delimiter ;
+
+select max(playerID)
+from player;
+select * from game;
+select * from player;
+select * from car;
+
+select max(gameID) from game;

@@ -1,4 +1,4 @@
-package dtu.cdio;
+package dtu.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,7 +10,7 @@ import java.sql.Statement;
 public class Connector {
 	private final String HOST     = "Localhost";
 	private final int    PORT     = 3306;
-	private final String DATABASE = "university";
+	private final String DATABASE = "MatadorDemo";
 	private final String USERNAME = "root"; 
 	private final String PASSWORD = "";
 	private Connection connection;
@@ -35,10 +35,30 @@ public class Connector {
 		Statement stmt = connection.createStatement();
 		ResultSet res = stmt.executeQuery(query);
 		return res;
+		
 	}
 
 	public void doUpdate(String query) throws SQLException{
 		Statement stmt = connection.createStatement();
+		stmt.executeUpdate(query);
+	}
+	
+	public void runProcedure(String functionName, Object... args)throws SQLException{
+		Statement stmt = connection.createStatement();
+		String query = String.format("call %s", functionName);
+		query += "(";
+		
+		for (Object o : args) {
+			if(o.getClass() == String.class) 
+				query += "'";
+			query += o.toString();
+			
+			if(o.getClass() == String.class) 
+				query += "'";
+			query += ",";
+		}
+		query = query.substring(0, query.length()-1);
+		query += ");";
 		stmt.executeUpdate(query);
 	}
 }

@@ -1,15 +1,16 @@
 package dk.dtu.compute.se.pisd.monopoly.mini;
 
 import java.awt.Color;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Card;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Chance;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.IncomeTax;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.StateTax;
-import dk.dtu.compute.se.pisd.monopoly.mini.model.IncomeTax;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardLegat;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardMove;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardMoveBack;
@@ -21,13 +22,11 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardReceiveMoneyFromBank
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardRecieveMoneyFromPlayers;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.OutOfJail;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.PayTax;
-import dk.dtu.compute.se.pisd.monopoly.mini.model.differentSpaces.FreeParking;
-import dk.dtu.compute.se.pisd.monopoly.mini.model.differentSpaces.Go;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.differentSpaces.Jail;
-import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Brewery;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Shipping;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Utility;
+import dtu.database.GameDAO;
 
 /**
  * Main class for setting up and running a (Mini-)Monoploy game.
@@ -504,10 +503,12 @@ public class MiniMonopoly {
 	 * cards, creates players, and then starts the game.
 	 * 
 	 * @param args not used
+	 * @throws SQLException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SQLException {
 		Game game = createGame();
 		game.shuffleCardDeck();
+		
 		
 		GameController controller = new GameController(game);
 		

@@ -1,6 +1,7 @@
 package dk.dtu.compute.se.pisd.monopoly.mini;
 
 import java.awt.Color;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -19,6 +20,8 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.OutOfJail;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeException;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
+import dtu.database.Connector;
+import dtu.database.GameDAO;
 import gui_main.GUI;
 //opret branch
 /**
@@ -61,6 +64,16 @@ public class GameController {
 	private View view;
 
 	private boolean disposed = false;
+	
+	private Connector c = new Connector();
+	
+	private GameDAO dao = new GameDAO(c);
+	
+	private static int CurrentMaxGameID;
+	
+	private static int CurrentMaxPlayerID;
+	
+	
 
 	/**
 	 * Constructor for a controller of a game.
@@ -78,8 +91,20 @@ public class GameController {
 	 * the participating players. Right now, the creation of players
 	 * is hard-coded. But this should be done by interacting with 
 	 * the user.
+	 * @throws SQLException 
 	 */
-	public void createPlayers() {
+	public void createPlayers() throws SQLException {
+		
+//		CurrentMaxGameID = dg.getMaxGameID();
+//		CurrentMaxPlayerID = jj.getMaxPlayerID();
+		CurrentMaxGameID = 0;
+		CurrentMaxPlayerID = 0;
+		
+		//System.out.println("ses " + CurrentMaxGameID);
+		
+		String gameName = gui.getUserString("Hvad vil du kalde dit spil?");
+		game.setGameName(gameName);		
+		
 		
 		int numberofplayers ;
 		String valg = gui.getUserSelection("Vælg antal spillere", "2","3","4","5","6");
@@ -93,7 +118,7 @@ public class GameController {
         
 		for (int i = 0; i < numberofplayers; i++) {
 			String name = gui.getUserString("Indtast navn: ");
-			
+						
 			if (name.equals("")) 
 				name = "Spiller "+(i+1);
 			else if (names.contains(name)) 
@@ -101,6 +126,8 @@ public class GameController {
 			names.add(name);
 			
 			String pickedColor = gui.getUserSelection("Vælg din bils farve", colorString.toArray(new String[0]));
+			CurrentMaxPlayerID++;
+			
 
             int colorIndex = colorString.indexOf(pickedColor);
             Color color = colorList.get(colorIndex);
@@ -116,10 +143,16 @@ public class GameController {
 			players[i].setName(names.get(i)); 
 			players[i].setCurrentPosition(game.getSpaces().get(0));
 			players[i].setColor(chosenColors.get(i));
+			players[i].setId(i);
+			players[i].setId(i);
 			game.addPlayer(players[i]);
 		}
 
 		view.playerUpdate();
+		dao.create(game);
+		String p = "GameID er: " + game.getGameID();
+		gui.getUserString(p);
+
 
 	}
 	

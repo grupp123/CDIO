@@ -23,7 +23,10 @@ public class Game extends Subject {
 	
 	private List<Player> players = new ArrayList<Player>();
 	
+	private int gameID;
 	
+	private String gameName;
+
 	private Player current;
 	
 	private final int PASSEDSTARTMONEY = 4000;
@@ -41,6 +44,22 @@ public class Game extends Subject {
 	private int hotels;
 	
 	
+	
+	public int getGameID() {
+		return gameID;
+	}
+
+	public void setGameID(int gameID) {
+		this.gameID = gameID;
+	}
+	
+	public String getGameName() {
+		return gameName;
+	}
+	
+	public void setGameName(String gameName) {
+		this.gameName = gameName;
+	}
 
 	public int getHotels() {
 		return hotels;

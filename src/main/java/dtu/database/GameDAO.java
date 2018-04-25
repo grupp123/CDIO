@@ -24,10 +24,9 @@ public class GameDAO implements IGameDAO {
 			//tilbage så den kan puttes ind i game
 			con.setAutoCommit(false);
 			connector.doUpdate("insert into game(gameName) values('"+game.getGameName() +"');");
-			Statement myState = con.createStatement();
-			ResultSet myRs = myState.executeQuery("select max(gameID) from game;");
-			while(myRs.next()) {
-				i = myRs.getInt("max(gameID)");
+			ResultSet rs = connector.doQuery("select max(gameID) from game;");
+			while(rs.next()) {
+				i = rs.getInt("max(gameID)");
 				
 			}
 			game.setGameID(i);
@@ -80,9 +79,7 @@ public class GameDAO implements IGameDAO {
 		return null;
 	}
 	
-	private void createPlayers (Game game) {
-		
-	}
+	
 	
 
 }

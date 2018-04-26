@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import dk.dtu.compute.se.pisd.monopoly.mini.GameController;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.Property;
 
 public class GameDAO implements IGameDAO {
 
@@ -74,8 +75,67 @@ public class GameDAO implements IGameDAO {
 
 	@Override
 	public boolean update(Game game) {
-		// TODO Auto-generated method stub
+		java.sql.Connection con = connector.getConnection();
+		try {
+			con.setAutoCommit(false);
+			for (int j = 0; j < game.getPlayers().size(); j++) {
+				updateBalanceOfAllPlayers(game);
+				updatePositionOfAllPlayers(game);
+				updatePropertiesOfAllPlayers(game);
+			}
+
+			con.commit();
+			con.setAutoCommit(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Problem med DB");
+		}
 		return false;
+
+	}
+
+	private void updatePropertiesOfAllPlayers(Game game) throws Exception {
+		try {
+			for (int i = 0; i < game.getPlayers().size(); i++) {
+				for (Property prop : game.getPlayers().get(i).getOwnedProperties()) {
+					connector.doUpdate("UPDATE properties set ownerP = " + 
+				game.getPlayers().get(i).getId() + 
+				" WHERE gameid = " + game.getGameID() + 
+				" AND spacenumber = " + prop.getIndex());
+					}
+				game.getPlayers().get(i).getOwnedProperties().size();
+				connector.doUpdate("UPDATE player set balance = " + 
+						game.getPlayers().get(i).getBalance() + 
+						" where gameid = " + game.getGameID() + 
+						" and playerid = " + game.getPlayers().get(i).getId());
+			}
+		}
+		catch (SQLException e) {throw new Exception(e); }		
+	}
+
+	private void updatePositionOfAllPlayers(Game game) throws Exception {
+		try {
+			for (int i = 0; i < game.getPlayers().size(); i++) {
+				connector.doUpdate("UPDATE car set position = " + 
+						game.getPlayers().get(i).getCurrentPosition().getIndex() + 
+						" where gameid = " + game.getGameID() + 
+						" and playerid = " + game.getPlayers().get(i).getId());
+			}
+		}
+		catch (SQLException e) {throw new Exception(e); }
+		
+	}
+
+	private void updateBalanceOfAllPlayers(Game game) throws Exception {
+		try {
+			for (int i = 0; i < game.getPlayers().size(); i++) {
+				connector.doUpdate("UPDATE player set balance = " + 
+						game.getPlayers().get(i).getBalance() + 
+						" where gameid = " + game.getGameID() + 
+						" and playerid = " + game.getPlayers().get(i).getId());
+			}
+		}
+		catch (SQLException e) {throw new Exception(e); }
 	}
 
 	@Override
@@ -84,19 +144,19 @@ public class GameDAO implements IGameDAO {
 		java.sql.Connection con = connector.getConnection();
 		try {
 			con.setAutoCommit(false);
-			
+
 			ArrayList<String> names = new ArrayList<String>();
 			names = getNames(game.getGameID());
 			ArrayList<Integer> pos = new ArrayList<>();
 			pos = getPositionOfPlayers(game.getGameID());
 			ArrayList<Integer> balance = new ArrayList<>();
 			balance = getBalanceOfPlayers(game.getGameID());
-			
-//			ArrayList<Color> chosenColors = new ArrayList<Color>();
-//			
-//			ArrayList<Color> colorList = new ArrayList<Color>(Arrays.asList(Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW,
-//					Color.BLACK, Color.WHITE));
-//			ArrayList<String> colorString = new ArrayList<String>(Arrays.asList("Blå", "Rød", "Grøn", "Gul", "Sort", "Hvid"));
+
+			//			ArrayList<Color> chosenColors = new ArrayList<Color>();
+			//			
+			//			ArrayList<Color> colorList = new ArrayList<Color>(Arrays.asList(Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW,
+			//					Color.BLACK, Color.WHITE));
+			//			ArrayList<String> colorString = new ArrayList<String>(Arrays.asList("Blå", "Rød", "Grøn", "Gul", "Sort", "Hvid"));
 			Player[] players = new Player[names.size()];
 			for (int i = 0; i < names.size(); i++) {
 				players[i] = new Player();
@@ -393,7 +453,7 @@ public class GameDAO implements IGameDAO {
 			}
 			return l;
 		} catch (Exception e) {
-			
+
 			System.out.println("SELECT playername from player where gameid = ... virker ikke " + e);
 			return null;
 		}
@@ -410,7 +470,7 @@ public class GameDAO implements IGameDAO {
 			}
 			return l;
 		} catch (Exception e) {
-			
+
 			System.out.println("SELECT playername from player where gameid = ... virker ikke " + e);
 			return null;
 		}

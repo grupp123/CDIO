@@ -278,6 +278,8 @@ public class GameController {
 					gui.showMessage("Rangordning for mest velhavende: "+ ranking.toString());
 					selection = gui.getUserSelection("Vil du gemme spillet?", "ja", "nej");
 					if (selection.equals("ja")) {
+						//--------complete method update---------//
+						dao.update(game);
 						//TODO gem spillet
 					}
 					else {

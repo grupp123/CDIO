@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import dk.dtu.compute.se.pisd.monopoly.mini.GameController;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
 
@@ -80,13 +81,13 @@ public class GameDAO implements IGameDAO {
 			ResultSet rs = connector.doQuery("SELECT * FROM game where gameid = " + gameID);
 
 			String str = rs.getString(1);
-			
+
 			game.setGameID(gameID);
-			
-			
+
+
 
 			for (int j = 0; j<game.getPlayers().size(); j++) {
-				
+
 				Player p = game.getPlayers().get(j);
 				int id = p.getId();
 				int gid = game.getGameID();
@@ -121,10 +122,10 @@ public class GameDAO implements IGameDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
+
+
 	//-----------------private methods-----------------//
-	
+
 	private String getPlayerName(int id) throws Exception {
 		ResultSet rs = connector.doQuery("SELECT playername FROM player WHERE id = " + id);
 		try {
@@ -133,7 +134,7 @@ public class GameDAO implements IGameDAO {
 		}
 		catch (SQLException e) {throw new Exception(e); }
 	}
-	
+
 	private int getPlayerBalance(int id) throws Exception {
 		ResultSet rs = connector.doQuery("SELECT balance FROM player WHERE id = " + id);
 		try {
@@ -142,12 +143,12 @@ public class GameDAO implements IGameDAO {
 		}
 		catch (SQLException e) {throw new Exception(e); }
 	}
-	
+
 	private void deleteTable(String game) throws Exception {
 		connector.doUpdate("drop table " + game);
 	}
-	
-	
+
+
 
 	public String toString(String s) {
 		String q = "";
@@ -175,7 +176,7 @@ public class GameDAO implements IGameDAO {
 			System.out.println(e);
 			return "error";
 		}
-	
+
 	} 
 
 
@@ -198,7 +199,7 @@ public class GameDAO implements IGameDAO {
 			System.out.println(e);
 		}
 	}
-	
+
 	private void insert(Player p) throws Exception {
 		try {
 			connector.doUpdate("INSERT INTO Player(ID, name, account) "
@@ -206,21 +207,21 @@ public class GameDAO implements IGameDAO {
 		}
 		catch (SQLException e) {throw new Exception(e); }
 	}
-	
+
 	private void createPlayerTable() throws Exception {
 		try {
 			connector.doUpdate("CREATE TABLE player ( id INTEGER PRIMARY KEY, name TEXT, account int(10))");
 		}
 		catch (SQLException e) {throw new Exception(e); }
 	}
-	
+
 	private void createFieldsTable() throws Exception {
 		try {
 			connector.doUpdate("CREATE TABLE fields ( number INTEGER, title TEXT, player INTEGER, FOREIGN KEY(player) REFERENCES player (id))");
 		}
 		catch (SQLException e) {throw new Exception(e); }
 	}
-	
+
 	public String activePlayerBalanceInGame(int i) throws SQLException{
 
 		String q = "";
@@ -246,7 +247,7 @@ public class GameDAO implements IGameDAO {
 		}
 
 	}
-	
+
 	public String activePlayerposInGame(int i) throws SQLException{
 
 		String q = "";
@@ -307,11 +308,11 @@ public class GameDAO implements IGameDAO {
 			ResultSet rs = connector.doQuery("SELECT * FROM player where playerid = " + i);
 			ResultSetMetaData rsmd = rs.getMetaData();
 			int columnsNumber = rsmd.getColumnCount();
-				for (int j = 1; j <= columnsNumber; j++) {
-					q[j-1] = rs.getString(j);
-					System.out.print(columnsNumber); //Value + " " + rsmd.getColumnName(j));
-					//q += columnValue;// + " " + rsmd.getColumnName(j);
-				}
+			for (int j = 1; j <= columnsNumber; j++) {
+				q[j-1] = rs.getString(j);
+				System.out.print(columnsNumber); //Value + " " + rsmd.getColumnName(j));
+				//q += columnValue;// + " " + rsmd.getColumnName(j);
+			}
 		}catch (Exception e) {
 			System.out.println(e);
 		}
@@ -328,7 +329,7 @@ public class GameDAO implements IGameDAO {
 
 		String q = "";
 		ArrayList<String> l = new ArrayList<>();
-		
+
 		try {
 			ResultSet rs = connector.doQuery("SELECT GameName FROM game");
 			ResultSetMetaData rsmd = rs.getMetaData();
@@ -354,4 +355,46 @@ public class GameDAO implements IGameDAO {
 		}
 	}
 
+	public int getGameIdFromName(String str) throws Exception {
+
+		ResultSet rs = connector.doQuery("SELECT gameid FROM game WHERE gamename = '" + str + "';");
+		try {
+			if (!rs.first()) throw new Exception("id " + str + " findes ikke");
+			return (rs.getInt(1));
+		}
+		catch (SQLException e) {throw new Exception(e); }
+	}
+
+	public ArrayList<String> getNames(int gameid) {
+		ArrayList<String> l = new ArrayList<>();
+		try {
+			ResultSet rs = connector.doQuery("SELECT playername from player where gameid = " + gameid);
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int columnsNumber = rsmd.getColumnCount();
+			while (rs.next()) {
+				l.add(rs.getString(1));
+			}
+			return l;
+		}catch (Exception e) {
+			System.out.println(e);
+			return null;
+		}
+	}
+
+	public ArrayList<Integer> getPositionOfPlayers(int gameID) {
+		ArrayList<Integer> l = new ArrayList<>();
+		try {
+			ResultSet rs = connector.doQuery("SELECT position from player where gameid = " + gameID + ";");
+			while (rs.next()) {
+				int i = rs.getInt(1);
+				Integer o = (i);
+				l.add(o);
+			}
+			return l;
+		} catch (Exception e) {
+			
+			System.out.println("SELECT playername from player where gameid = ... virker ikke " + e);
+			return null;
+		}
+	}
 }

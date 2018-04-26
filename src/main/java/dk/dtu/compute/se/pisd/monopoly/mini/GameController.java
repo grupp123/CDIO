@@ -112,7 +112,7 @@ public class GameController {
 		}
 	}
 
-	private void loadGame() throws SQLException {
+	private void loadGame() throws Exception {
 		GameDAO dao = new GameDAO(c);
 		ArrayList<String> spil = dao.activeGames();
 		String[] spilstr = new String[spil.size()];
@@ -120,9 +120,43 @@ public class GameController {
 		for (int i = 0; i < spil.size(); i++) {
 			spilstr[i] = spil.get(i);
 		}
+		String str = gui.getUserSelection("vælg spil", spilstr);
+		int gameid = dao.getGameIdFromName(str);
+		game.setGameID(gameid);
 		
-		gui.getUserSelection("vælg spil", spilstr);
 		
+		
+		ArrayList<String> names = new ArrayList<String>();
+		names = dao.getNames(game.getGameID());
+		ArrayList<Integer> pos = new ArrayList<>();
+		pos = dao.getPositionOfPlayers(game.getGameID());
+		
+		
+//		ArrayList<Color> chosenColors = new ArrayList<Color>();
+//		
+//		ArrayList<Color> colorList = new ArrayList<Color>(Arrays.asList(Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW,
+//				Color.BLACK, Color.WHITE));
+//		ArrayList<String> colorString = new ArrayList<String>(Arrays.asList("Blå", "Rød", "Grøn", "Gul", "Sort", "Hvid"));
+		gui.getUserButtonPressed("", "loaded");
+		Player[] players = new Player[names.size()];
+		for (int i = 0; i < names.size(); i++) {
+			players[i] = new Player();
+			players[i].setName(names.get(i)); 
+			players[i].setCurrentPosition(game.getSpaces().get(pos.get(i)));
+			players[i].setColor(Color.red); //all red for now, but it will change later when db has been fixed
+			players[i].setId(i);
+			players[i].setId(i);
+			game.addPlayer(players[i]);
+		}
+
+		view.playerUpdate();
+		String p = "GameID er: " + game.getGameID();
+		gui.getUserString(p);
+		
+		
+		gui.getUserButtonPressed("", "game succesfully loaded");
+
+
 		
 	}
 

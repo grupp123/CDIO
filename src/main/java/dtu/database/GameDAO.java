@@ -219,6 +219,138 @@ public class GameDAO implements IGameDAO {
 		}
 		catch (SQLException e) {throw new Exception(e); }
 	}
+	
+	public String activePlayerBalanceInGame(int i) throws SQLException{
+
+		String q = "";
+		try {
+			ResultSet rs = connector.doQuery("SELECT balance FROM player where gameid = " + i);
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int columnsNumber = rsmd.getColumnCount();
+			while (rs.next()) {
+				for (int j = 1; j <= columnsNumber; j++) {
+					if (j > 1) {
+						q += ", ";
+					}
+					String columnValue = rs.getString(j);
+					//System.out.print(columnValue + " " + rsmd.getColumnName(j));
+					q += columnValue;// + " " + rsmd.getColumnName(j);
+				}
+				q += ", ";
+			}
+			return q;
+		}catch (Exception e) {
+			System.out.println(e);
+			return "error";
+		}
+
+	}
+	
+	public String activePlayerposInGame(int i) throws SQLException{
+
+		String q = "";
+		try {
+			ResultSet rs = connector.doQuery("SELECT position FROM player where gameid = " + i);
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int columnsNumber = rsmd.getColumnCount();
+			while (rs.next()) {
+				for (int j = 1; j <= columnsNumber; j++) {
+					if (j > 1) {
+						q += ", ";
+					}
+					String columnValue = rs.getString(j);
+					//System.out.print(columnValue + " " + rsmd.getColumnName(j));
+					q += columnValue;// + " " + rsmd.getColumnName(j);
+				}
+				q += ", ";
+			}
+			return q;
+		}catch (Exception e) {
+			System.out.println(e);
+			return "error";
+		}
+
+	}
+
+	public String allInfoActivePlayersInGame(int i) throws SQLException{
+
+		String q = "";
+		try {
+			ResultSet rs = connector.doQuery("SELECT * FROM player where gameid = " + i);
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int columnsNumber = rsmd.getColumnCount();
+			while (rs.next()) {
+				for (int j = 1; j <= columnsNumber; j++) {
+					if (j > 1) {
+						q += " - ";
+					}
+					String columnValue = rs.getString(j);
+					//System.out.print(columnValue + " " + rsmd.getColumnName(j));
+					q += columnValue;// + " " + rsmd.getColumnName(j);
+				}
+				q += "\n";
+			}
+			q += "\n";
+			return q;
+		}catch (Exception e) {
+			System.out.println(e);
+			return "error";
+		}
+
+	}
+
+	public String[] getInfoArrayPlayer(int i) throws SQLException{
+
+		String[] q = new String[8];
+		try {
+			ResultSet rs = connector.doQuery("SELECT * FROM player where playerid = " + i);
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int columnsNumber = rsmd.getColumnCount();
+				for (int j = 1; j <= columnsNumber; j++) {
+					q[j-1] = rs.getString(j);
+					System.out.print(columnsNumber); //Value + " " + rsmd.getColumnName(j));
+					//q += columnValue;// + " " + rsmd.getColumnName(j);
+				}
+		}catch (Exception e) {
+			System.out.println(e);
+		}
+		return q;
+
+	}
+
+
+
+
+
+
+	public String activeGames() throws SQLException {
+
+		String q = "";
+		try {
+			ResultSet rs = connector.doQuery("SELECT GameID FROM game");
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int columnsNumber = rsmd.getColumnCount();
+			while (rs.next()) {
+				for (int j = 1; j <= columnsNumber; j++) {
+					if (j > 1) {
+
+						q += " - ";
+					}
+					String columnValue = rs.getString(j);
+					//System.out.print(columnValue + " " + rsmd.getColumnName(j));
+					q += columnValue;// + " " + rsmd.getColumnName(j);
+				}
+
+				q += ", ";
+			}
+			//q += "\n";
+			return q;
+		}catch (Exception e) {
+			System.out.println(e);
+			return "error";
+		}
+
+	}
 
 
 }

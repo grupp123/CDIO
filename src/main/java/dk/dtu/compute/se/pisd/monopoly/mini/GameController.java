@@ -108,14 +108,14 @@ public class GameController {
 	}
 
 	private void loadGame() {
-		
+				
 		String[] i = {"1", "2", "3"};
 		gui.getUserSelection("vælg spil", i);
 		
 		
 	}
 
-	public void createPlayers() throws SQLException {
+	private void createPlayers() throws SQLException {
 
 		//		CurrentMaxGameID = dg.getMaxGameID();
 		//		CurrentMaxPlayerID = jj.getMaxPlayerID();

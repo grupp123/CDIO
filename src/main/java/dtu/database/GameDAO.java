@@ -1,6 +1,8 @@
 package dtu.database;
 
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
@@ -79,8 +81,11 @@ public class GameDAO implements IGameDAO {
 			String str = rs.getString(1);
 			
 			game.setGameID(gameID);
+			
+			
 
 			for (int j = 0; j<game.getPlayers().size(); j++) {
+				
 				Player p = game.getPlayers().get(j);
 				int id = p.getId();
 				int gid = game.getGameID();
@@ -115,8 +120,105 @@ public class GameDAO implements IGameDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	
+	//-----------------private methods-----------------//
+	
+	private String getPlayerName(int id) throws Exception {
+		ResultSet rs = connector.doQuery("SELECT playername FROM player WHERE id = " + id);
+		try {
+			if (!rs.first()) throw new Exception("id " + id + " findes ikke");
+			return (rs.getString("name"));
+		}
+		catch (SQLException e) {throw new Exception(e); }
+	}
+	
+	private int getPlayerBalance(int id) throws Exception {
+		ResultSet rs = connector.doQuery("SELECT balance FROM player WHERE id = " + id);
+		try {
+			if (!rs.first()) throw new Exception("id " + id + " findes ikke");
+			return (rs.getInt("account"));
+		}
+		catch (SQLException e) {throw new Exception(e); }
+	}
+	
+	private void deleteTable(String game) throws Exception {
+		connector.doUpdate("drop table " + game);
+	}
+	
+	
+
+	public String toString(String s) {
+		String q = "";
+		try {
+			ResultSet rs = connector.doQuery(s);			
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int columnsNumber = rsmd.getColumnCount();
+			while (rs.next()) {
+				for (int j = 1; j <= columnsNumber; j++) {
+					if (j > 1) {
+						System.out.print(" - ");
+						q += " - ";
+					}
+					String columnValue = rs.getString(j);
+					System.out.print(columnValue + " " + rsmd.getColumnName(j));
+					q += columnValue + " " + rsmd.getColumnName(j);
+				}
+				System.out.println("");
+				q += "\n";
+			}
+			System.out.println("");
+			q += "\n";
+			return q;
+		}catch (Exception e) {
+			System.out.println(e);
+			return "error";
+		}
+	
+	} 
 
 
+	private void print(String query) {
+		try {
+			ResultSet rs = connector.doQuery(query);			
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int columnsNumber = rsmd.getColumnCount();
+			System.out.println(query);
+			while (rs.next()) {
+				for (int j = 1; j <= columnsNumber; j++) {
+					if (j > 1) System.out.print(" - ");
+					String columnValue = rs.getString(j);
+					System.out.print(columnValue + " " + rsmd.getColumnName(j));
+				}
+				System.out.println("");
+			}
+			System.out.println("");
+		}catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+	
+	private void insert(Player p) throws Exception {
+		try {
+			connector.doUpdate("INSERT INTO Player(ID, name, account) "
+					+ "VALUES(" +p.getId()+ ", '" + p.getName() + "', " + p.getBalance() + ")" );
+		}
+		catch (SQLException e) {throw new Exception(e); }
+	}
+	
+	private void createPlayerTable() throws Exception {
+		try {
+			connector.doUpdate("CREATE TABLE player ( id INTEGER PRIMARY KEY, name TEXT, account int(10))");
+		}
+		catch (SQLException e) {throw new Exception(e); }
+	}
+	
+	private void createFieldsTable() throws Exception {
+		try {
+			connector.doUpdate("CREATE TABLE fields ( number INTEGER, title TEXT, player INTEGER, FOREIGN KEY(player) REFERENCES player (id))");
+		}
+		catch (SQLException e) {throw new Exception(e); }
+	}
 
 
 }

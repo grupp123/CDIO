@@ -1,5 +1,6 @@
 package dtu.database;
 
+import java.awt.Color;
 import java.awt.List;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -75,37 +76,31 @@ public class GameDAO implements IGameDAO {
 	public boolean load(Game game, int gameID) {
 
 		java.sql.Connection con = connector.getConnection();
-		int i = 0;
 		try {
 			con.setAutoCommit(false);
-			ResultSet rs = connector.doQuery("SELECT * FROM game where gameid = " + gameID);
-
-			String str = rs.getString(1);
-
-			game.setGameID(gameID);
-
-
-
-			for (int j = 0; j<game.getPlayers().size(); j++) {
-
-				Player p = game.getPlayers().get(j);
-				int id = p.getId();
-				int gid = game.getGameID();
-				String name = p.getName();
-				connector.doUpdate("insert into player(playerID, gameID, playerName) values("+ id +", " + gid + ", '" + name + "');");
+			
+			ArrayList<String> names = new ArrayList<String>();
+			names = getNames(game.getGameID());
+			ArrayList<Integer> pos = new ArrayList<>();
+			pos = getPositionOfPlayers(game.getGameID());
+			ArrayList<Integer> balance = new ArrayList<>();
+			balance = getBalanceOfPlayers(game.getGameID());
+			
+//			ArrayList<Color> chosenColors = new ArrayList<Color>();
+//			
+//			ArrayList<Color> colorList = new ArrayList<Color>(Arrays.asList(Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW,
+//					Color.BLACK, Color.WHITE));
+//			ArrayList<String> colorString = new ArrayList<String>(Arrays.asList("Blå", "Rød", "Grøn", "Gul", "Sort", "Hvid"));
+			Player[] players = new Player[names.size()];
+			for (int i = 0; i < names.size(); i++) {
+				players[i] = new Player();
+				players[i].setName(names.get(i)); 
+				players[i].setCurrentPosition(game.getSpaces().get(pos.get(i)));
+				players[i].setColor(Color.red); //all red for now, but it will change later when db has been fixed
+				players[i].setId(i);
+				players[i].setBalance(balance.get(i));
+				game.addPlayer(players[i]);
 			}
-
-			//nu oprettes de tilhørende biler til hver spiller
-			for (int j = 0; j<game.getPlayers().size(); j++) {
-				Player p = game.getPlayers().get(j);
-				int playerid = p.getId();
-				int color = p.getColor().getRGB();
-				int gid = game.getGameID();
-				String name = p.getName();
-				connector.doUpdate("insert into car(carColor, playerID, gameID) values("+ color +", " + playerid + ", " + gid + ");");
-			}
-			//nu oprettes alle de ejelige felter 
-
 
 			con.commit();
 			con.setAutoCommit(true);

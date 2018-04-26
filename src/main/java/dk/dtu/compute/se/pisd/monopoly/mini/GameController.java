@@ -124,40 +124,10 @@ public class GameController {
 		int gameid = dao.getGameIdFromName(str);
 		game.setGameID(gameid);
 		
+		dao.load(game, game.getGameID());
 		
-		
-		ArrayList<String> names = new ArrayList<String>();
-		names = dao.getNames(game.getGameID());
-		ArrayList<Integer> pos = new ArrayList<>();
-		pos = dao.getPositionOfPlayers(game.getGameID());
-		ArrayList<Integer> balance = new ArrayList<>();
-		balance = dao.getBalanceOfPlayers(game.getGameID());
-		
-//		ArrayList<Color> chosenColors = new ArrayList<Color>();
-//		
-//		ArrayList<Color> colorList = new ArrayList<Color>(Arrays.asList(Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW,
-//				Color.BLACK, Color.WHITE));
-//		ArrayList<String> colorString = new ArrayList<String>(Arrays.asList("Blå", "Rød", "Grøn", "Gul", "Sort", "Hvid"));
-		gui.getUserButtonPressed("", "loading");
-		Player[] players = new Player[names.size()];
-		for (int i = 0; i < names.size(); i++) {
-			players[i] = new Player();
-			players[i].setName(names.get(i)); 
-			players[i].setCurrentPosition(game.getSpaces().get(pos.get(i)));
-			players[i].setColor(Color.red); //all red for now, but it will change later when db has been fixed
-			players[i].setId(i);
-			players[i].setBalance(balance.get(i));
-			game.addPlayer(players[i]);
-		}
-
 		view.playerUpdate();
-		String p = "GameID er: " + game.getGameID();
-		gui.getUserString(p);
-		
-		
-		gui.getUserButtonPressed("", "game succesfully loaded");
-
-
+		gui.getUserButtonPressed("GameID er: " + game.getGameID(), "game succesfully loaded");
 		
 	}
 

@@ -103,14 +103,25 @@ public class GameController {
 				e.printStackTrace();
 			}
 		} else {
-			loadGame();
+			try {
+				loadGame();
+			} catch (Exception e) {
+				System.err.println(e);
+				
+			}
 		}
 	}
 
-	private void loadGame() {
-				
-		String[] i = {"1", "2", "3"};
-		gui.getUserSelection("vælg spil", i);
+	private void loadGame() throws SQLException {
+		GameDAO dao = new GameDAO(c);
+		ArrayList<String> spil = dao.activeGames();
+		String[] spilstr = new String[spil.size()];
+		
+		for (int i = 0; i < spil.size(); i++) {
+			spilstr[i] = spil.get(i);
+		}
+		
+		gui.getUserSelection("vælg spil", spilstr);
 		
 		
 	}

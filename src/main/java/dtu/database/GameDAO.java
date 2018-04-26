@@ -1,5 +1,6 @@
 package dtu.database;
 
+import java.awt.List;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -323,19 +324,21 @@ public class GameDAO implements IGameDAO {
 
 
 
-	public String activeGames() throws SQLException {
+	public ArrayList<String> activeGames() throws SQLException {
 
 		String q = "";
+		ArrayList<String> l = new ArrayList<>();
+		
 		try {
-			ResultSet rs = connector.doQuery("SELECT GameID FROM game");
+			ResultSet rs = connector.doQuery("SELECT GameName FROM game");
 			ResultSetMetaData rsmd = rs.getMetaData();
 			int columnsNumber = rsmd.getColumnCount();
 			while (rs.next()) {
 				for (int j = 1; j <= columnsNumber; j++) {
 					if (j > 1) {
-
 						q += " - ";
 					}
+					l.add(rs.getString(j));
 					String columnValue = rs.getString(j);
 					//System.out.print(columnValue + " " + rsmd.getColumnName(j));
 					q += columnValue;// + " " + rsmd.getColumnName(j);
@@ -344,13 +347,11 @@ public class GameDAO implements IGameDAO {
 				q += ", ";
 			}
 			//q += "\n";
-			return q;
+			return l;
 		}catch (Exception e) {
 			System.out.println(e);
-			return "error";
+			return null;
 		}
-
 	}
-
 
 }

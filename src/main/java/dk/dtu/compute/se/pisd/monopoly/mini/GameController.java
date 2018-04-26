@@ -130,7 +130,8 @@ public class GameController {
 		names = dao.getNames(game.getGameID());
 		ArrayList<Integer> pos = new ArrayList<>();
 		pos = dao.getPositionOfPlayers(game.getGameID());
-		
+		ArrayList<Integer> balance = new ArrayList<>();
+		balance = dao.getBalanceOfPlayers(game.getGameID());
 		
 //		ArrayList<Color> chosenColors = new ArrayList<Color>();
 //		
@@ -145,7 +146,7 @@ public class GameController {
 			players[i].setCurrentPosition(game.getSpaces().get(pos.get(i)));
 			players[i].setColor(Color.red); //all red for now, but it will change later when db has been fixed
 			players[i].setId(i);
-			players[i].setId(i);
+			players[i].setBalance(balance.get(i));
 			game.addPlayer(players[i]);
 		}
 

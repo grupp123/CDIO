@@ -397,4 +397,21 @@ public class GameDAO implements IGameDAO {
 			return null;
 		}
 	}
+
+	public ArrayList<Integer> getBalanceOfPlayers(int gameID) {
+		ArrayList<Integer> l = new ArrayList<>();
+		try {
+			ResultSet rs = connector.doQuery("SELECT balance from player where gameid = " + gameID + ";");
+			while (rs.next()) {
+				int i = rs.getInt(1);
+				Integer o = (i);
+				l.add(o);
+			}
+			return l;
+		} catch (Exception e) {
+			
+			System.out.println("SELECT playername from player where gameid = ... virker ikke " + e);
+			return null;
+		}
+	}
 }

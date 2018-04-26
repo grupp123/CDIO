@@ -64,16 +64,16 @@ public class GameController {
 	private View view;
 
 	private boolean disposed = false;
-	
+
 	private Connector c = new Connector();
-	
+
 	private GameDAO dao = new GameDAO(c);
-	
+
 	private static int CurrentMaxGameID;
-	
+
 	private static int CurrentMaxPlayerID;
-	
-	
+
+
 
 	/**
 	 * Constructor for a controller of a game.
@@ -93,19 +93,41 @@ public class GameController {
 	 * the user.
 	 * @throws SQLException 
 	 */
-	public void createPlayers() throws SQLException {
+
+	public void chooseNewOrLoadGame() {
+		boolean newGame = gui.getUserLeftButtonPressed("", "Nyt spil", "Load spil");
+		if(newGame) {
+			try {
+				createPlayers();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else {
+			loadGame();
+		}
+	}
+
+	private void loadGame() {
 		
-//		CurrentMaxGameID = dg.getMaxGameID();
-//		CurrentMaxPlayerID = jj.getMaxPlayerID();
+		String[] i = {"1", "2", "3"};
+		gui.getUserSelection("vælg spil", i);
+		
+		
+	}
+
+	public void createPlayers() throws SQLException {
+
+		//		CurrentMaxGameID = dg.getMaxGameID();
+		//		CurrentMaxPlayerID = jj.getMaxPlayerID();
 		CurrentMaxGameID = 0;
 		CurrentMaxPlayerID = 0;
-		
+
 		//System.out.println("ses " + CurrentMaxGameID);
-		
+
 		String gameName = gui.getUserString("Hvad vil du kalde dit spil?");
 		game.setGameName(gameName);		
-		
-		
+
+
 		int numberofplayers ;
 		String valg = gui.getUserSelection("Vælg antal spillere", "2","3","4","5","6");
 		numberofplayers = Integer.parseInt(valg);
@@ -113,29 +135,29 @@ public class GameController {
 		ArrayList<String> names = new ArrayList<String>();
 		ArrayList<Color> chosenColors = new ArrayList<Color>();
 		ArrayList<Color> colorList = new ArrayList<Color>(Arrays.asList(Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW,
-                Color.BLACK, Color.WHITE));
-        ArrayList<String> colorString = new ArrayList<String>(Arrays.asList("Blå", "Rød", "Grøn", "Gul", "Sort", "Hvid"));
-        
+				Color.BLACK, Color.WHITE));
+		ArrayList<String> colorString = new ArrayList<String>(Arrays.asList("Blå", "Rød", "Grøn", "Gul", "Sort", "Hvid"));
+
 		for (int i = 0; i < numberofplayers; i++) {
 			String name = gui.getUserString("Indtast navn: ");
-						
+
 			if (name.equals("")) 
 				name = "Spiller "+(i+1);
 			else if (names.contains(name)) 
 				name += " "+(i+1);
 			names.add(name);
-			
+
 			String pickedColor = gui.getUserSelection("Vælg din bils farve", colorString.toArray(new String[0]));
 			CurrentMaxPlayerID++;
-			
 
-            int colorIndex = colorString.indexOf(pickedColor);
-            Color color = colorList.get(colorIndex);
-            chosenColors.add(color);
 
-            colorString.remove(colorIndex);
-            colorList.remove(colorIndex);
-			
+			int colorIndex = colorString.indexOf(pickedColor);
+			Color color = colorList.get(colorIndex);
+			chosenColors.add(color);
+
+			colorString.remove(colorIndex);
+			colorList.remove(colorIndex);
+
 		}
 		Player[] players = new Player[numberofplayers];
 		for (int i = 0; i < numberofplayers; i++) {
@@ -155,7 +177,7 @@ public class GameController {
 
 
 	}
-	
+
 	/**
 	 * This method will initialize the GUI. It should be called after
 	 * the players of the game are created. As of now, the initialization
@@ -282,7 +304,7 @@ public class GameController {
 				} 
 				else {
 					String selection = gui.getUserSelection(player.getName()+", du kastede ikke to ens, hvad vil du?", "Betal kaution", "Brug frikort", "Vent til næste tur");
-					
+
 					if (selection.equals("Betal kaution")) {
 						paymentToBank(player, game.JAIL_BAIL_PRICE);
 						if (!player.isBroke()) {
@@ -310,7 +332,7 @@ public class GameController {
 					else {
 						gui.showMessage(player.getName() + " forbliver i fængslet og venter til næste tur!");
 					}
-					
+
 					if (player.isInPrison() && player.getPrisonTime() >= game.MAX_PRISON_TIME) {
 						gui.showMessage(player.getName() + " har været i fængselet for længe, du tvinges nu til at betale kaution af "+game.JAIL_BAIL_PRICE+"kr.");
 						paymentToBank(player, game.JAIL_BAIL_PRICE);
@@ -320,8 +342,8 @@ public class GameController {
 					}
 				}
 			}
-			
-			
+
+
 
 			if (castDouble) {
 				doublesCount++;
@@ -361,7 +383,7 @@ public class GameController {
 
 		if (posOld > player.getCurrentPosition().getIndex()) {
 			gui.showMessage("Spiller " + player.getName() + " modtager 4.000kr. for at lande på eller passere Start!");
-		this.paymentFromBank(player, game.getPassesStartMoney());
+			this.paymentFromBank(player, game.getPassesStartMoney());
 		}		
 		gui.showMessage("Spiller " + player.getName() + " lander på " + space.getIndex() + ": " +  space.getName() + ".");
 
@@ -374,7 +396,7 @@ public class GameController {
 		// that this is delegated to the field, which implements this action
 		space.doAction(this, player);
 	}	
-	
+
 	public void moveToIndex(Player player, int index) throws PlayerBrokeException {
 		moveToSpace(player,game.getSpaces().get(index));
 	}
@@ -440,7 +462,7 @@ public class GameController {
 			earned = newBalance-oldBalance;
 		}
 		while (!gui.getUserLeftButtonPressed("Du har optjent "+earned+"kr. hvad vil du?", "Fortsæt", "Sælg mere"));
-		
+
 		if (needed <= earned) {
 			gui.showMessage(player.getName()+", du har fået optjent nok!");
 			return;
@@ -449,14 +471,14 @@ public class GameController {
 		gui.showMessage(player.getName()+", du fik ikke optjent nok penge og mangler "+needed+"kr.");
 
 	}
-	
+
 	/**
 	 * The activity that gives the player the opportunity to sell houses, properties and mortgage properties.
 	 * @param player the player
 	 */
 	public void obtainCash(Player player) {
 		String selection = gui.getUserSelection("Hvad vil du optjene penge med?","Bolig","Grund","Pantsæt");
-		
+
 		if (selection.equals("Bolig")) {
 			tradeSellHouse(player);
 		}
@@ -467,14 +489,14 @@ public class GameController {
 			tradeCashInMortgage(player);
 		}
 	}
-	
+
 	/**
 	 * The activity that gives the player the opportunity to buy houses, properties and pay mortgage.
 	 * @param player the player
 	 */
 	public void spendCash(Player player) {
 		String selection = gui.getUserSelection("Hvad vil du bruge penge på?","Bolig","Spillers grund","Pant");
-		
+
 		if (selection.equals("Bolig")) {
 			tradeBuyHouse(player);
 		}
@@ -606,7 +628,7 @@ public class GameController {
 				}
 			}
 		}
-		
+
 		while (bidders.size() > 1)
 		{
 			for(Player player : bidders.toArray(new Player[0])) {
@@ -616,7 +638,7 @@ public class GameController {
 				}
 				else if (gui.getUserLeftButtonPressed(msg, "ja", "nej")) {
 					currentBid = gui.getUserInteger("Indtast dit bud. Det skal være minimum "
-								+minNextBid+"kr. højere end "+currentBid, currentBid+minNextBid, Integer.MAX_VALUE);
+							+minNextBid+"kr. højere end "+currentBid, currentBid+minNextBid, Integer.MAX_VALUE);
 				}
 				else {
 					//Player is removed from the auction if he chooses no
@@ -624,13 +646,13 @@ public class GameController {
 				}
 			}
 		}
-		
+
 		if (bidders.size() > 0) {
 			auctionWinner = bidders.get(0);
-			
+
 			gui.showMessage("Tillykke "+auctionWinner.getName()+", du har vundet auktionen! "+
-			"Du har købt: "+property.getName()+" for "+currentBid+"kr.");
-			
+					"Du har købt: "+property.getName()+" for "+currentBid+"kr.");
+
 			try {
 				paymentToBank(auctionWinner, currentBid);
 			} catch (PlayerBrokeException e) {
@@ -642,7 +664,7 @@ public class GameController {
 		else {
 			gui.showMessage("Ingen deltager i auktionen, denne annulleres derfor.");
 		}
-		
+
 	}
 
 	/**
@@ -666,7 +688,7 @@ public class GameController {
 					((RealEstate)property).clearHouses();
 				}
 			}
-			
+
 			property.setOwner(benificiary);
 			benificiary.addOwnedProperty(property);
 		}	
@@ -728,7 +750,7 @@ public class GameController {
 			//      deployed via Maven (or other  official versions)
 		}
 	}
-	
+
 	/**
 	 * Starts a trade dialogue.
 	 * @param player the trading player
@@ -738,7 +760,7 @@ public class GameController {
 		//If the user chooses no, no trade action will happen...	
 		while (choice) {
 			String selection = gui.getUserSelection("Hvad vil du?", "Optjene penge", "Spendere penge");
-			
+
 			//If user chooses to spend money
 			if (selection.equals("Spendere penge")) {
 				spendCash(player);
@@ -747,12 +769,12 @@ public class GameController {
 			else {
 				obtainCash(player);
 			}
-			
+
 			choice = gui.getUserLeftButtonPressed(player.getName()+" har du lyst til at handle, igen?", "Ja", "Nej");
 		}
-		
+
 	}
-	
+
 	/**
 	 * Starts the mortgage dialogue
 	 * @param player the mortgaging player
@@ -769,24 +791,24 @@ public class GameController {
 					mortgageableProperties.put(property.getName(),property);
 				}	
 			}
-			
+
 		}
-		
+
 		if (mortgageableProperties.isEmpty()) {
 			gui.showMessage("Du har ingen grunde der kan pantsættes.");
 			return;
 		}
-		
+
 		Property chosenProperty = pickProperty(mortgageableProperties, "Vælg den grund du vil pantsætte");
-		
+
 		if (chosenProperty != null) {
 			chosenProperty.setMortgaged(true);
 			paymentFromBank(player, chosenProperty.getMortgageValue());
 		}
-		
-		
+
+
 	}
-	
+
 	/**
 	 * Starts the pay mortgage dialogue
 	 * @param player the paying player
@@ -797,16 +819,16 @@ public class GameController {
 			if (property.isMortgaged()) {
 				demortgageableProperties.put(property.getName(),property);
 			}
-			
+
 		}
-		
+
 		if (demortgageableProperties.isEmpty()) {
 			gui.showMessage("Du har ingen pantsatte grunde.");
 			return;
 		}
-		
+
 		Property chosenProperty = pickProperty(demortgageableProperties, "Vælg den grund du vil betale pant for.");
-		
+
 		if (chosenProperty != null) {
 			int amount = (int) (chosenProperty.getMortgageValue()*1.1f);
 			try {
@@ -817,7 +839,7 @@ public class GameController {
 			chosenProperty.setMortgaged(false);
 		}
 	}
-	
+
 
 	/**
 	 * Starts a buy house dialogue.
@@ -835,14 +857,14 @@ public class GameController {
 				}
 			}	
 		}
-		
+
 		if (developableProperties.isEmpty()) {
 			gui.showMessage("Du har ingen grunde at bygge på.");
 			return;
 		}
-		
+
 		RealEstate chosenProperty = (RealEstate)pickProperty(developableProperties, "Vælg den grund du vil udvikle.");
-		
+
 		if (chosenProperty != null) {
 			try {
 				paymentToBank(buyer, chosenProperty.getHousePrice());
@@ -852,27 +874,27 @@ public class GameController {
 			chosenProperty.addHouse();
 		}
 	}
-	
+
 	/**
 	 * Starts a buy property dialogue.
 	 * @param buyer the buying player
 	 */
 	private void tradeBuyProperty(Player buyer) {
 		Map<String, Player> players = new HashMap<String, Player>();
-		
+
 		for (Player player: game.getPlayers()) {
 			//Skal lige testes
 			if (!player.equals(buyer)) {
 				players.put(player.getName(), player);
 			}
 		}
-		
+
 		String[] choices = players.keySet().toArray(new String[0]);
-		
+
 		String choice = gui.getUserSelection("Vælg den spiller du vil købe fra.", choices);
-		
+
 		Player seller = players.get(choice);
-		
+
 		Map<String,Property> buyableProperties = new HashMap<String,Property>();
 		for (Property property: seller.getOwnedProperties()) {
 			if (property instanceof RealEstate) {
@@ -883,21 +905,21 @@ public class GameController {
 				buyableProperties.put(property.getName(),property);
 			}	
 		}
-		
+
 		if (buyableProperties.isEmpty()) {
 			gui.showMessage(seller.getName()+", har ingen salgsbare grunde.");
 			return;
 		}
-		
+
 		Property chosenProperty = pickProperty(buyableProperties, "Vælg den grund du vil købe.");
-		
+
 		if (chosenProperty != null) {
 			Integer price = gui.getUserInteger("Indtast din pris.");
-			
+
 			moveOwnership(buyer, chosenProperty, price, seller);
 		}
 	}
-	
+
 	/**
 	 * Starts sell house dialogue.
 	 * @param seller selling player
@@ -911,41 +933,41 @@ public class GameController {
 				//TODO tjek for om man har alle grunde af samme farve.
 			}	
 		}
-		
+
 		if (undevelopableProperties.isEmpty()) {
 			gui.showMessage("Du har ingen grunde med huse.");
 			return;
 		}
-		
+
 		RealEstate chosenProperty = (RealEstate)pickProperty(undevelopableProperties, "Vælg den grund du vil uudvikle.");
-		
+
 		if (chosenProperty != null) {
 			chosenProperty.removeHouse();
 			paymentFromBank(seller, chosenProperty.getHousePrice());
 		}
-		
+
 	}
-	
+
 	/**
 	 * Starts a sell Property dialogue.
 	 * @param seller the selling player
 	 */
 	private void tradeSellProperty(Player seller) {
 		Map<String, Player> players = new HashMap<String, Player>();
-		
+
 		for (Player player: game.getPlayers()) {
 			//Skal lige testes
 			if (!player.equals(seller)) {
 				players.put(player.getName(), player);
 			}
 		}
-		
+
 		String[] choices = players.keySet().toArray(new String[0]);
-		
+
 		String choice = gui.getUserSelection("Vælg den spiller du vil sælge til.", choices);
-		
+
 		Player buyer = players.get(choice);
-		
+
 		Map<String,Property> sellableProperties = new HashMap<String,Property>();
 		for (Property property: seller.getOwnedProperties()) {
 			if (property instanceof RealEstate) {
@@ -961,14 +983,14 @@ public class GameController {
 			return;
 		}
 		Property chosenProperty = pickProperty(sellableProperties, "Vælg den grund du vil sælge.");
-		
+
 		if (chosenProperty != null) {
 			Integer price = gui.getUserInteger("Indtast din pris.");
-			
+
 			moveOwnership(buyer, chosenProperty, price, seller);
 		}
 	}
-	
+
 	/**
 	 * Handles the transaction of the ownership of a property from the seller to the buyer at the given prices.
 	 * @param buyer player buying the property
@@ -982,14 +1004,14 @@ public class GameController {
 		} catch (PlayerBrokeException e) {
 			e.printStackTrace();
 		}
-		
+
 		seller.removeOwnedProperty(property);
 		buyer.addOwnedProperty(property);
 		property.setOwner(buyer);
-		
-		
+
+
 	}
-	
+
 	/**
 	 * Starts a list picking dialog with the given properties from the Map.
 	 * @param properties Map with the properties and names as key value
@@ -998,26 +1020,26 @@ public class GameController {
 	 */
 	private Property pickProperty(Map<String, Property> properties, String msg) {
 		String[] choices = properties.keySet().toArray(new String[0]);
-		
+
 		String choice;
 		Property pickedProperty;
-		
+
 		do {
 			choice = gui.getUserSelection(msg, choices);
-			
+
 			pickedProperty = properties.get(choice);
-			
+
 			choice = gui.getUserButtonPressed("Er du sikker?", "Ja","Vælg anden","Anuller");
 		}
 		while(choice.equals("Vælg anden"));
-		
+
 		if (!choice.equals("Ja")) {
 			pickedProperty = null;
 		}
-		
+
 		return pickedProperty;
 	}
-	
+
 	/**
 	 * Used to check weather the player owns all the streets of same colorgroup
 	 * @param properties
@@ -1026,7 +1048,7 @@ public class GameController {
 	 */
 	private boolean isColorgroupComplete (Set<Property> properties, Color colorGroup) {
 		int count = 0;
-		
+
 		for (Property property : properties) {
 			if (property instanceof RealEstate) {
 				if (property.getColor().equals(colorGroup)) {
@@ -1034,7 +1056,7 @@ public class GameController {
 				}
 			}
 		}
-		
+
 		if (count == 3) {
 			return true;
 		}
@@ -1045,7 +1067,7 @@ public class GameController {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * 
 	 * @param players
@@ -1070,7 +1092,7 @@ public class GameController {
 		}
 
 		return ranking;
-		
+
 	}
 
 }

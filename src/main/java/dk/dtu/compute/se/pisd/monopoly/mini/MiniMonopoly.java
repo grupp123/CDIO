@@ -514,7 +514,7 @@ public class MiniMonopoly {
 		
 		
 		controller.initializeGUI();
-		controller.createPlayers();
+		controller.chooseNewOrLoadGame();
 		
 		
 		controller.play();

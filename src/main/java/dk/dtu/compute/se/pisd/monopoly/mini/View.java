@@ -208,8 +208,6 @@ public class View implements Observer {
 
 		GUI_Field[] guiFields = new GUI_Field[game.getSpaces().size()];
 
-		System.out.println(game.getSpaces().size());
-
 
 		int i = 0 ;
 		for (Space space: game.getSpaces()) {

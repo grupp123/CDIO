@@ -55,6 +55,12 @@ public class GameDAO implements IGameDAO {
 				connector.doUpdate("insert into car(carColor, playerID, gameID) values("+ color +", " + playerid + ", " + gid + ");");
 			}
 			//nu oprettes alle de ejelige felter 
+			for (int j = 0; j < 40; j++) {
+				int gid = game.getGameID();
+				String properties = "insert into properties(spacenumber, ownerp, houses, gameid) values (" + j + ", null, 0, " + gid + ");";
+				connector.doUpdate(properties);
+
+			}
 
 
 			con.commit();

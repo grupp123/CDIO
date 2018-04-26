@@ -384,7 +384,7 @@ public class GameDAO implements IGameDAO {
 	public ArrayList<Integer> getPositionOfPlayers(int gameID) {
 		ArrayList<Integer> l = new ArrayList<>();
 		try {
-			ResultSet rs = connector.doQuery("SELECT position from player where gameid = " + gameID + ";");
+			ResultSet rs = connector.doQuery("SELECT position from car where gameid = " + gameID + ";");
 			while (rs.next()) {
 				int i = rs.getInt(1);
 				Integer o = (i);

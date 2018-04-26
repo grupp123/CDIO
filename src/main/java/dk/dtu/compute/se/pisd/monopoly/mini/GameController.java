@@ -138,7 +138,7 @@ public class GameController {
 //		ArrayList<Color> colorList = new ArrayList<Color>(Arrays.asList(Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW,
 //				Color.BLACK, Color.WHITE));
 //		ArrayList<String> colorString = new ArrayList<String>(Arrays.asList("Blå", "Rød", "Grøn", "Gul", "Sort", "Hvid"));
-		gui.getUserButtonPressed("", "loaded");
+		gui.getUserButtonPressed("", "loading");
 		Player[] players = new Player[names.size()];
 		for (int i = 0; i < names.size(); i++) {
 			players[i] = new Player();

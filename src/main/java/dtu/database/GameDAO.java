@@ -99,10 +99,10 @@ public class GameDAO implements IGameDAO {
 			for (int i = 0; i < game.getPlayers().size(); i++) {
 				for (Property prop : game.getPlayers().get(i).getOwnedProperties()) {
 					connector.doUpdate("UPDATE properties set ownerP = " + 
-				game.getPlayers().get(i).getId() + 
-				" WHERE gameid = " + game.getGameID() + 
-				" AND spacenumber = " + prop.getIndex());
-					}
+							game.getPlayers().get(i).getId() + 
+							" WHERE gameid = " + game.getGameID() + 
+							" AND spacenumber = " + prop.getIndex());
+				}
 				game.getPlayers().get(i).getOwnedProperties().size();
 				connector.doUpdate("UPDATE player set balance = " + 
 						game.getPlayers().get(i).getBalance() + 
@@ -123,7 +123,7 @@ public class GameDAO implements IGameDAO {
 			}
 		}
 		catch (SQLException e) {throw new Exception(e); }
-		
+
 	}
 
 	private void updateBalanceOfAllPlayers(Game game) throws Exception {
@@ -144,15 +144,17 @@ public class GameDAO implements IGameDAO {
 		java.sql.Connection con = connector.getConnection();
 		try {
 			con.setAutoCommit(false);
-
+			//lister oprettes med info om spillerne.
 			ArrayList<String> names = new ArrayList<String>();
 			names = getNames(game.getGameID());
 			ArrayList<Integer> pos = new ArrayList<>();
-			pos = getPositionOfPlayers(game.getGameID());
+			pos = getPositionOfPlayers(game.getGameID()); //spillernes sidste position
 			ArrayList<Integer> balance = new ArrayList<>();
 			balance = getBalanceOfPlayers(game.getGameID());
-
-			//			ArrayList<Color> chosenColors = new ArrayList<Color>();
+			ArrayList<Integer> properties = new ArrayList<>(); //en liste 0-39. hvis null, er der ingen ejer. ellers angives spillers id.
+			properties = getPropertiesFromGame(game.getGameID());
+																				//farverne på spillerne er ikke helt færdige
+			//			ArrayList<Color> chosenColors = new ArrayList<Color>(); 
 			//			
 			//			ArrayList<Color> colorList = new ArrayList<Color>(Arrays.asList(Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW,
 			//					Color.BLACK, Color.WHITE));
@@ -167,7 +169,16 @@ public class GameDAO implements IGameDAO {
 				players[i].setBalance(balance.get(i));
 				game.addPlayer(players[i]);
 			}
+			//-------------------Der er noget galt med den her metode til at få properties fra databasen----------//
+			for (int i = 0; i < properties.size(); i++) {
+				if (properties.get(i)!=null) {
+					game.getPlayers().get(properties.get(i)).addOwnedProperty((Property) game.getSpaces().get(i));
+					
+				}
 
+			//--------------------------Den burde indsætte properties til players-------------//
+
+			}
 			con.commit();
 			con.setAutoCommit(true);
 		}catch (Exception e) {
@@ -177,6 +188,23 @@ public class GameDAO implements IGameDAO {
 		return false;
 	}
 
+
+	private ArrayList<Integer> getPropertiesFromGame(int gameID) {
+
+		ArrayList<Integer> l = new ArrayList<>();
+		try {
+			ResultSet rs = connector.doQuery("SELECT * FROM properties where gameid = " + gameID);
+			while (rs.next()) {
+				Integer p = rs.getInt(2);
+				l.add(p);
+			}
+			return l;
+		}catch (Exception e) {
+			System.out.println(e);
+			return null;
+		}
+
+	}
 
 	@Override
 	public ArrayList<Integer> readGame(int Id) {

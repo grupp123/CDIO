@@ -243,7 +243,7 @@ public class GameDAO implements IGameDAO {
 			//List<Space> spaces = new ArrayList<Space>();
 			Integer owner = 0;
 			//spaces = game.getSpaces();
-			for (int u = 0; u <= 28; u++) {
+			for (int u = 0; u <= 39; u++) {
 				Space space = game.getSpaces().get(u);
 				if(space instanceof Property) {
 					//tjek for ejer

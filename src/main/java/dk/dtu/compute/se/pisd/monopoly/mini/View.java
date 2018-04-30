@@ -212,7 +212,7 @@ public class View implements Observer {
 		int i = 0 ;
 		for (Space space: game.getSpaces()) {
 
-			System.out.println(i);
+			//System.out.println(i);
 
 			if (space instanceof Chance) {
 				GUI_Chance gui_chance = new GUI_Chance();

@@ -327,6 +327,11 @@ public class Player extends Subject {
 		String st = getName()+" : "+getAssetsValue()+"kr.";
 		return st;
 	}
+
+	public void setPrisonTime(int jailTime) {
+		prisonTime = jailTime;
+		
+	}
 	
 	
 

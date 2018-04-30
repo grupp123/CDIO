@@ -1,22 +1,20 @@
 package dtu.database;
 
 import java.awt.Color;
-import java.awt.List;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
-import dk.dtu.compute.se.pisd.monopoly.mini.GameController;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Property;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 
 public class GameDAO implements IGameDAO {
-
+	
 	private Connector connector;
-
+	
 	public GameDAO(Connector connector) {
 		this.connector = connector;
 	}
@@ -33,19 +31,19 @@ public class GameDAO implements IGameDAO {
 			ResultSet rs = connector.doQuery("select max(gameID) from game;");
 			while(rs.next()) {
 				i = rs.getInt("max(gameID)");
-
+				
 			}
 			game.setGameID(i);
-
+			
 			//spillerne oprettes i databasen med deres ID, gameID og navn
 			for (int j = 0; j<game.getPlayers().size(); j++) {
-				Player p = game.getPlayers().get(j);
-				int id = p.getId();
-				int gid = game.getGameID();
-				String name = p.getName();
-				connector.doUpdate("insert into player(playerID, gameID, playerName) values("+ id +", " + gid + ", '" + name + "');");
+			Player p = game.getPlayers().get(j);
+			int id = p.getId();
+			int gid = game.getGameID();
+			String name = p.getName();
+			connector.doUpdate("insert into player(playerID, gameID, playerName) values("+ id +", " + gid + ", '" + name + "');");
 			}
-
+			
 			//nu oprettes de tilhørende biler til hver spiller
 			for (int j = 0; j<game.getPlayers().size(); j++) {
 				Player p = game.getPlayers().get(j);
@@ -54,17 +52,22 @@ public class GameDAO implements IGameDAO {
 				int gid = game.getGameID();
 				String name = p.getName();
 				connector.doUpdate("insert into car(carColor, playerID, gameID) values("+ color +", " + playerid + ", " + gid + ");");
-			}
+				}
 			//nu oprettes alle de ejelige felter 
-			for (int j = 0; j < 40; j++) {
-				int gid = game.getGameID();
-				String properties = "insert into properties(spacenumber, ownerp, houses, gameid) values (" + j + ", null, 0, " + gid + ");";
-				connector.doUpdate(properties);
-
-			}
-
-
-			con.commit();
+		//List<Space> spaces = game.getSpaces();
+			for(int f=0;f<game.getSpaces().size();f++) {
+				Space k = game.getSpaces().get(f);
+				if(k instanceof Property) {
+						
+				int spaceNumber = k.getIndex();
+				int gid = game.getGameID();				
+				//Følgende sql sætning virker i workbench
+				//insert into properties(spaceNumber,gameID) values (0,1);
+				connector.doUpdate("insert into properties(spaceNumber,gameID) values(" + spaceNumber + ", " + gid + ");");
+				}
+				}
+			
+			
 			con.setAutoCommit(true);
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -77,343 +80,252 @@ public class GameDAO implements IGameDAO {
 	public boolean update(Game game) {
 		java.sql.Connection con = connector.getConnection();
 		try {
+			//her opdateres spillet inde i databasen altså sørger for at ændre currentPlayer 
 			con.setAutoCommit(false);
-			for (int j = 0; j < game.getPlayers().size(); j++) {
-				updateBalanceOfAllPlayers(game);
-				updatePositionOfAllPlayers(game);
-				updatePropertiesOfAllPlayers(game);
-			}
-
-			con.commit();
+			int cp = game.getCurrentPlayer().getId();
+			int gidd = game.getGameID();
+			connector.doUpdate("update game set currentPlayer = " + cp + " where gameID = "+ gidd +";");
+			
+			//her opdateres spillerne inde i databasen, altså om de har tabt, balance, jail
+			//jailcard og jailtime 
+			for (int j = 0; j<game.getPlayers().size(); j++) {
+				Player p = game.getPlayers().get(j);
+				int id = p.getId();
+				int gid = game.getGameID();
+				boolean hasLost = p.isBroke();
+				int balance = p.getBalance();
+				boolean inJail = p.isInPrison();
+				//List<Card> jailc = p.getOwnedCards();
+				int jailCard = p.getOwnedCards().size();
+				int jailTime = p.getPrisonTime();
+				connector.doUpdate("update player set hasLost = " + hasLost + ", balance = " + balance + ", inJail = " + inJail + ", jailCard = " + jailCard + ", jailTime = " + jailTime + " where gameID = " + gid + " and playerID = " + id + ";");
+				}
+			//nu opdateres car-tabellen og det eneste der skal 
+			//opdateres løbende er position
+			for (int j = 0; j<game.getPlayers().size(); j++) {
+				Player p = game.getPlayers().get(j);
+				int playerid = p.getId();
+				int gameid = game.getGameID();
+				int position = p.getCurrentPosition().getIndex();
+				connector.doUpdate("update car set position = " + position + " where gameID = " + gameid + " and playerID = " + playerid + ";");
+				}
+			
+			//nu opdateres de ejerne på alle felterne samt antal huse og om det er pantsat
+			
+			//List<Space> spaces = game.getSpaces();
+						//Loop through all spaces
+			for(int o = 0; o < game.getSpaces().size() ; o++) {
+				Space current = game.getSpaces().get(o);
+				//Properties - Updating owner and if the space is mortgaged
+				if(current instanceof Property) {
+					Property prop = (Property) game.getSpaces().get(o); 
+					if(prop.getOwner()!=null) {
+						int pid = prop.getOwner().getId();
+						int spaceNumber = prop.getIndex();
+						int gid = game.getGameID();
+						boolean mortgaged = prop.isMortgaged();
+												
+						//Følgende sql sætning virker i workbench
+						//update properties set ownerP=0, spaceNumber=0, Mortagaged=true where gameid=1;
+						connector.doUpdate("update properties set ownerP = " + pid  +  ", mortagaged = " + mortgaged + " where gameID = " + gid + " And spaceNumber = " + spaceNumber + ";");
+					}	
+				}
+				if(current instanceof RealEstate) {
+					RealEstate real = (RealEstate) game.getSpaces().get(o);
+					int numberhouses = real.getHouses();
+					int gid = game.getGameID();
+					int spaceNumber = real.getIndex();
+					connector.doUpdate("update properties set houses = " + numberhouses + " where gameID = " + gid + " And spaceNumber = " + spaceNumber + ";");
+				}
+				}
+				
 			con.setAutoCommit(true);
-		} catch (Exception e) {
+		}catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Problem med DB");
 		}
 		return false;
-
-	}
-
-	private void updatePropertiesOfAllPlayers(Game game) throws Exception {
-		try {
-			for (int i = 0; i < game.getPlayers().size(); i++) {
-				for (Property prop : game.getPlayers().get(i).getOwnedProperties()) {
-					connector.doUpdate("UPDATE properties set ownerP = " + 
-							game.getPlayers().get(i).getId() + 
-							" WHERE gameid = " + game.getGameID() + 
-							" AND spacenumber = " + prop.getIndex());
-				}
-				game.getPlayers().get(i).getOwnedProperties().size();
-				connector.doUpdate("UPDATE player set balance = " + 
-						game.getPlayers().get(i).getBalance() + 
-						" where gameid = " + game.getGameID() + 
-						" and playerid = " + game.getPlayers().get(i).getId());
-			}
-		}
-		catch (SQLException e) {throw new Exception(e); }		
-	}
-
-	private void updatePositionOfAllPlayers(Game game) throws Exception {
-		try {
-			for (int i = 0; i < game.getPlayers().size(); i++) {
-				connector.doUpdate("UPDATE car set position = " + 
-						game.getPlayers().get(i).getCurrentPosition().getIndex() + 
-						" where gameid = " + game.getGameID() + 
-						" and playerid = " + game.getPlayers().get(i).getId());
-			}
-		}
-		catch (SQLException e) {throw new Exception(e); }
-
-	}
-
-	private void updateBalanceOfAllPlayers(Game game) throws Exception {
-		try {
-			for (int i = 0; i < game.getPlayers().size(); i++) {
-				connector.doUpdate("UPDATE player set balance = " + 
-						game.getPlayers().get(i).getBalance() + 
-						" where gameid = " + game.getGameID() + 
-						" and playerid = " + game.getPlayers().get(i).getId());
-			}
-		}
-		catch (SQLException e) {throw new Exception(e); }
 	}
 
 	@Override
 	public boolean load(Game game, int gameID) {
-
 		java.sql.Connection con = connector.getConnection();
+		int i = 0;
+		int numberOfPlayers = 0;
 		try {
+			//AutoCommit is set to false until all the data in this method is ready to commit.
 			con.setAutoCommit(false);
-			//lister oprettes med info om spillerne.
-			ArrayList<String> names = new ArrayList<String>();
-			names = getNames(game.getGameID());
-			ArrayList<Integer> pos = new ArrayList<>();
-			pos = getPositionOfPlayers(game.getGameID()); //spillernes sidste position
-			ArrayList<Integer> balance = new ArrayList<>();
-			balance = getBalanceOfPlayers(game.getGameID());
-			ArrayList<Integer> properties = new ArrayList<>(); //en liste 0-39. hvis null, er der ingen ejer. ellers angives spillers id.
-			properties = getPropertiesFromGame(game.getGameID());
-																				//farverne på spillerne er ikke helt færdige
-			//			ArrayList<Color> chosenColors = new ArrayList<Color>(); 
-			//			
-			//			ArrayList<Color> colorList = new ArrayList<Color>(Arrays.asList(Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW,
-			//					Color.BLACK, Color.WHITE));
-			//			ArrayList<String> colorString = new ArrayList<String>(Arrays.asList("Blå", "Rød", "Grøn", "Gul", "Sort", "Hvid"));
-			Player[] players = new Player[names.size()];
-			for (int i = 0; i < names.size(); i++) {
-				players[i] = new Player();
-				players[i].setName(names.get(i)); 
-				players[i].setCurrentPosition(game.getSpaces().get(pos.get(i)));
-				players[i].setColor(Color.red); //all red for now, but it will change later when db has been fixed
-				players[i].setId(i);
-				players[i].setBalance(balance.get(i));
-				game.addPlayer(players[i]);
+			
+			//Start med at hente antallet af spillere i spillet med dette gameID, hermed kender vi deres ID
+			//test værdi:
+			ResultSet rs = connector.doQuery("Select count(playerID) from player where gameID = " + gameID + ";");
+			while(rs.next()) {
+			numberOfPlayers = rs.getInt(1);
 			}
-			//-------------------Der er noget galt med den her metode til at få properties fra databasen----------//
-			for (int i = 0; i < properties.size(); i++) {
-				if (properties.get(i)!=null) {
-					game.getPlayers().get(properties.get(i)).addOwnedProperty((Property) game.getSpaces().get(i));
+			
+			//Going through the player ID's			
+			Player[] players = new Player[numberOfPlayers];
+			for (int u = 0; u < numberOfPlayers; u++) {
+				players[u] = new Player();
+				int playerID = u;
+				//getting and setting playerName
+				rs = connector.doQuery("select playerName from player where playerID = " + playerID + " and gameID = " + gameID + ";");
+				while(rs.next()) {
+				String name = rs.getString("playerName");
+				players[u].setName(name); 
+				}
+				
+				//getting and setting balance
+				rs = connector.doQuery("select balance from player where playerID = " + playerID + " and gameID = " + gameID + ";");
+				while(rs.next()) {
+				int balance = rs.getInt("balance");
+				players[u].setBalance(balance);
+				}
+				
+				//getting and setting has lost;
+				rs = connector.doQuery("select hasLost from player where playerID = "+ playerID + " and gameID = " + gameID + ";");
+				while(rs.next()) {
+				boolean hasLost = rs.getBoolean("hasLost");
+				players[u].setBroke(hasLost);
+				}
+				
+				//getting and setting in jail;
+				rs = connector.doQuery("select inJail from player where playerID = " + playerID + " and gameID = " + gameID + ";");
+				while(rs.next()) {
+				boolean inJail = rs.getBoolean("inJail");
+				players[u].setInPrison(inJail);
+				}
+				
+				//getting and setting jailTime
+				rs = connector.doQuery("select jailTime from player where playerID = " + playerID + " and gameID = " + gameID + ";");
+				while(rs.next()) {
+				int jailTime = rs.getInt(1);
+				players[u].setPrisonTime(jailTime);
+				}
+				//MANGLER KUN JAILCARD
+				
+				//getting and setting car color
+				rs = connector.doQuery("select carColor from car where playerID = "+playerID+" and gameID = "+gameID+";");
+				while(rs.next()) {
+				int rgb = rs.getInt("carColor");
+				Color carColor = new Color(rgb);
+				players[u].setColor(carColor);;
+				}
+				
+				//getting and setting current position
+				rs = connector.doQuery("select position from car where playerID = "+playerID+" and gameID = "+gameID+";");
+				while(rs.next()) {
+				int position = rs.getInt("position");
+				//List<Space> spaces = game.getSpaces();
+				Space cuPos = game.getSpaces().get(position);
+				players[u].setCurrentPosition(cuPos);
+				}
+				
+				players[u].setId(u);
+				game.addPlayer(players[u]);
+			}
+			
+			//getting currrent player from db
+			rs = connector.doQuery("select currentPlayer from game;");
+			//setting current player
+			while(rs.next()) {
+				i = rs.getInt("currentPlayer");
+			}
+			int currentPlayerID = i;
+			//Looping through players, checking if id is equal to currentPlayerID from db
+			for (int j = 0; j<game.getPlayers().size(); j++) {
+				Player p = game.getPlayers().get(j);
+				if(p.getId()==currentPlayerID) {
+					game.setCurrentPlayer(p);
+				}	}
+			
+			//Going through the properties			
+			//List<Space> spaces = new ArrayList<Space>();
+			Integer owner = 0;
+			//spaces = game.getSpaces();
+			for (int u = 0; u <= 28; u++) {
+				Space space = game.getSpaces().get(u);
+				if(space instanceof Property) {
+					//tjek for ejer
+					rs = connector.doQuery("Select ownerP from properties where spaceNumber = " + space.getIndex() + " and gameID = " + gameID + ";");
+					while(rs.next()) {
+						owner = (Integer) rs.getObject(1);
+					}
+					try {
+						if(owner == 0) {
+							Player powner = game.getPlayers().get(owner);
+							Property owned = (Property) space;
+							((Property) space).setOwner(powner);
+							powner.addOwnedProperty(owned);
+						}
+						
+						if(owner == 1) {
+							Player powner = game.getPlayers().get(owner);
+							Property owned = (Property) space;
+							((Property) space).setOwner(powner);
+							powner.addOwnedProperty(owned);
+						}
+						
+						if(owner == 2) {
+							Player powner = game.getPlayers().get(owner);
+							Property owned = (Property) space;
+							((Property) space).setOwner(powner);
+							powner.addOwnedProperty(owned);
+						}
+						
+						if(owner == 3) {
+							Player powner = game.getPlayers().get(owner);
+							Property owned = (Property) space;
+							((Property) space).setOwner(powner);
+							powner.addOwnedProperty(owned);
+						}
+						
+						if(owner == 4) {
+							Player powner = game.getPlayers().get(owner);
+							Property owned = (Property) space;
+							((Property) space).setOwner(powner);
+							powner.addOwnedProperty(owned);
+						}
+						
+						if(owner == 5) {
+							Player powner = game.getPlayers().get(owner);
+							Property owned = (Property) space;
+							((Property) space).setOwner(powner);
+							powner.addOwnedProperty(owned);
+						}
+					}catch(Exception e) {
+						e.getStackTrace();
+						//System.out.println("Y er null");
+						
+					}
+					
+				
+				
+					//hent antal huse
+					rs = connector.doQuery("Select houses from properties where spaceNumber = " + space.getIndex() + " and gameID = " + gameID + ";");
+					while(rs.next()) {
+						int houses = rs.getInt(1);
+					}
 					
 				}
-
-			//--------------------------Den burde indsætte properties til players-------------//
-
 			}
-			con.commit();
+			
 			con.setAutoCommit(true);
-		}catch (Exception e) {
+			
+		}catch(Exception e) {
 			e.printStackTrace();
 			System.out.println("Problem med DB");
 		}
 		return false;
 	}
 
-
-	private ArrayList<Integer> getPropertiesFromGame(int gameID) {
-
-		ArrayList<Integer> l = new ArrayList<>();
-		try {
-			ResultSet rs = connector.doQuery("SELECT * FROM properties where gameid = " + gameID);
-			while (rs.next()) {
-				Integer p = rs.getInt(2);
-				l.add(p);
-			}
-			return l;
-		}catch (Exception e) {
-			System.out.println(e);
-			return null;
-		}
-
-	}
 
 	@Override
 	public ArrayList<Integer> readGame(int Id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
-	//-----------------private methods-----------------//
-
-	private String getPlayerName(int id) throws Exception {
-		ResultSet rs = connector.doQuery("SELECT playername FROM player WHERE id = " + id);
-		try {
-			if (!rs.first()) throw new Exception("id " + id + " findes ikke");
-			return (rs.getString("name"));
-		}
-		catch (SQLException e) {throw new Exception(e); }
-	}
-
-	private int getPlayerBalance(int id) throws Exception {
-		ResultSet rs = connector.doQuery("SELECT balance FROM player WHERE id = " + id);
-		try {
-			if (!rs.first()) throw new Exception("id " + id + " findes ikke");
-			return (rs.getInt("account"));
-		}
-		catch (SQLException e) {throw new Exception(e); }
-	}
-
-	private void deleteTable(String game) throws Exception {
-		connector.doUpdate("drop table " + game);
-	}
-
-
-
-	public String toString(String s) {
-		String q = "";
-		try {
-			ResultSet rs = connector.doQuery(s);			
-			ResultSetMetaData rsmd = rs.getMetaData();
-			int columnsNumber = rsmd.getColumnCount();
-			while (rs.next()) {
-				for (int j = 1; j <= columnsNumber; j++) {
-					if (j > 1) {
-						System.out.print(" - ");
-						q += " - ";
-					}
-					String columnValue = rs.getString(j);
-					System.out.print(columnValue + " " + rsmd.getColumnName(j));
-					q += columnValue + " " + rsmd.getColumnName(j);
-				}
-				System.out.println("");
-				q += "\n";
-			}
-			System.out.println("");
-			q += "\n";
-			return q;
-		}catch (Exception e) {
-			System.out.println(e);
-			return "error";
-		}
-
-	} 
-
-
-	private void print(String query) {
-		try {
-			ResultSet rs = connector.doQuery(query);			
-			ResultSetMetaData rsmd = rs.getMetaData();
-			int columnsNumber = rsmd.getColumnCount();
-			System.out.println(query);
-			while (rs.next()) {
-				for (int j = 1; j <= columnsNumber; j++) {
-					if (j > 1) System.out.print(" - ");
-					String columnValue = rs.getString(j);
-					System.out.print(columnValue + " " + rsmd.getColumnName(j));
-				}
-				System.out.println("");
-			}
-			System.out.println("");
-		}catch (Exception e) {
-			System.out.println(e);
-		}
-	}
-
-	private void insert(Player p) throws Exception {
-		try {
-			connector.doUpdate("INSERT INTO Player(ID, name, account) "
-					+ "VALUES(" +p.getId()+ ", '" + p.getName() + "', " + p.getBalance() + ")" );
-		}
-		catch (SQLException e) {throw new Exception(e); }
-	}
-
-	private void createPlayerTable() throws Exception {
-		try {
-			connector.doUpdate("CREATE TABLE player ( id INTEGER PRIMARY KEY, name TEXT, account int(10))");
-		}
-		catch (SQLException e) {throw new Exception(e); }
-	}
-
-	private void createFieldsTable() throws Exception {
-		try {
-			connector.doUpdate("CREATE TABLE fields ( number INTEGER, title TEXT, player INTEGER, FOREIGN KEY(player) REFERENCES player (id))");
-		}
-		catch (SQLException e) {throw new Exception(e); }
-	}
-
-	public String activePlayerBalanceInGame(int i) throws SQLException{
-
-		String q = "";
-		try {
-			ResultSet rs = connector.doQuery("SELECT balance FROM player where gameid = " + i);
-			ResultSetMetaData rsmd = rs.getMetaData();
-			int columnsNumber = rsmd.getColumnCount();
-			while (rs.next()) {
-				for (int j = 1; j <= columnsNumber; j++) {
-					if (j > 1) {
-						q += ", ";
-					}
-					String columnValue = rs.getString(j);
-					//System.out.print(columnValue + " " + rsmd.getColumnName(j));
-					q += columnValue;// + " " + rsmd.getColumnName(j);
-				}
-				q += ", ";
-			}
-			return q;
-		}catch (Exception e) {
-			System.out.println(e);
-			return "error";
-		}
-
-	}
-
-	public String activePlayerposInGame(int i) throws SQLException{
-
-		String q = "";
-		try {
-			ResultSet rs = connector.doQuery("SELECT position FROM player where gameid = " + i);
-			ResultSetMetaData rsmd = rs.getMetaData();
-			int columnsNumber = rsmd.getColumnCount();
-			while (rs.next()) {
-				for (int j = 1; j <= columnsNumber; j++) {
-					if (j > 1) {
-						q += ", ";
-					}
-					String columnValue = rs.getString(j);
-					//System.out.print(columnValue + " " + rsmd.getColumnName(j));
-					q += columnValue;// + " " + rsmd.getColumnName(j);
-				}
-				q += ", ";
-			}
-			return q;
-		}catch (Exception e) {
-			System.out.println(e);
-			return "error";
-		}
-
-	}
-
-	public String allInfoActivePlayersInGame(int i) throws SQLException{
-
-		String q = "";
-		try {
-			ResultSet rs = connector.doQuery("SELECT * FROM player where gameid = " + i);
-			ResultSetMetaData rsmd = rs.getMetaData();
-			int columnsNumber = rsmd.getColumnCount();
-			while (rs.next()) {
-				for (int j = 1; j <= columnsNumber; j++) {
-					if (j > 1) {
-						q += " - ";
-					}
-					String columnValue = rs.getString(j);
-					//System.out.print(columnValue + " " + rsmd.getColumnName(j));
-					q += columnValue;// + " " + rsmd.getColumnName(j);
-				}
-				q += "\n";
-			}
-			q += "\n";
-			return q;
-		}catch (Exception e) {
-			System.out.println(e);
-			return "error";
-		}
-
-	}
-
-	public String[] getInfoArrayPlayer(int i) throws SQLException{
-
-		String[] q = new String[8];
-		try {
-			ResultSet rs = connector.doQuery("SELECT * FROM player where playerid = " + i);
-			ResultSetMetaData rsmd = rs.getMetaData();
-			int columnsNumber = rsmd.getColumnCount();
-			for (int j = 1; j <= columnsNumber; j++) {
-				q[j-1] = rs.getString(j);
-				System.out.print(columnsNumber); //Value + " " + rsmd.getColumnName(j));
-				//q += columnValue;// + " " + rsmd.getColumnName(j);
-			}
-		}catch (Exception e) {
-			System.out.println(e);
-		}
-		return q;
-
-	}
-
-
-
-
-
-
+	@Override
 	public ArrayList<String> activeGames() throws SQLException {
 
 		String q = "";
@@ -421,7 +333,7 @@ public class GameDAO implements IGameDAO {
 
 		try {
 			ResultSet rs = connector.doQuery("SELECT GameName FROM game");
-			ResultSetMetaData rsmd = rs.getMetaData();
+			java.sql.ResultSetMetaData rsmd = rs.getMetaData();
 			int columnsNumber = rsmd.getColumnCount();
 			while (rs.next()) {
 				for (int j = 1; j <= columnsNumber; j++) {
@@ -443,7 +355,7 @@ public class GameDAO implements IGameDAO {
 			return null;
 		}
 	}
-
+	@Override
 	public int getGameIdFromName(String str) throws Exception {
 
 		ResultSet rs = connector.doQuery("SELECT gameid FROM game WHERE gamename = '" + str + "';");
@@ -454,53 +366,4 @@ public class GameDAO implements IGameDAO {
 		catch (SQLException e) {throw new Exception(e); }
 	}
 
-	public ArrayList<String> getNames(int gameid) {
-		ArrayList<String> l = new ArrayList<>();
-		try {
-			ResultSet rs = connector.doQuery("SELECT playername from player where gameid = " + gameid);
-			ResultSetMetaData rsmd = rs.getMetaData();
-			int columnsNumber = rsmd.getColumnCount();
-			while (rs.next()) {
-				l.add(rs.getString(1));
-			}
-			return l;
-		}catch (Exception e) {
-			System.out.println(e);
-			return null;
-		}
-	}
-
-	public ArrayList<Integer> getPositionOfPlayers(int gameID) {
-		ArrayList<Integer> l = new ArrayList<>();
-		try {
-			ResultSet rs = connector.doQuery("SELECT position from car where gameid = " + gameID + ";");
-			while (rs.next()) {
-				int i = rs.getInt(1);
-				Integer o = (i);
-				l.add(o);
-			}
-			return l;
-		} catch (Exception e) {
-
-			System.out.println("SELECT playername from player where gameid = ... virker ikke " + e);
-			return null;
-		}
-	}
-
-	public ArrayList<Integer> getBalanceOfPlayers(int gameID) {
-		ArrayList<Integer> l = new ArrayList<>();
-		try {
-			ResultSet rs = connector.doQuery("SELECT balance from player where gameid = " + gameID + ";");
-			while (rs.next()) {
-				int i = rs.getInt(1);
-				Integer o = (i);
-				l.add(o);
-			}
-			return l;
-		} catch (Exception e) {
-
-			System.out.println("SELECT playername from player where gameid = ... virker ikke " + e);
-			return null;
-		}
-	}
 }

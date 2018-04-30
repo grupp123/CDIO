@@ -1,5 +1,4 @@
 package dk.dtu.compute.se.pisd.monopoly.mini;
-
 import java.awt.Color;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -8,9 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.swing.event.ListSelectionEvent;
-
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Card;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.IncomeTax;
@@ -23,7 +19,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 import dtu.database.Connector;
 import dtu.database.GameDAO;
 import gui_main.GUI;
-//opret branch
+
 /**
  * The overall controller of a Monopoly game. It provides access
  * to all basic actions and activities for the game. All other
@@ -73,12 +69,10 @@ public class GameController {
 
 	private static int CurrentMaxPlayerID;
 
-
-
 	/**
 	 * Constructor for a controller of a game.
 	 * 
-	 * @param game the game
+	 * @param game
 	 */
 	public GameController(Game game) {
 		super();
@@ -87,11 +81,7 @@ public class GameController {
 	}
 
 	/**
-	 * This method will be called when the game is started to create
-	 * the participating players. Right now, the creation of players
-	 * is hard-coded. But this should be done by interacting with 
-	 * the user.
-	 * @throws SQLException 
+	 * Choose to load a game or make a new one.
 	 */
 
 	public void chooseNewOrLoadGame() {
@@ -111,6 +101,11 @@ public class GameController {
 			}
 		}
 	}
+	
+	/**
+	 * Load game.
+	 * @throws Exception
+	 */
 
 	private void loadGame() throws Exception {
 		GameDAO dao = new GameDAO(c);
@@ -132,17 +127,19 @@ public class GameController {
 	}
 
 	private void createPlayers() throws SQLException {
-
-		//		CurrentMaxGameID = dg.getMaxGameID();
-		//		CurrentMaxPlayerID = jj.getMaxPlayerID();
 		CurrentMaxGameID = 0;
 		CurrentMaxPlayerID = 0;
-
-		//System.out.println("ses " + CurrentMaxGameID);
-
-		String gameName = gui.getUserString("Hvad vil du kalde dit spil?");
-		game.setGameName(gameName);		
-
+		//Navnet skal være på mindst 1 tegn
+		String regexMorethanZero =".+";
+		int y = 1;
+		do {
+			String gameName = gui.getUserString("Hvad vil du kalde dit spil? (mindst et tegn)");
+			game.setGameName(gameName);	
+			if(game.getGameName().matches(regexMorethanZero)){
+				y = 0;
+			}
+		}
+		while(y==1);
 
 		int numberofplayers ;
 		String valg = gui.getUserSelection("Vælg antal spillere", "2","3","4","5","6");
@@ -261,7 +258,6 @@ public class GameController {
 
 			}
 
-			// TODO offer all players the options to trade etc.
 			if (!player.isBroke()) {
 				trade(player);
 			}
@@ -278,9 +274,6 @@ public class GameController {
 					gui.showMessage("Rangordning for mest velhavende: "+ ranking.toString());
 					selection = gui.getUserSelection("Vil du gemme spillet?", "ja", "nej");
 					if (selection.equals("ja")) {
-						//--------complete method update---------//
-						//dao.update(game);
-						//TODO gem spillet
 					}
 					else {
 						gui.showMessage("Vinderen er: "+ranking.get(0).toString()+". Spillet lukkes når du trykker ok.");

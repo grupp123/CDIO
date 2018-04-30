@@ -73,8 +73,6 @@ public class GameController {
 
 	private static int CurrentMaxPlayerID;
 
-
-
 	/**
 	 * Constructor for a controller of a game.
 	 * 
@@ -133,15 +131,20 @@ public class GameController {
 
 	private void createPlayers() throws SQLException {
 
-		//		CurrentMaxGameID = dg.getMaxGameID();
-		//		CurrentMaxPlayerID = jj.getMaxPlayerID();
+		
 		CurrentMaxGameID = 0;
 		CurrentMaxPlayerID = 0;
-
-		//System.out.println("ses " + CurrentMaxGameID);
-
-		String gameName = gui.getUserString("Hvad vil du kalde dit spil?");
-		game.setGameName(gameName);		
+		//Navnet skal være på mindst 1 tegn
+		String regexMorethanZero =".+";
+		int y = 1;
+		do {
+			String gameName = gui.getUserString("Hvad vil du kalde dit spil? (mindst et tegn)");
+			game.setGameName(gameName);	
+			if(game.getGameName().matches(regexMorethanZero)){
+				y = 0;
+			}
+		}
+		while(y==1);
 
 
 		int numberofplayers ;

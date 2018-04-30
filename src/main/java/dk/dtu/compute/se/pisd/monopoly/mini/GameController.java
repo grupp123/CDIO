@@ -279,7 +279,7 @@ public class GameController {
 					selection = gui.getUserSelection("Vil du gemme spillet?", "ja", "nej");
 					if (selection.equals("ja")) {
 						//--------complete method update---------//
-						dao.update(game);
+						//dao.update(game);
 						//TODO gem spillet
 					}
 					else {
@@ -288,6 +288,7 @@ public class GameController {
 					terminated = true;
 				}
 			}
+			dao.update(game);
 		}
 
 		dispose();

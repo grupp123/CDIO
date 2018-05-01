@@ -64,37 +64,6 @@ public class View implements Observer {
 	 */
 	public View(Game game) {
 		this.game = game;
-		/*		this.gui = gui;
-		GUI_Field[] guiFields = gui.getFields();
-
-		int i = 0;
-		for (Space space: game.getSpaces()) {
-
-			space.
-			// TODO, here we assume that the games fields fit to the GUI's fields;
-			// the GUI fields should actually be created according to the games
-			// fields
-			//space2GuiField.put(space, guiFields[i++]);
-
-			// TODO wee should also register with the properties as observer; but
-			// the current version does not update anything for the spaces, so we do not
-			// register the view as an observer for now
-		}
-
-		// create the players in the GUI
-		for (Player player: game.getPlayers()) {
-			GUI_Car car = new GUI_Car(player.getColor(), Color.black, Type.CAR, Pattern.FILL);
-			GUI_Player guiPlayer = new GUI_Player(player.getName(), player.getBalance(), car);
-			player2GuiPlayer.put(player, guiPlayer);
-			gui.addPlayer(guiPlayer);
-			// player2position.put(player, 0);
-
-			// register this view with the player as an observer, in order to update the
-			// player's state in the GUI
-			player.attach(this);
-
-			updatePlayer(player);
-		}*/
 	}
 
 	@Override
@@ -145,12 +114,12 @@ public class View implements Observer {
 			} else if (player.isInPrison()) {
 				guiPlayer.setName(player.getName() + " (i fængsel)");
 			} else {
-				
+
 				guiPlayer.setName(player.getName());
 			}
 		}
 	}
-	
+
 	/**
 	 * Updates the realestate's state in the GUI (houses, hotel)
 	 * @param realEstate the realestate which is to be updated.
@@ -165,11 +134,11 @@ public class View implements Observer {
 				guiEstate.setHotel(false);
 				guiEstate.setHouses(houses);
 			}
-			
+
 			guiEstate.setRent(Integer.toString(realEstate.getRent()));
 		}
 	}
-	
+
 	/**
 	 * Updates the property's state in the GUI (Owner name and color and if mortgaged)
 	 * @param property the property which is to be updated.
@@ -194,6 +163,9 @@ public class View implements Observer {
 		}
 	}
 
+	/**
+	 * Method used to unregister all Subjects.
+	 */
 	void dispose() {
 		if (!disposed) {
 			disposed = true;
@@ -204,6 +176,10 @@ public class View implements Observer {
 		}
 	}
 
+	/**
+	 * Creates and initiallizes the fields, cards and players in the GUI.
+	 * @return the created GUI object
+	 */
 	public GUI createGUI() {
 
 		GUI_Field[] guiFields = new GUI_Field[game.getSpaces().size()];
@@ -219,7 +195,7 @@ public class View implements Observer {
 				guiFields[i] = gui_chance;
 				gui_chance.setBackGroundColor(space.getColor());
 				gui_chance.setDescription("Chancekort");
-				
+
 			} else if (space instanceof RealEstate) {
 				RealEstate realestate = (RealEstate) space; 
 				GUI_Street gui_street = new GUI_Street(realestate.getName(), "Pris : " + realestate.getCost() + "", "Husleje : " + realestate.getRent() + "", "husleje : " + realestate.getRent() + "", realestate.getColor(), Color.black);
@@ -273,51 +249,54 @@ public class View implements Observer {
 
 				}
 			}
-				space2GuiField.put(space, guiFields[i++]);
+			space2GuiField.put(space, guiFields[i++]);
 
-				// TODO we should also register with the properties as observer; but
-				// the current version does not update anything for the spaces, so we do not
-				// register the view as an observer for now
-				space.attach(this);
-			}
-
-			gui = new GUI(guiFields);
-
-			for (Player player: game.getPlayers()) {
-				GUI_Car car = new GUI_Car(player.getColor(), Color.black, Type.CAR, Pattern.FILL);
-				GUI_Player guiPlayer = new GUI_Player(player.getName(), player.getBalance(), car);
-				player2GuiPlayer.put(player, guiPlayer);
-				gui.addPlayer(guiPlayer);
-				// player2position.put(player, 0);
-
-				// register this view with the player as an observer, in order to update the
-				// player's state in the GUI
-				player.attach(this);
-
-
-
-
-			}
-			return gui;
+			// TODO we should also register with the properties as observer; but
+			// the current version does not update anything for the spaces, so we do not
+			// register the view as an observer for now
+			space.attach(this);
 		}
 
-		public void playerUpdate(){
+		gui = new GUI(guiFields);
 
-			for (Player player: game.getPlayers()) {
-				GUI_Car car = new GUI_Car(player.getColor(), Color.black, Type.CAR, Pattern.FILL);
-				GUI_Player guiPlayer = new GUI_Player(player.getName(), player.getBalance(), car);
-				player2GuiPlayer.put(player, guiPlayer);
-				System.out.println(guiPlayer + "\n" + player);
-				gui.addPlayer(guiPlayer);
-				// player2position.put(player, 0);
+		for (Player player: game.getPlayers()) {
+			GUI_Car car = new GUI_Car(player.getColor(), Color.black, Type.CAR, Pattern.FILL);
+			GUI_Player guiPlayer = new GUI_Player(player.getName(), player.getBalance(), car);
+			player2GuiPlayer.put(player, guiPlayer);
+			gui.addPlayer(guiPlayer);
+			// player2position.put(player, 0);
 
-				// register this view with the player as an observer, in order to update the
-				// player's state in the GUI
-				player.attach(this);
-
-				updatePlayer(player);
+			// register this view with the player as an observer, in order to update the
+			// player's state in the GUI
+			player.attach(this);
 
 
-			}
+
+
+		}
+		return gui;
+	}
+
+	/**
+	 * Updates the players in the GUI.
+	 */
+	public void playerUpdate(){
+
+		for (Player player: game.getPlayers()) {
+			GUI_Car car = new GUI_Car(player.getColor(), Color.black, Type.CAR, Pattern.FILL);
+			GUI_Player guiPlayer = new GUI_Player(player.getName(), player.getBalance(), car);
+			player2GuiPlayer.put(player, guiPlayer);
+			System.out.println(guiPlayer + "\n" + player);
+			gui.addPlayer(guiPlayer);
+			// player2position.put(player, 0);
+
+			// register this view with the player as an observer, in order to update the
+			// player's state in the GUI
+			player.attach(this);
+
+			updatePlayer(player);
+
+
 		}
 	}
+}

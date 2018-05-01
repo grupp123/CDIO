@@ -130,6 +130,10 @@ public class GameController {
 		
 	}
 
+	/**
+	 * Creates the players for the game based on user input.
+	 * @throws SQLException
+	 */
 	private void createPlayers() throws SQLException {
 		CurrentMaxGameID = 0;
 		CurrentMaxPlayerID = 0;
@@ -1065,9 +1069,9 @@ public class GameController {
 
 	/**
 	 * Used to check weather the player owns all the streets of same colorgroup
-	 * @param properties
-	 * @param colorGroup
-	 * @return
+	 * @param properties the players owned properties
+	 * @param colorGroup the color of the group
+	 * @return <code>true</code> if colorgroup is complete, if not then <code>false</code>.
 	 */
 	private boolean isColorgroupComplete (Set<Property> properties, Color colorGroup) {
 		int count = 0;
@@ -1092,9 +1096,9 @@ public class GameController {
 	}
 
 	/**
-	 * 
-	 * @param players
-	 * @return
+	 * Method used to get a ranked list of the players based on their assets. Highest score at first index.
+	 * @param players a list of the players to be ranked.
+	 * @return a ranked list of players, from highest to lowest score.
 	 */
 	public List<Player> playerRanking(List<Player> players) {
 		List<Player> ranking = new ArrayList<Player>();

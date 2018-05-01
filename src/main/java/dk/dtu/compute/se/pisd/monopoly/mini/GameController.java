@@ -110,6 +110,9 @@ public class GameController {
 	private void loadGame() throws Exception {
 		GameDAO dao = new GameDAO(c);
 		ArrayList<String> spil = dao.activeGames();
+		if (spil.size()==0) {
+			createPlayers();
+		}
 		String[] spilstr = new String[spil.size()];
 		
 		for (int i = 0; i < spil.size(); i++) {

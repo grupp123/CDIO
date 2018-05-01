@@ -5,6 +5,11 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Card;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeException;
 
+/**
+ * Represents the move back chance card from the Matador boardgame.
+ * @author 
+ *
+ */
 public class CardMoveBack extends Card{
 
 

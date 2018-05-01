@@ -634,7 +634,6 @@ public class GameController {
 	public void auction(Property property) {
 		int currentBid = property.getCost()/2;
 		int minNextBid = 100;
-		boolean isABid = false;
 		Player auctionWinner;
 		List<Player> bidders = new ArrayList<Player>();
 		gui.showMessage("Der afholdes en auktion for: "+property.getName());

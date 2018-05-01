@@ -19,13 +19,13 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeExceptio
  *
  */
 public class Space extends Subject {
-	
+
 	private String name;
-	
+
 	private int index;
-	
+
 	private Color color = Color.gray;
-	
+
 	/**
 	 * Returns the space's name.
 	 * 
@@ -53,7 +53,7 @@ public class Space extends Subject {
 	public int getIndex() {
 		return index;
 	}
-	
+
 	/**
 	 * Sets the index of the space in the game.
 	 * 
@@ -63,7 +63,7 @@ public class Space extends Subject {
 		this.index = index;
 		notifyChange();
 	}
-	
+
 	/**
 	 * The action taken when a player arrives on that fields
 	 * 
@@ -74,10 +74,19 @@ public class Space extends Subject {
 	public void doAction(GameController controller, Player player) throws PlayerBrokeException {
 		// per default there is no action for a space
 	};
-	
+
+	/**
+	 * Returns the Color of the field.
+	 * @return the <code>Color</code> of the field.
+	 */
 	public Color getColor() {
 		return color;
 	}
+	
+	/**
+	 * Sets the Color of the field.
+	 * @param color <code>Color</code> of the field.
+	 */
 	public void setColor(Color color) {
 		this.color = color;
 	}

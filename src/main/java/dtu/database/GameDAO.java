@@ -67,7 +67,7 @@ public class GameDAO implements IGameDAO {
 				}
 				}
 			
-			
+			con.commit();
 			con.setAutoCommit(true);
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -138,7 +138,7 @@ public class GameDAO implements IGameDAO {
 					connector.doUpdate("update properties set houses = " + numberhouses + " where gameID = " + gid + " And spaceNumber = " + spaceNumber + ";");
 				}
 				}
-				
+			con.commit();	
 			con.setAutoCommit(true);
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -323,7 +323,7 @@ public class GameDAO implements IGameDAO {
 					
 				}
 			}
-			
+			con.commit();
 			con.setAutoCommit(true);
 			
 		}catch(Exception e) {

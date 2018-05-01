@@ -4,7 +4,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
 
 /**
  * Represents the start/go field from the Matador gameboard.
- * @author 
+ * @author Jacob Jørgensen
  *
  */
 public class Go extends Space {

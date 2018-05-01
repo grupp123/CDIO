@@ -322,7 +322,7 @@ public class Player extends Subject {
 		int totalAmount = balance;
 		for(Property property : ownedProperties)
 		{
-			totalAmount += property.getCost();
+			totalAmount += property.getCost()/2;
 			
 			if (property instanceof RealEstate) {
 				RealEstate estate = (RealEstate) property;

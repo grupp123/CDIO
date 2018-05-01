@@ -98,7 +98,7 @@ public class GameDAO implements IGameDAO {
 				//List<Card> jailc = p.getOwnedCards();
 				int jailCard = p.getOwnedCards().size();
 				int jailTime = p.getPrisonTime();
-				connector.doUpdate("update player set hasLost = " + hasLost + ", balance = " + balance + ", inJail = " + inJail + ", jailCard = " + jailCard + ", jailTime = " + jailTime + " where gameID = " + gid + " and playerID = " + id + ";");
+				connector.doUpdate("call update_player("+hasLost+","+balance+","+inJail+","+jailCard+","+jailTime+","+gid+","+id+");");
 				}
 			//nu opdateres car-tabellen og det eneste der skal 
 			//opdateres løbende er position

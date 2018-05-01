@@ -125,10 +125,12 @@ public class GameDAO implements IGameDAO {
 						int spaceNumber = prop.getIndex();
 						int gid = game.getGameID();
 						boolean mortgaged = prop.isMortgaged();
+						int houses = 0;
+						
 												
 						//Følgende sql sætning virker i workbench
 						//update properties set ownerP=0, spaceNumber=0, Mortagaged=true where gameid=1;
-						connector.doUpdate("update properties set ownerP = " + pid  +  ", mortagaged = " + mortgaged + " where gameID = " + gid + " And spaceNumber = " + spaceNumber + ";");
+						connector.doUpdate("call update_properties("+pid+","+mortgaged+","+gid+","+spaceNumber+");");
 					}	
 				}
 				if(current instanceof RealEstate) {

@@ -3,6 +3,7 @@ package dk.dtu.compute.se.pisd.monopoly.mini.model.properties;
 import java.awt.Color;
 
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Property;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.HousesOnRealEstateException;
 
 /**
  * A specific property, which represents real estate on which houses
@@ -69,12 +70,12 @@ public class RealEstate extends Property{
 	/**
 	 * Adds a house to the field (if possible).
 	 */
-	public void addHouse() {
+	public void addHouse() throws HousesOnRealEstateException{
 		houses++;
 		developped = true;
 		if (houses > MAX_HOUSES) {
-			//TODO evt en exception?
 			houses = MAX_HOUSES;
+			throw new HousesOnRealEstateException(this);
 		}
 		setRent(rentLevels[houses]);
 		notifyChange();
@@ -91,11 +92,11 @@ public class RealEstate extends Property{
 	/**
 	 * Removes a house from the field (if possible).
 	 */
-	public void removeHouse() {
+	public void removeHouse() throws HousesOnRealEstateException {
 		houses--;
 		if (houses < 0) {
-			//TODO exception
 			houses = 0;
+			throw new HousesOnRealEstateException(this);
 		}
 		if (houses == 0)
 			developped = false;

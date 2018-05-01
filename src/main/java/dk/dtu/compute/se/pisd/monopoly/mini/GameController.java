@@ -14,6 +14,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Property;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardBail;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.HousesOnRealEstateException;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.NoHousesAvailableException;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeException;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
@@ -896,6 +897,9 @@ public class GameController {
 				e.printStackTrace();
 				gui.showMessage("Der er ikke flere ledige bygninger, prøv igen senere.");
 				paymentFromBank(buyer, chosenProperty.getHousePrice());
+			} catch (HousesOnRealEstateException e) {
+				e.printStackTrace();
+				gui.showMessage("Det er ikke muligt at bygge flere huse på grunden!");
 			}
 			
 		}
@@ -956,7 +960,6 @@ public class GameController {
 			if (property instanceof RealEstate) {
 				if (((RealEstate)property).isDevelopped())
 					undevelopableProperties.put(property.getName(),property);
-				//TODO tjek for om man har alle grunde af samme farve.
 			}	
 		}
 
@@ -968,7 +971,13 @@ public class GameController {
 		RealEstate chosenProperty = (RealEstate)pickProperty(undevelopableProperties, "Vælg den grund du vil uudvikle.");
 
 		if (chosenProperty != null) {
-			chosenProperty.removeHouse();
+			try {
+				chosenProperty.removeHouse();
+			} catch (HousesOnRealEstateException e) {
+				e.printStackTrace();
+				gui.showMessage("Det er ikke muligt at fjerne flere huse fra grunden!");
+				return;
+			}
 			paymentFromBank(seller, chosenProperty.getHousePrice());
 		}
 

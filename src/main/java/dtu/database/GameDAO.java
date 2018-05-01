@@ -302,10 +302,24 @@ public class GameDAO implements IGameDAO {
 				
 				
 					//hent antal huse
-					rs = connector.doQuery("Select houses from properties where spaceNumber = " + space.getIndex() + " and gameID = " + gameID + ";");
-					while(rs.next()) {
-						int houses = rs.getInt(1);
+					int houses = 0;
+					if(space instanceof RealEstate) {
+						rs = connector.doQuery("Select houses from properties where spaceNumber = " + space.getIndex() + " and gameID = " + gameID + ";");
+						while(rs.next()) {
+							houses = rs.getInt(1);
+						}
+						((RealEstate) space).setHouses(houses);
+				
 					}
+					
+					//hent mortagaged
+					boolean mort = false;
+					rs = connector.doQuery("Select mortagaged from properties where spaceNumber = " + space.getIndex() + " and gameID = " + gameID + ";");
+					while(rs.next()) {
+						mort = rs.getBoolean(1);
+					}
+					((Property) space).setMortgaged(mort);
+					
 					
 				}
 			}

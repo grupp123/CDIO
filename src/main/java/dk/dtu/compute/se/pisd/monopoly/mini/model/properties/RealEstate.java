@@ -58,6 +58,9 @@ public class RealEstate extends Property{
 		setRent(rentLevels[houses]);
 		notifyChange();
 	}
+	public void setHouses(int houses) {
+		this.houses = houses;
+	}
 	
 	public void removeHouse() {
 		houses--;

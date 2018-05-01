@@ -124,10 +124,14 @@ public class GameDAO implements IGameDAO {
 						int spaceNumber = prop.getIndex();
 						int gid = game.getGameID();
 						boolean mortgaged = prop.isMortgaged();
+						int houses = 0;
+						if(prop instanceof RealEstate) {
+							houses = ((RealEstate) prop).getHouses();
+						}
 												
 						//Følgende sql sætning virker i workbench
 						//update properties set ownerP=0, spaceNumber=0, Mortagaged=true where gameid=1;
-						connector.doUpdate("update properties set ownerP = " + pid  +  ", mortagaged = " + mortgaged + " where gameID = " + gid + " And spaceNumber = " + spaceNumber + ";");
+						connector.doUpdate("update properties set ownerP = " + pid  +  ", mortagaged = " + mortgaged + ", houses = " + houses + " where gameID = " + gid + " And spaceNumber = " + spaceNumber + ";");
 					}	
 				}
 				if(current instanceof RealEstate) {

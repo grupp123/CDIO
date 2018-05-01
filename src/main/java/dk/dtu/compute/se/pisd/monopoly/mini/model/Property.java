@@ -10,30 +10,48 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeExceptio
  *
  */
 public class Property extends Space {
-	
+
 	private int cost;
 	private int rent;
-	
+
 	private boolean mortgaged;
 	private int mortageValue;
-	
+
 	private Player owner;
-	
-	
+
+	/**
+	 * Returns the boolean value representing whether or not the property is mortgaged.
+	 * @return <code>true</code> if mortgaged, if not then <code>false</code>.
+	 */
 	public boolean isMortgaged() {
 		return mortgaged;
 	}
-	public void setMortgaged(boolean mortaged) {
-		this.mortgaged = mortaged;
+	
+	/**
+	 * Sets the boolean value representing whether or not the property is mortgaged.
+	 * @param mortgaged <code>true</code> if mortgaged, if not then <code>false</code>.
+	 */
+	public void setMortgaged(boolean mortgaged) {
+		this.mortgaged = mortgaged;
 		notifyChange();
 	}
+	
+	/**
+	 * Returns the mortgage value of the property.
+	 * @return the mortgage value as int.
+	 */
 	public int getMortgageValue() {
 		return mortageValue;
 	}
+	
+	/**
+	 * Sets the mortgage value of the property.
+	 * @param mortageValue the mortgage value.
+	 */
 	public void setMortgageValue(int mortageValue) {
 		this.mortageValue = mortageValue;
 	}
-	
+
 
 	/**
 	 * Returns the cost of this property.
@@ -107,7 +125,7 @@ public class Property extends Space {
 				controller.payment(player, rent, owner);
 			}
 		}
-		
+
 	}
 
 }

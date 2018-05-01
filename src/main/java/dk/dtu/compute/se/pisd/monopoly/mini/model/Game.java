@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 
 import dk.dtu.compute.se.pisd.designpatterns.Subject;
-import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.NoHotelAvailableException;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.NoHousesAvailableException;
 
 /**
@@ -18,50 +17,63 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.NoHousesAvailableEx
  *
  */
 public class Game extends Subject {
-	
+
 	private List<Space> spaces = new ArrayList<Space>();
-	
+
 	private List<Card> cardDeck = new ArrayList<Card>();
-	
+
 	private List<Player> players = new ArrayList<Player>();
-	
+
 	private int gameID;
-	
+
 	private String gameName;
 
 	private Player current;
-	
+
 	private final int PASSEDSTARTMONEY = 4000;
 
 	public final int MAX_HOUSES = 52;
-	
+
 	public final int JAIL_BAIL_PRICE = 1000;
-	
+
 	public final int MAX_PRISON_TIME = 3;
-	
+
 	private int houses;
-	
-	private int hotels;
-	
-	
-	
+
+
+	/**
+	 * Returns the gameID used in the database.
+	 * @return the <code>int</code> gameID.
+	 */
 	public int getGameID() {
 		return gameID;
 	}
 
+	/**
+	 * Used to set the gameID used in the database.
+	 * @param gameID the game's id integer.
+	 */
 	public void setGameID(int gameID) {
 		this.gameID = gameID;
 	}
-	
+
+	/**
+	 * Returns the name of the game (gameName)
+	 * @return <code>String</code> the game's name.
+	 */
 	public String getGameName() {
 		return gameName;
 	}
-	
+
+	/**
+	 * Used to set the name of the game (gamename).
+	 * @param gameName the game's name.
+	 */
 	public void setGameName(String gameName) {
 		this.gameName = gameName;
 	}
 
-	
+
 	/**
 	 * Returns the amount players receive upon passing start
 	 * 
@@ -91,7 +103,7 @@ public class Game extends Subject {
 		this.spaces = new ArrayList<Space>(spaces);
 		notifyChange();
 	}
-	
+
 	/**
 	 * Adds a space to the game at the end.
 	 * 
@@ -111,7 +123,7 @@ public class Game extends Subject {
 	public List<Card> getCardDeck() {
 		return Collections.unmodifiableList(cardDeck);
 	}
-	
+
 	/**
 	 * Removes the topmost card from the deck and returns it.
 	 * 
@@ -122,9 +134,9 @@ public class Game extends Subject {
 		Card card = cardDeck.remove(0);
 		notifyChange();
 		return card;
-		
+
 	}
-	
+
 	/**
 	 * Add the given card to the bottom of the deck.
 	 * 
@@ -146,7 +158,7 @@ public class Game extends Subject {
 		this.cardDeck = new ArrayList<Card>(cardDeck);
 		notifyChange();
 	}
-	
+
 
 	/**
 	 * Shuffles the cards in the deck.
@@ -178,7 +190,7 @@ public class Game extends Subject {
 		this.players = new ArrayList<Player>(players);
 		notifyChange();
 	}
-	
+
 	/**
 	 * Adds a player to the game.
 	 * 
@@ -188,7 +200,7 @@ public class Game extends Subject {
 		players.add(player);
 		notifyChange();
 	}
-	
+
 	/**
 	 * Returns the current player of the game. This is the player
 	 * who's turn it is to do the next move (or currently is doing a move).
@@ -201,7 +213,7 @@ public class Game extends Subject {
 		}
 		return current;
 	}
-	
+
 	/**
 	 * Sets the current player. It is required that the player is a
 	 * player of the game already; otherwise an IllegalArumentException
@@ -221,7 +233,7 @@ public class Game extends Subject {
 	public int getHouses() {
 		return houses;
 	}
-	
+
 	/**
 	 * Adds the given number of houses to the house count in the game.
 	 * 
@@ -236,11 +248,14 @@ public class Game extends Subject {
 			throw new NoHousesAvailableException(this);
 		}
 	}
-	
+
+	/**
+	 * Removes card at index 20. This will only work if it was deliberately inserted at index 20 before the cards are shuffled.
+	 */
 	public void removeJailCard() {
 		cardDeck.remove(20);
 	}
-	
-	
+
+
 
 }

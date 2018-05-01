@@ -22,39 +22,46 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
  *
  */
 public class Player extends Subject {
-	
+
 	private int _throw;
-	
-	
+
+
 	private int id;
-	
+
 	private String name;
-	
+
 	private Color color;
-	
+
 	private Space currentPosition;
-	
+
 	private int balance = 30000;
-	
+
 	private boolean inPrison = false;
-	
+
 	private int prisonTime = 0;
-	
+
 	private boolean broke = false;
-	
+
 	private Set<Property> ownedProperties = new HashSet<Property>();
-	
+
 	private List<Card> ownedCards = new ArrayList<Card>();
 
-	
+
+	/**
+	 * Increases the player's prison time by one.
+	 */
 	public void addPrisonTime() {
 		prisonTime++;
 	}
-	
+
+	/**
+	 * Returns the player's amount of consecutive rounds in prison.
+	 * @return the amount of rounds as int.
+	 */
 	public int getPrisonTime() {
 		return this.prisonTime;
 	}
-	
+
 	/**
 	 * Returns the name of the player.
 	 * 
@@ -130,7 +137,7 @@ public class Player extends Subject {
 		this.balance = balance;
 		notifyChange();
 	}
-	
+
 	/**
 	 * Adds the given amount to the balance of the player.
 	 * 
@@ -140,7 +147,7 @@ public class Player extends Subject {
 		balance = balance + amount;
 		notifyChange();
 	}
-	
+
 	/**
 	 * Removes the given amount from the balance of the player.
 	 * 
@@ -172,7 +179,7 @@ public class Player extends Subject {
 		this.ownedProperties = new HashSet<Property>(ownedProperties);
 		notifyChange();
 	}
-	
+
 	/**
 	 * Adds a property to the list of currently owned properties.
 	 * 
@@ -183,7 +190,7 @@ public class Player extends Subject {
 		property.setOwner(this);
 		notifyChange();
 	}
-	
+
 	/**
 	 * Removes a property from the list of currently owned properties.
 	 * 
@@ -196,7 +203,7 @@ public class Player extends Subject {
 		notifyChange();
 		return result;
 	}
-	
+
 	/**
 	 * Removes all properties from the player.
 	 */
@@ -204,7 +211,7 @@ public class Player extends Subject {
 		ownedProperties.clear();
 		notifyChange();
 	}
-	
+
 
 	/**
 	 * Returns a list of all cards currently owned by the player as
@@ -226,7 +233,7 @@ public class Player extends Subject {
 		this.ownedCards = new ArrayList<Card>(ownedCards);
 		notifyChange();
 	}
-	
+
 	/**
 	 * Adds a card to the owned cards
 	 * 
@@ -236,7 +243,7 @@ public class Player extends Subject {
 		this.ownedCards.add(card);
 		notifyChange();
 	}
-	
+
 	/**
 	 * Removes a card from the owned cards.
 	 * 
@@ -297,23 +304,38 @@ public class Player extends Subject {
 		}
 	}
 
+	/**
+	 * Returns the player's id.
+	 * @return player id.
+	 */
 	public int getId() {
 		return id;
 	}
-	
 
+	/**
+	 * Sets the player's id.
+	 * @param id the player's id.
+	 */
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
+	/**
+	 * Returns the player's last dice throw's value.
+	 * @return the player's last throw as int.
+	 */
 	public int get_throw() {
 		return _throw;
 	}
 
+	/**
+	 * Sets the player's last dice throw value.
+	 * @param _throw the player's throw.
+	 */
 	public void set_throw(int _throw) {
 		this._throw = _throw;
 	}
-	
+
 	/**
 	 * Returns the total value of all the player's assets (houses, hotels, properties, cash).
 	 * @return total value of assets.
@@ -323,7 +345,7 @@ public class Player extends Subject {
 		for(Property property : ownedProperties)
 		{
 			totalAmount += property.getCost()/2;
-			
+
 			if (property instanceof RealEstate) {
 				RealEstate estate = (RealEstate) property;
 				totalAmount += estate.getHouses()*estate.getHousePrice();
@@ -338,11 +360,15 @@ public class Player extends Subject {
 		return st;
 	}
 
+	/**
+	 * Sets the player's consecutive amount of rounds in prison.
+	 * @param jailTime rounds in prison.
+	 */
 	public void setPrisonTime(int jailTime) {
 		prisonTime = jailTime;
-		
+
 	}
-	
-	
+
+
 
 }

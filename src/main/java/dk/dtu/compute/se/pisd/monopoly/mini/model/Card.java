@@ -14,7 +14,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeExceptio
 public abstract class Card {
 
 	private String text;
-	
+
 	/**
 	 * Returns the text of this card.
 	 * 
@@ -23,7 +23,7 @@ public abstract class Card {
 	public String getText() {
 		return text;
 	}
-	
+
 	/**
 	 * Changes the text of this card.
 	 * 
@@ -32,7 +32,7 @@ public abstract class Card {
 	public void setText(String text) {
 		this.text = text;
 	}
-	
+
 	/**
 	 * The action involved with this card.
 	 * 

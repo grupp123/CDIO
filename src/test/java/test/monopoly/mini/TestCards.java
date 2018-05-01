@@ -57,194 +57,194 @@ public class TestCards {
 	//set en current position
 	//teste hvilken rederi som er tættest på spilleren
 	//det han skal rykke til når han trækker kortet
-//	@Test
-//	public void testCardNearestShip() {
-//		nearestShip = new CardNearestShip();
-//		nearestShip.setText("Ryk brikken frem til det nærmeste rederi og betal ejeren to gange den leje, han ellers er berettiget til. Hvis selskabet ikke ejes af nogen kan De købe det af banken");
-//		List<Card> cards = new ArrayList<Card>();
-//		cards.add(nearestShip);
-//		game.setCardDeck(cards);
-//		
-//		int[] expecteds = new int[] {5,15,25,25,35,5};
-//		int[] actuals = new int[expecteds.length];
-//		
-//		try {
-//			controller.moveToSpace(player, game.getSpaces().get(2));
-//		} catch (PlayerBrokeException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		actuals[0] = player.getCurrentPosition().getIndex();
-//		
-//		try {
-//			controller.moveToSpace(player, game.getSpaces().get(7));
-//		} catch (PlayerBrokeException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		actuals[1] = player.getCurrentPosition().getIndex();
-//		
-//		try {
-//			controller.moveToSpace(player, game.getSpaces().get(17));
-//		} catch (PlayerBrokeException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		actuals[2] = player.getCurrentPosition().getIndex();
-//		
-//		try {
-//			controller.moveToSpace(player, game.getSpaces().get(22));
-//		} catch (PlayerBrokeException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		actuals[3] = player.getCurrentPosition().getIndex();
-//		
-//		try {
-//			controller.moveToSpace(player, game.getSpaces().get(33));
-//		} catch (PlayerBrokeException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		actuals[4] = player.getCurrentPosition().getIndex();
-//		
-//		try {
-//			controller.moveToSpace(player, game.getSpaces().get(36));
-//		} catch (PlayerBrokeException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		actuals[5] = player.getCurrentPosition().getIndex();
-//		
-//		assertArrayEquals(expecteds, actuals);
-//	}
-//	
-//	@Test
-//	public void testCardPayForAmountPropertiesHotelWithoutHouses() {
-//		CardPayForAmountPropertiesHotel cardPayHotel = new CardPayForAmountPropertiesHotel();
-//		cardPayHotel.setText("Oliepriserne er steget, og De skal betale: kr. 500 pr. hus, kr. 2.000 per. hotel");
-//		cardPayHotel.setAmountPerHotel(2000);
-//		cardPayHotel.setAmountPerHouse(500);
-//		List<Card> cards = new ArrayList<Card>();
-//		cards.add(cardPayHotel);
-//		
-//		CardPayForAmountPropertiesHotel propTax = new CardPayForAmountPropertiesHotel();
-//		propTax.setText("Ejendomsskatterne er steget, ekstraudgifterne er: kr. 800 pr. hus, kr. 2.300 per hotel");
-//		propTax.setAmountPerHotel(2300);
-//		propTax.setAmountPerHouse(800);
-//		cards.add(propTax);
-//		
-//		game.setCardDeck(cards);
-//		
-//		int[] expecteds = new int[] {30000,30000};
-//		int[] actuals = new int[expecteds.length];
-//		
-//		try {
-//			controller.takeChanceCard(player);
-//		} catch (PlayerBrokeException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		actuals[0] = player.getBalance();
-//		
-//		try {
-//			controller.takeChanceCard(player);
-//		} catch (PlayerBrokeException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		actuals[1] = player.getBalance();
-//				
-//		assertArrayEquals(expecteds, actuals);
-//	}
-//	
-//
-//	@Test
-//	public void testCardPayForAmountPropertiesHotelWithHouses() {
-//		
-//		CardPayForAmountPropertiesHotel cardPayHotel = new CardPayForAmountPropertiesHotel();
-//		cardPayHotel.setText("Oliepriserne er steget, og De skal betale: kr. 500 pr. hus, kr. 2.000 per. hotel");
-//		cardPayHotel.setAmountPerHotel(2000);
-//		cardPayHotel.setAmountPerHouse(500);
-//		
-//		CardPayForAmountPropertiesHotel propTax = new CardPayForAmountPropertiesHotel();
-//		propTax.setText("Ejendomsskatterne er steget, ekstraudgifterne er: kr. 800 pr. hus, kr. 2.300 per hotel");
-//		propTax.setAmountPerHotel(2300);
-//		propTax.setAmountPerHouse(800);
-//		
-//		RealEstate r1 = new RealEstate();
-//		r1.setName("Roskildevej");
-//		r1.setCost(2000);
-//		r1.setRent(100);
-//		r1.setRentLevels(new int[] {100,600,1800,5400,8000,11000});
-//		r1.setHousePrice(1000);
-//		r1.setColor(Color.cyan);
-//		//game.addSpace(r1);
-//		
-//		RealEstate r2 = new RealEstate();
-//		r2.setName("Valby Langgade");
-//		r2.setCost(2000);
-//		r2.setRent(100);
-//		r2.setRentLevels(new int[] {100,600,1800,5400,8000,11000});
-//		r2.setHousePrice(1000);
-//		r2.setColor(Color.cyan);
-//		//game.addSpace(r2);
-//		
-//		RealEstate r3 = new RealEstate();
-//		r3.setName("Allégade");
-//		r3.setCost(2400);
-//		r3.setRent(150);
-//		r3.setRentLevels(new int[] {150,800,2000,6000,9000,12000});
-//		r3.setHousePrice(1000);
-//		r3.setColor(Color.cyan);
-//		//game.addSpace(r3);
-//		
-//		int[] expecteds = new int[] {22000,5500};
-//		int[] actuals = new int[expecteds.length];
-//		
-//		try {
-//			player.addOwnedProperty(r1);
-//			player.addOwnedProperty(r2);
-//			player.addOwnedProperty(r3);
-//			
-//			r1.addHouse();
-//			r1.addHouse();
-//			r1.addHouse();
-//			r1.addHouse();
-//			r1.addHouse();
-//			
-//			r2.addHouse();
-//			r2.addHouse();
-//			r2.addHouse();
-//			r2.addHouse();
-//			r2.addHouse();
-//			
-//			cardPayHotel.doAction(controller, player);
-//			
-//		} catch (PlayerBrokeException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		actuals[0] = player.getBalance();
-//		
-//		try {
-//			r3.addHouse();
-//			r3.addHouse();
-//			r3.addHouse();
-//			r3.addHouse();
-//			r3.addHouse();
-//			
-//			
-//			propTax.doAction(controller, player);
-//			
-//		} catch (PlayerBrokeException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		actuals[1] = player.getBalance();
-//				
-//		assertArrayEquals(expecteds, actuals);
-//	}
+	@Test
+	public void testCardNearestShip() {
+		nearestShip = new CardNearestShip();
+		nearestShip.setText("Ryk brikken frem til det nærmeste rederi og betal ejeren to gange den leje, han ellers er berettiget til. Hvis selskabet ikke ejes af nogen kan De købe det af banken");
+		List<Card> cards = new ArrayList<Card>();
+		cards.add(nearestShip);
+		game.setCardDeck(cards);
+		
+		int[] expecteds = new int[] {5,15,25,25,35,5};
+		int[] actuals = new int[expecteds.length];
+		
+		try {
+			controller.moveToSpace(player, game.getSpaces().get(2));
+		} catch (PlayerBrokeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		actuals[0] = player.getCurrentPosition().getIndex();
+		
+		try {
+			controller.moveToSpace(player, game.getSpaces().get(7));
+		} catch (PlayerBrokeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		actuals[1] = player.getCurrentPosition().getIndex();
+		
+		try {
+			controller.moveToSpace(player, game.getSpaces().get(17));
+		} catch (PlayerBrokeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		actuals[2] = player.getCurrentPosition().getIndex();
+		
+		try {
+			controller.moveToSpace(player, game.getSpaces().get(22));
+		} catch (PlayerBrokeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		actuals[3] = player.getCurrentPosition().getIndex();
+		
+		try {
+			controller.moveToSpace(player, game.getSpaces().get(33));
+		} catch (PlayerBrokeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		actuals[4] = player.getCurrentPosition().getIndex();
+		
+		try {
+			controller.moveToSpace(player, game.getSpaces().get(36));
+		} catch (PlayerBrokeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		actuals[5] = player.getCurrentPosition().getIndex();
+		
+		assertArrayEquals(expecteds, actuals);
+	}
+	
+	@Test
+	public void testCardPayForAmountPropertiesHotelWithoutHouses() {
+		CardPayForAmountPropertiesHotel cardPayHotel = new CardPayForAmountPropertiesHotel();
+		cardPayHotel.setText("Oliepriserne er steget, og De skal betale: kr. 500 pr. hus, kr. 2.000 per. hotel");
+		cardPayHotel.setAmountPerHotel(2000);
+		cardPayHotel.setAmountPerHouse(500);
+		List<Card> cards = new ArrayList<Card>();
+		cards.add(cardPayHotel);
+		
+		CardPayForAmountPropertiesHotel propTax = new CardPayForAmountPropertiesHotel();
+		propTax.setText("Ejendomsskatterne er steget, ekstraudgifterne er: kr. 800 pr. hus, kr. 2.300 per hotel");
+		propTax.setAmountPerHotel(2300);
+		propTax.setAmountPerHouse(800);
+		cards.add(propTax);
+		
+		game.setCardDeck(cards);
+		
+		int[] expecteds = new int[] {30000,30000};
+		int[] actuals = new int[expecteds.length];
+		
+		try {
+			controller.takeChanceCard(player);
+		} catch (PlayerBrokeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		actuals[0] = player.getBalance();
+		
+		try {
+			controller.takeChanceCard(player);
+		} catch (PlayerBrokeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		actuals[1] = player.getBalance();
+				
+		assertArrayEquals(expecteds, actuals);
+	}
+	
+
+	@Test
+	public void testCardPayForAmountPropertiesHotelWithHouses() {
+		
+		CardPayForAmountPropertiesHotel cardPayHotel = new CardPayForAmountPropertiesHotel();
+		cardPayHotel.setText("Oliepriserne er steget, og De skal betale: kr. 500 pr. hus, kr. 2.000 per. hotel");
+		cardPayHotel.setAmountPerHotel(2000);
+		cardPayHotel.setAmountPerHouse(500);
+		
+		CardPayForAmountPropertiesHotel propTax = new CardPayForAmountPropertiesHotel();
+		propTax.setText("Ejendomsskatterne er steget, ekstraudgifterne er: kr. 800 pr. hus, kr. 2.300 per hotel");
+		propTax.setAmountPerHotel(2300);
+		propTax.setAmountPerHouse(800);
+		
+		RealEstate r1 = new RealEstate();
+		r1.setName("Roskildevej");
+		r1.setCost(2000);
+		r1.setRent(100);
+		r1.setRentLevels(new int[] {100,600,1800,5400,8000,11000});
+		r1.setHousePrice(1000);
+		r1.setColor(Color.cyan);
+		//game.addSpace(r1);
+		
+		RealEstate r2 = new RealEstate();
+		r2.setName("Valby Langgade");
+		r2.setCost(2000);
+		r2.setRent(100);
+		r2.setRentLevels(new int[] {100,600,1800,5400,8000,11000});
+		r2.setHousePrice(1000);
+		r2.setColor(Color.cyan);
+		//game.addSpace(r2);
+		
+		RealEstate r3 = new RealEstate();
+		r3.setName("Allégade");
+		r3.setCost(2400);
+		r3.setRent(150);
+		r3.setRentLevels(new int[] {150,800,2000,6000,9000,12000});
+		r3.setHousePrice(1000);
+		r3.setColor(Color.cyan);
+		//game.addSpace(r3);
+		
+		int[] expecteds = new int[] {22000,5500};
+		int[] actuals = new int[expecteds.length];
+		
+		try {
+			player.addOwnedProperty(r1);
+			player.addOwnedProperty(r2);
+			player.addOwnedProperty(r3);
+			
+			r1.addHouse();
+			r1.addHouse();
+			r1.addHouse();
+			r1.addHouse();
+			r1.addHouse();
+			
+			r2.addHouse();
+			r2.addHouse();
+			r2.addHouse();
+			r2.addHouse();
+			r2.addHouse();
+			
+			cardPayHotel.doAction(controller, player);
+			
+		} catch (PlayerBrokeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		actuals[0] = player.getBalance();
+		
+		try {
+			r3.addHouse();
+			r3.addHouse();
+			r3.addHouse();
+			r3.addHouse();
+			r3.addHouse();
+			
+			
+			propTax.doAction(controller, player);
+			
+		} catch (PlayerBrokeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		actuals[1] = player.getBalance();
+				
+		assertArrayEquals(expecteds, actuals);
+	}
 	
 	@Test
 	public void testRemoveOutOfJailCard() {

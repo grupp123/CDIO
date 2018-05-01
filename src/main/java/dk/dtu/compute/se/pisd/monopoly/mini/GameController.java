@@ -14,6 +14,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Property;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.OutOfJail;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.NoHousesAvailableException;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeException;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 import dtu.database.Connector;
@@ -883,10 +884,17 @@ public class GameController {
 		if (chosenProperty != null) {
 			try {
 				paymentToBank(buyer, chosenProperty.getHousePrice());
+				game.addHouses(1);
+				chosenProperty.addHouse();
 			} catch (PlayerBrokeException e) {
 				e.printStackTrace();
+			} catch (NoHousesAvailableException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				gui.showMessage("Der er ikke flere ledige bygninger, prøv igen senere.");
+				paymentFromBank(buyer, chosenProperty.getHousePrice());
 			}
-			chosenProperty.addHouse();
+			
 		}
 	}
 

@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 import dk.dtu.compute.se.pisd.designpatterns.Subject;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.NoHotelAvailableException;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.NoHousesAvailableException;
 
 /**
  * Represents the top-level element of a Monopoly game's state. In order
@@ -31,9 +33,7 @@ public class Game extends Subject {
 	
 	private final int PASSEDSTARTMONEY = 4000;
 
-	public final int MAX_HOUSES = 40;
-	
-	public final int MAX_HOTELS = 12;
+	public final int MAX_HOUSES = 52;
 	
 	public final int JAIL_BAIL_PRICE = 1000;
 	
@@ -61,20 +61,6 @@ public class Game extends Subject {
 		this.gameName = gameName;
 	}
 
-	public int getHotels() {
-		return hotels;
-	}
-
-	public void setHotels(int hotels) {
-		if (this.hotels + hotels <= MAX_HOTELS) {
-			this.hotels += hotels;
-		}
-		else {
-			//TODO exception ved for mange hoteller
-		}
-		
-
-	}
 	
 	/**
 	 * Returns the amount players receive upon passing start
@@ -223,7 +209,7 @@ public class Game extends Subject {
 	 * 
 	 * @param player the new current player
 	 */
-	public void setCurrentPlayer(Player player) {
+	public void setCurrentPlayer(Player player) throws IllegalArgumentException{
 		if (player != null && players.contains(player)) {
 			current = player;
 		} else {
@@ -235,13 +221,19 @@ public class Game extends Subject {
 	public int getHouses() {
 		return houses;
 	}
-
-	public void setHouses(int houses) {
+	
+	/**
+	 * Adds the given number of houses to the house count in the game.
+	 * 
+	 * @param houses the nb of houses to be added.
+	 * @throws NoHousesAvailableException thrown if the given value is higher than the nb of avaiable houses.
+	 */
+	public void addHouses(int houses) throws NoHousesAvailableException {
 		if (this.houses + houses <= MAX_HOUSES) {
 			this.houses += houses;
 		}
 		else {
-			//TODO exception ved for mange huse
+			throw new NoHousesAvailableException(this);
 		}
 	}
 	

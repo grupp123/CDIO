@@ -9,37 +9,19 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.Property;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 
 
 public class TestPlayer {
 
-	Player balanceTest;
-	Player positionTest;
-	Player getColorTest;
-	Player getNameTest;
-	Player recieveMoneyTest;
-	Player payMoneyTest;
-	Player getOwnedPropertiesTest;
-	Player addOwnedProperitesTest;
-	Player removeOwnedPropertiesTest;
-	Player reMoveAllPropertiesTest;
-	Player getOwnedCardsTest;
-	Player removeOwnedCardsTest;
-	Player isBrokeTest;
-	Player isInPrisonTest;
-	Player getIdTest;
+	Player player;
 	
 	
 	@Before
 	public void setUp() throws Exception {
-		balanceTest = new Player();
-		positionTest = new Player();
-		getColorTest = new Player();
-		getNameTest = new Player();
-		recieveMoneyTest = new Player();
-		payMoneyTest = new Player();
-		getOwnedPropertiesTest = new Player();
+		player = new Player();
 		
 	}
 	
@@ -48,16 +30,16 @@ public class TestPlayer {
 	
 	@Test
 	public void testGetColor() {
-		getColorTest.getColor();
-		Color actual = getColorTest.getColor();
+		player.getColor();
+		Color actual = player.getColor();
 		Color expected = null;
 		assertEquals(actual, expected);
 	}
 	
 	@Test
 	public void testPosition() {
-		positionTest.getCurrentPosition();
-		Space actual = positionTest.getCurrentPosition();
+		player.getCurrentPosition();
+		Space actual = player.getCurrentPosition();
 		Object expected = null;
 		assertEquals(actual, expected);
 	}
@@ -65,10 +47,33 @@ public class TestPlayer {
 	
 	@Test
 	public void testBalance() {
-		balanceTest.getBalance();
-		int actual = balanceTest.getBalance();
+		player.getBalance();
+		int actual = player.getBalance();
 		int expected = 30000;
 		assertEquals(actual, expected);
+	}
+	
+	@Test
+	public void testGetAssetsValue() {
+		int balance = 30000, cost = 4000, houseP = 600;
+		int value = player.getAssetsValue();
+		
+		RealEstate property = new RealEstate();
+		property.setCost(cost);
+		property.setRentLevels(new int[]{1,2,3,4,5});
+		property.setHousePrice(houseP);
+		
+		player.addOwnedProperty(property);
+		
+		value += player.getAssetsValue();
+		
+		property.setHouses(2);
+		
+		value += player.getAssetsValue();
+		
+		int expected = balance*3 + cost + houseP*2;
+		
+		assertEquals(expected, value);
 	}
 
 }

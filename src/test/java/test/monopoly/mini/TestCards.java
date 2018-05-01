@@ -20,7 +20,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardNearestShip;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardPayForAmountPropertiesHotel;
-import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.OutOfJail;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardBail;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeException;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 
@@ -29,7 +29,7 @@ public class TestCards {
 	Game game;
 	GameController controller;
 	CardNearestShip nearestShip;
-	OutOfJail jailCard;
+	CardBail jailCard;
 	Player player;
 	
 	@Before

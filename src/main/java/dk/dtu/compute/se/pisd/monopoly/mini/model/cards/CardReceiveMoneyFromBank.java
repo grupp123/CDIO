@@ -12,7 +12,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeExceptio
  *
  */
 public class CardReceiveMoneyFromBank extends Card {
-	
+
 	private int amount;
 
 	/**
@@ -43,5 +43,5 @@ public class CardReceiveMoneyFromBank extends Card {
 			super.doAction(controller, player);
 		}
 	}
-	
+
 }

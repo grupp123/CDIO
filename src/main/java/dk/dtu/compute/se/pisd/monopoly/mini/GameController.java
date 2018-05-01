@@ -13,7 +13,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.IncomeTax;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Property;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
-import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.OutOfJail;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardBail;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.NoHousesAvailableException;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeException;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
@@ -334,7 +334,7 @@ public class GameController {
 					else if (selection.equals("Brug frikort")) {
 						boolean cardUsed = false;
 						for(Card card : player.getOwnedCards()){
-							if(card instanceof OutOfJail)
+							if(card instanceof CardBail)
 							{
 								player.setInPrison(false);
 								player.removeOwnedCard(card);

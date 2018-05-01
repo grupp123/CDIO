@@ -19,9 +19,9 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardNearestShip;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardPay;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardPayForAmountPropertiesHotel;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardReceiveMoneyFromBank;
-import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardRecieveMoneyFromPlayers;
-import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.OutOfJail;
-import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.PayTax;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardReceiveMoneyFromPlayers;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardBail;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardPayTax;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.differentSpaces.Jail;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Shipping;
@@ -347,11 +347,11 @@ public class MiniMonopoly {
 		
 		List<Card> cards = new ArrayList<Card>();
 		
-		PayTax tax = new PayTax();
+		CardPayTax tax = new CardPayTax();
 		tax.setText("Pay 10% income tax!");
 		cards.add(tax);
 		
-		CardRecieveMoneyFromPlayers birthday = new CardRecieveMoneyFromPlayers();
+		CardReceiveMoneyFromPlayers birthday = new CardReceiveMoneyFromPlayers();
 		birthday.setText("Det er deres fødselsdag. Modtag af hver medspiller kr. 200.");
 		birthday.setAmount(200);
 		cards.add(birthday);
@@ -451,7 +451,7 @@ public class MiniMonopoly {
 		}
 		
 		for (int i = 0; i < 2; i++) {
-		OutOfJail OutOfJail = new OutOfJail();
+		CardBail OutOfJail = new CardBail();
 		cards.add(OutOfJail);
 		}
 		

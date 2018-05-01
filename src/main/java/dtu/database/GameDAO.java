@@ -9,7 +9,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Property;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
-import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.OutOfJail;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardBail;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 
 public class GameDAO implements IGameDAO {
@@ -213,7 +213,7 @@ public class GameDAO implements IGameDAO {
 				jailCard = rs.getInt(1);
 				}
 				for (int j = 0; j < jailCard; j++) {
-					players[u].addOwnedCard(new OutOfJail());
+					players[u].addOwnedCard(new CardBail());
 					//Very bad, we have no certainty that the actual jailcard was removed or another card.
 					//TODO: could be reimplemented.
 					game.removeJailCard();

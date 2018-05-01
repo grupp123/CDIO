@@ -245,6 +245,10 @@ public class Game extends Subject {
 		}
 	}
 	
+	public void removeJailCard() {
+		cardDeck.remove(20);
+	}
+	
 	
 
 }

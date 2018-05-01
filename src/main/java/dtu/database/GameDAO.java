@@ -9,6 +9,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Property;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.OutOfJail;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 
 public class GameDAO implements IGameDAO {
@@ -206,7 +207,19 @@ public class GameDAO implements IGameDAO {
 				int jailTime = rs.getInt(1);
 				players[u].setPrisonTime(jailTime);
 				}
-				//MANGLER KUN JAILCARD
+				
+				//Getting and setting jailCard
+				rs = connector.doQuery("select jailCard from player where playerID = " + playerID + " and gameID = " + gameID + ";");
+				int jailCard = 0;
+				while(rs.next()) {
+				jailCard = rs.getInt(1);
+				}
+				for (int j = 0; j < jailCard; j++) {
+					players[u].addOwnedCard(new OutOfJail());
+					//Very bad, we have no certainty that the actual jailcard was removed or another card.
+					//TODO: could be reimplemented.
+					game.removeJailCard();
+				}
 				
 				//getting and setting car color
 				rs = connector.doQuery("select carColor from car where playerID = "+playerID+" and gameID = "+gameID+";");

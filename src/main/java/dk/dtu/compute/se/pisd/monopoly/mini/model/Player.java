@@ -228,6 +228,16 @@ public class Player extends Subject {
 	}
 	
 	/**
+	 * Adds a card to the owned cards
+	 * 
+	 * @param card the card to be added
+	 */
+	public void addOwnedCard(Card card) {
+		this.ownedCards.add(card);
+		notifyChange();
+	}
+	
+	/**
 	 * Removes a card from the owned cards.
 	 * 
 	 * @param card the card to be removed

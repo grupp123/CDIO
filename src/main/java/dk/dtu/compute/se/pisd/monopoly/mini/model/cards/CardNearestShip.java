@@ -6,26 +6,19 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeException;
 
-
-
+/**
+ * Represents the nearest ship chance card from the Matador boardgame.
+ * @author 
+ *
+ */
 public class CardNearestShip extends Card{
-
-	private Space target ;
-
-	public Space getTarget() {
-		return target;
-	}
-
-	public void setTarget(Space target) {
-		this.target = target;
-	}
 
 	@Override
 	public void doAction(GameController controller, Player player) throws PlayerBrokeException {
 		try {
 			int tar = 5;
 			int pos = player.getCurrentPosition().getIndex();
-			
+
 			if(pos < 5) {
 				tar = 5;
 			} else if (pos < 15) {

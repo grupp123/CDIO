@@ -5,6 +5,11 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Card;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeException;
 
+/**
+ * Represents the pay chance card from the Matador boardgame.
+ * @author 
+ *
+ */
 public class CardPay extends Card{
 	
 	int amount;
@@ -20,9 +25,18 @@ public class CardPay extends Card{
 		}
 	}
 	
+	/**
+	 * Returns the amount to be paid upon drawing this card.
+	 * @return the amount to be paid upon drawing this card as int.
+	 */
 	public int getAmount() {
 		return amount;
 	}
+	
+	/**
+	 * Sets the amount to be paid upon drawing this card.
+	 * @param amount the amount to be paid upon drawing this card.
+	 */
 	public void setAmount(int amount) {
 		this.amount = amount;
 	}

@@ -1,9 +1,12 @@
 package test.monopoly.mini;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.After;
@@ -13,11 +16,11 @@ import org.junit.Test;
 import dk.dtu.compute.se.pisd.monopoly.mini.GameController;
 import dk.dtu.compute.se.pisd.monopoly.mini.MiniMonopoly;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Card;
-import dk.dtu.compute.se.pisd.monopoly.mini.model.Chance;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardNearestShip;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardPayForAmountPropertiesHotel;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.OutOfJail;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeException;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 
@@ -26,6 +29,7 @@ public class TestCards {
 	Game game;
 	GameController controller;
 	CardNearestShip nearestShip;
+	OutOfJail jailCard;
 	Player player;
 	
 	@Before
@@ -240,6 +244,26 @@ public class TestCards {
 		actuals[1] = player.getBalance();
 				
 		assertArrayEquals(expecteds, actuals);
+	}
+	
+	@Test
+	public void testRemoveOutOfJailCard() {
+		int newSize;
+		Card[] arr = game.getCardDeck().toArray(new Card[0]);
+		List<Card> cardDeck = new ArrayList<Card>();
+		
+		for (Card card : arr) {
+			cardDeck.add(card);
+		}
+		
+		//Jailcard indexes: 20 and 21;
+		cardDeck.remove(20);
+		cardDeck.remove(21);
+		newSize = cardDeck.size();
+		
+		game.setCardDeck(cardDeck);
+		
+		assertEquals(newSize, game.getCardDeck().size());
 	}
 
 }

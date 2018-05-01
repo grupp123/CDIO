@@ -228,6 +228,16 @@ public class Player extends Subject {
 	}
 	
 	/**
+	 * Adds a card to the owned cards
+	 * 
+	 * @param card the card to be added
+	 */
+	public void addOwnedCard(Card card) {
+		this.ownedCards.add(card);
+		notifyChange();
+	}
+	
+	/**
 	 * Removes a card from the owned cards.
 	 * 
 	 * @param card the card to be removed
@@ -312,7 +322,7 @@ public class Player extends Subject {
 		int totalAmount = balance;
 		for(Property property : ownedProperties)
 		{
-			totalAmount += property.getCost();
+			totalAmount += property.getCost()/2;
 			
 			if (property instanceof RealEstate) {
 				RealEstate estate = (RealEstate) property;
@@ -326,6 +336,11 @@ public class Player extends Subject {
 	public String toString() {
 		String st = getName()+" : "+getAssetsValue()+"kr.";
 		return st;
+	}
+
+	public void setPrisonTime(int jailTime) {
+		prisonTime = jailTime;
+		
 	}
 	
 	

@@ -208,13 +208,11 @@ public class View implements Observer {
 
 		GUI_Field[] guiFields = new GUI_Field[game.getSpaces().size()];
 
-		System.out.println(game.getSpaces().size());
-
 
 		int i = 0 ;
 		for (Space space: game.getSpaces()) {
 
-			System.out.println(i);
+			//System.out.println(i);
 
 			if (space instanceof Chance) {
 				GUI_Chance gui_chance = new GUI_Chance();

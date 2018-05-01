@@ -5,6 +5,11 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Property;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeException;
 
+/**
+ * Represents the shipping field from the Matador gameboard.
+ * @author Nils Rasamoel
+ *
+ */
 public class Shipping extends Property{
 
 	@Override
@@ -22,11 +27,11 @@ public class Shipping extends Property{
 					}
 				}
 				rent = (int) (super.getRent()*Math.pow(2, count-1));
-				
+
 				controller.payment(player, rent, owner);
 			}
 		}
-		
+
 	}
 
 }

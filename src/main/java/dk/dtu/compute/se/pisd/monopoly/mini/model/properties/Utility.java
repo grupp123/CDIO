@@ -13,7 +13,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeExceptio
  *
  */
 public class Utility extends Property {
-	
+
 	@Override
 	public void doAction(GameController controller, Player player) throws PlayerBrokeException {
 		Player owner = super.getOwner();
@@ -30,7 +30,7 @@ public class Utility extends Property {
 				}
 				//Rule says 100 times number of eyes or 200 if you own both utilities.
 				rent = 100*count*player.get_throw();
-				
+
 				controller.payment(player, rent, owner);
 			}
 		}

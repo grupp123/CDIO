@@ -9,6 +9,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Property;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.OutOfJail;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 
 public class GameDAO implements IGameDAO {
@@ -98,7 +99,7 @@ public class GameDAO implements IGameDAO {
 				//List<Card> jailc = p.getOwnedCards();
 				int jailCard = p.getOwnedCards().size();
 				int jailTime = p.getPrisonTime();
-				connector.doUpdate("update player set hasLost = " + hasLost + ", balance = " + balance + ", inJail = " + inJail + ", jailCard = " + jailCard + ", jailTime = " + jailTime + " where gameID = " + gid + " and playerID = " + id + ";");
+				connector.doUpdate("call update_player("+hasLost+","+balance+","+inJail+","+jailCard+","+jailTime+","+gid+","+id+");");
 				}
 			//nu opdateres car-tabellen og det eneste der skal 
 			//opdateres løbende er position
@@ -124,10 +125,12 @@ public class GameDAO implements IGameDAO {
 						int spaceNumber = prop.getIndex();
 						int gid = game.getGameID();
 						boolean mortgaged = prop.isMortgaged();
+						int houses = 0;
+						
 												
 						//Følgende sql sætning virker i workbench
 						//update properties set ownerP=0, spaceNumber=0, Mortagaged=true where gameid=1;
-						connector.doUpdate("update properties set ownerP = " + pid  +  ", mortagaged = " + mortgaged + " where gameID = " + gid + " And spaceNumber = " + spaceNumber + ";");
+						connector.doUpdate("call update_properties("+pid+","+mortgaged+","+gid+","+spaceNumber+");");
 					}	
 				}
 				if(current instanceof RealEstate) {
@@ -202,7 +205,19 @@ public class GameDAO implements IGameDAO {
 				int jailTime = rs.getInt(1);
 				players[u].setPrisonTime(jailTime);
 				}
-				//MANGLER KUN JAILCARD
+				
+				//Getting and setting jailCard
+				rs = connector.doQuery("select jailCard from player where playerID = " + playerID + " and gameID = " + gameID + ";");
+				int jailCard = 0;
+				while(rs.next()) {
+				jailCard = rs.getInt(1);
+				}
+				for (int j = 0; j < jailCard; j++) {
+					players[u].addOwnedCard(new OutOfJail());
+					//Very bad, we have no certainty that the actual jailcard was removed or another card.
+					//TODO: could be reimplemented.
+					game.removeJailCard();
+				}
 				
 				//getting and setting car color
 				rs = connector.doQuery("select carColor from car where playerID = "+playerID+" and gameID = "+gameID+";");

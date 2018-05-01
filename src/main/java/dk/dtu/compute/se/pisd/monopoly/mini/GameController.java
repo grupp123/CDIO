@@ -50,7 +50,7 @@ import gui_main.GUI;
  * of this game controller. Then, the game controller takes care
  * of updating the GUI.
  * 
- * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Ekkart Kindler, ekki@dtu.dk, Nils Rasamoel
  *
  */
 public class GameController {

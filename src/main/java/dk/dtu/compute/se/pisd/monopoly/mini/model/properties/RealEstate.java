@@ -10,7 +10,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.HousesOnRealEstateE
  * and hotels can be built. Note that has not details yet and needs
  * to be implemented.
  * 
- * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Ekkart Kindler, ekki@dtu.dk, Nils Rasamoel
  *
  */
 public class RealEstate extends Property{

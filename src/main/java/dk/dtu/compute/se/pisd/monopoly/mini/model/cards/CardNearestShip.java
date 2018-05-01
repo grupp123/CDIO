@@ -8,7 +8,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeExceptio
 
 /**
  * Represents the nearest ship chance card from the Matador boardgame.
- * @author 
+ * @author Nils Rasamoel
  *
  */
 public class CardNearestShip extends Card{

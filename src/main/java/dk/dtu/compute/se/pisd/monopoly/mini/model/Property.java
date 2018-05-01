@@ -6,7 +6,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeExceptio
 /**
  * A property which is a space that can be owned by a player.
  * 
- * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Ekkart Kindler, ekki@dtu.dk, Nils Rasamoel
  *
  */
 public class Property extends Space {

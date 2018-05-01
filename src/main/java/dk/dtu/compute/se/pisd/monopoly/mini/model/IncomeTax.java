@@ -6,7 +6,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeExceptio
 /**
  * Represents a space, where the player has to pay tax.
  * 
- * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Ekkart Kindler, ekki@dtu.dk, Nils Rasamoel
  *
  */
 public class IncomeTax extends Space {

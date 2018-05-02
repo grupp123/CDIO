@@ -6,15 +6,13 @@ import java.util.ArrayList;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
 public interface IGameDAO {
 
-	boolean create(Game game);
+	void create(Game game) throws SQLException;
 	
-	boolean update(Game game);
+	void update(Game game) throws SQLException;
 	
-	boolean load(Game game, int gameID);
+	void load(Game game, int gameID) throws SQLException;
 	
-	ArrayList<Integer> readGame(int Id);
-	
-	public int getGameIdFromName(String str) throws Exception;
+	public int getGameIdFromName(String str) throws SQLException;
 
 	ArrayList<String> activeGames() throws SQLException;
 }

@@ -81,14 +81,13 @@ public class GameDAO implements IGameDAO {
 	public boolean update(Game game) {
 		java.sql.Connection con = connector.getConnection();
 		try {
-			//her opdateres spillet inde i databasen altså sørger for at ændre currentPlayer 
+			//Update the game in the database 
 			con.setAutoCommit(false);
 			int cp = game.getCurrentPlayer().getId();
 			int gidd = game.getGameID();
 			connector.doUpdate("update game set currentPlayer = " + cp + " where gameID = "+ gidd +";");
 			
-			//her opdateres spillerne inde i databasen, altså om de har tabt, balance, jail
-			//jailcard og jailtime 
+			//Update all the players in the database
 			for (int j = 0; j<game.getPlayers().size(); j++) {
 				Player p = game.getPlayers().get(j);
 				int id = p.getId();
@@ -143,7 +142,7 @@ public class GameDAO implements IGameDAO {
 				}
 			con.commit();	
 			con.setAutoCommit(true);
-		}catch (Exception e) {
+		}catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Problem med DB");
 		}

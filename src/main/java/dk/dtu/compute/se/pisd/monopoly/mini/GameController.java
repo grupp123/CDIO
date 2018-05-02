@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import dk.dtu.compute.se.pisd.database.Connector;
+import dk.dtu.compute.se.pisd.database.GameDAO;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Card;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.IncomeTax;
@@ -19,8 +22,6 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.HousesOnRealEstateE
 import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.NoHousesAvailableException;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeException;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
-import dtu.database.Connector;
-import dtu.database.GameDAO;
 import gui_main.GUI;
 
 /**

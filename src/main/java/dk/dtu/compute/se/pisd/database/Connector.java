@@ -1,4 +1,4 @@
-package dtu.database;
+package dk.dtu.compute.se.pisd.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

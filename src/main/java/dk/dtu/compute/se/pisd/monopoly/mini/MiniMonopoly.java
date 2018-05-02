@@ -11,6 +11,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.IncomeTax;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.StateTax;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardBail;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardLegat;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardMove;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardMoveBack;
@@ -18,15 +19,13 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardMovePassStart;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardNearestShip;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardPay;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardPayForAmountPropertiesHotel;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardPayTax;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardReceiveMoneyFromBank;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardReceiveMoneyFromPlayers;
-import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardBail;
-import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardPayTax;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.differentSpaces.Jail;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Shipping;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Utility;
-import dtu.database.GameDAO;
 
 /**
  * Main class for setting up and running a (Mini-)Monoploy game.

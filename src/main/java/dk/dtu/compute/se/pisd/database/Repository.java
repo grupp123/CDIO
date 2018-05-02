@@ -1,4 +1,4 @@
-package dtu.database;
+package dk.dtu.compute.se.pisd.database;
 
 public class Repository {
 

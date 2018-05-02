@@ -21,6 +21,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardNearestShip;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardPayForAmountPropertiesHotel;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardBail;
+import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.HousesOnRealEstateException;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeException;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 
@@ -224,6 +225,9 @@ public class TestCards {
 		} catch (PlayerBrokeException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (HousesOnRealEstateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		actuals[0] = player.getBalance();
 		
@@ -238,6 +242,9 @@ public class TestCards {
 			propTax.doAction(controller, player);
 			
 		} catch (PlayerBrokeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (HousesOnRealEstateException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

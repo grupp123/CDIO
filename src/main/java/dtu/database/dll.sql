@@ -1,4 +1,4 @@
-drop database if exists matadordemo;
+drop database matadordemo;
 create database MatadorDemo;
 use MatadorDemo;
 
@@ -45,4 +45,45 @@ PRIMARY KEY(gameID, spaceNumber),
 FOREIGN KEY(gameID, ownerP) REFERENCES player(gameID, playerID),
 foreign key(gameID) references game(gameID)
 );
+
+delimiter //
+create procedure update_player
+(in has_Lost tinyint(1),
+in balance_ int(7),
+in in_Jail tinyint(1),
+in jail_Card int(1),
+in jail_Time int(1),
+in game_ID int(3),
+in player_ID int (3))
+begin 
+update player 
+set hasLost = has_lost,
+balance = balance_,
+inJail = in_Jail,
+jailCard = jail_card,
+jailTime = jail_Time
+where
+gameID = game_ID and playerID = player_ID;
+end; //
+
+delimiter //
+create procedure update_properties
+(in player_ID int(3),
+in Mortagaged_ tinyint(1),
+in game_ID tinyint(1),
+in space_Number int(1))
+begin 
+update properties 
+set ownerP = player_ID,
+Mortagaged = Mortagaged_
+where
+gameID = game_ID and spaceNumber = space_Number;
+end; //
+
+create view game_info as
+select player.gameID as 'gameID', count(player.playerID) as 'number of players',
+game.gameName as 'GameName'
+from player natural join game
+group by gameID;
+
 

@@ -63,6 +63,7 @@ public class GameDAO implements IGameDAO {
 			if (k instanceof Property) {
 
 				int spaceNumber = k.getIndex();
+
 				int gid = game.getGameID();
 				// Følgende sql sætning virker i workbench
 				// insert into properties(spaceNumber,gameID) values (0,1);
@@ -73,7 +74,6 @@ public class GameDAO implements IGameDAO {
 
 		con.commit();
 		con.setAutoCommit(true);
-
 	}
 
 	@Override

@@ -12,7 +12,7 @@ public interface IGameDAO {
 	
 	void load(Game game, int gameID) throws SQLException;
 	
-	public int getGameIdFromName(String str) throws SQLException;
+	int getGameIdFromName(String str) throws SQLException;
 
 	ArrayList<String> activeGames() throws SQLException;
 }

@@ -279,6 +279,7 @@ public class GameDAO implements IGameDAO {
 				while (rs.next()) {
 					owner = (Integer) rs.getObject(1);
 				}
+				try {
 
 				if (owner == 0) {
 					Player powner = game.getPlayers().get(owner);
@@ -320,6 +321,10 @@ public class GameDAO implements IGameDAO {
 					Property owned = (Property) space;
 					((Property) space).setOwner(powner);
 					powner.addOwnedProperty(owned);
+				}
+				}catch (NullPointerException e) {
+					e.getStackTrace();
+					
 				}
 
 				// hent antal huse

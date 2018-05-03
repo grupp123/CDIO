@@ -190,61 +190,83 @@ public class View implements Observer {
 
 			//System.out.println(i);
 
-			if (space instanceof Chance) {
+			if (space instanceof RealEstate) {
+				RealEstate realestate = (RealEstate) space; 
+				GUI_Street gui_street = new GUI_Street(
+						realestate.getName(), 
+						realestate.getSubText(), 
+						realestate.getDescription(), 
+						"husleje : " + realestate.getRent(), 
+						realestate.getColor(), 
+						Color.black
+						);
+				guiFields[i] = gui_street;
+			} 
+			else if (space instanceof Chance) {
 				GUI_Chance gui_chance = new GUI_Chance();
 				guiFields[i] = gui_chance;
 				gui_chance.setBackGroundColor(space.getColor());
-				gui_chance.setDescription("Chancekort");
+				gui_chance.setDescription(space.getDescription());
 
-			} else if (space instanceof RealEstate) {
-				RealEstate realestate = (RealEstate) space; 
-				GUI_Street gui_street = new GUI_Street(realestate.getName(), "Pris : " + realestate.getCost() + "", "Husleje : " + realestate.getRent() + "", "husleje : " + realestate.getRent() + "", realestate.getColor(), Color.black);
-				guiFields[i] = gui_street;
-			} else if (space instanceof Utility){
+			} 
+			else if (space instanceof Utility){
 				Utility utility = (Utility) space;
 				GUI_Brewery gui_brewery = new GUI_Brewery();
 				gui_brewery.setTitle(utility.getName());
-				gui_brewery.setSubText("" + utility.getCost() + "");
-				gui_brewery.setDescription("Prisen er : " + utility.getCost() + " \n\r Lejen er : " + utility.getRent());
+				gui_brewery.setSubText(utility.getSubText());
+				gui_brewery.setDescription(utility.getDescription());
 				gui_brewery.setBackGroundColor(Color.BLACK);
 				gui_brewery.setForeGroundColor(Color.WHITE);
 				guiFields[i] = gui_brewery;						
-			} else if (space instanceof Shipping) {
+			} 
+			else if (space instanceof Shipping) {
 				Shipping shipping = (Shipping) space;
 				GUI_Shipping gui_shipping = new GUI_Shipping();
-				gui_shipping.setTitle("" + shipping.getCost() + "");
-				gui_shipping.setSubText(shipping.getName());
+				gui_shipping.setTitle(shipping.getName());
+				gui_shipping.setSubText(shipping.getSubText());
 				gui_shipping.setBackGroundColor(Color.white);
-				gui_shipping.setDescription("Pris: " + shipping.getCost() + "\n\r leje: " + shipping.getRent());
+				gui_shipping.setDescription(shipping.getDescription());
 				guiFields[i] = gui_shipping;
-			} else if (space instanceof IncomeTax){
+			} 
+			else if (space instanceof IncomeTax){
 				IncomeTax tax = (IncomeTax) space;
 				GUI_Tax gui_tax = new GUI_Tax();
-				gui_tax.setTitle("SKAT");
-				gui_tax.setSubText("" + space.getName() + "");
-				gui_tax.setDescription("" + space.getName() + "");
+				gui_tax.setTitle(tax.getName());
+				gui_tax.setSubText(tax.getSubText());
+				gui_tax.setDescription(tax.getDescription());
 				guiFields[i] = gui_tax;
-			} else if (space instanceof StateTax){
+			} 
+			else if (space instanceof StateTax){
 				StateTax tax = (StateTax) space;
 				GUI_Tax gui_tax = new GUI_Tax();
-				gui_tax.setTitle("SKAT");
-				gui_tax.setSubText("" + space.getName() + "");
-				gui_tax.setDescription("" + space.getName() + "");
+				gui_tax.setTitle(tax.getName());
+				gui_tax.setSubText(tax.getSubText());
+				gui_tax.setDescription(tax.getDescription());
 				guiFields[i] = gui_tax;
-			} else {
+			} 
+			else {
 				if(space.getIndex() == 10 || space.getIndex() == 30) {
 					GUI_Jail gui_jail = new GUI_Jail();
-					gui_jail.setSubText(space.getName());
+					gui_jail.setSubText(space.getSubText());
+					gui_jail.setDescription(space.getDescription());
 					guiFields[i] = gui_jail;
 
-				} else if (space.getIndex() == 20) {
+				} 
+				else if (space.getIndex() == 20) {
 					GUI_Refuge gui_refuge = new GUI_Refuge();
 					gui_refuge.setBackGroundColor(Color.WHITE);
-					gui_refuge.setSubText("");
+					gui_refuge.setSubText(space.getSubText());
 					guiFields[i] = gui_refuge;
 
-				} else {
-					GUI_Field gui_field = new GUI_Start(space.getName(), "", "", space.getColor(), Color.BLACK);
+				} 
+				else {
+					GUI_Field gui_field = new GUI_Start(
+							space.getName(),
+							space.getSubText(),
+							space.getDescription(),
+							space.getColor(),
+							Color.BLACK
+							);
 					guiFields[i] = gui_field;
 
 				}

@@ -36,4 +36,13 @@ public class Utility extends Property {
 		}
 	}
 
+	@Override
+	public String getDescription() {
+		String description = "Hvis 1 virksomhed ejes, betales 100 gange så meget som øjnene viser."
+				+ "\\n"
+				+ "\\nHvis begge ejes, betales 200 gange så meget som øjnene viser.";
+		return super.getDescription();
+	}
+	
+
 }

@@ -128,4 +128,10 @@ public class Property extends Space {
 
 	}
 
+	@Override
+	public String getSubText() {
+		String subText = "Pris kr. "+this.getCost();
+		return subText;
+	}
+
 }

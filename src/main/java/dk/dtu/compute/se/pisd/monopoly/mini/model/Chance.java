@@ -16,4 +16,10 @@ public class Chance extends Space {
 		controller.takeChanceCard(player);
 	}
 
+	@Override
+	public String getDescription() {
+		String description = "Træk et chancekort.";
+		return description;
+	}
+
 }

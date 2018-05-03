@@ -21,6 +21,10 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeExceptio
 public class Space extends Subject {
 
 	private String name;
+	
+	private String description = "";
+	
+	private String subText = "";
 
 	private int index;
 
@@ -89,6 +93,38 @@ public class Space extends Subject {
 	 */
 	public void setColor(Color color) {
 		this.color = color;
+	}
+
+	/**
+	 * Returns the field's description
+	 * @return the field's description as String.
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * Sets the field's description.
+	 * @param description the field's description.
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	/**
+	 * Returns the field's subText.
+	 * @return the field's subText as String.
+	 */
+	public String getSubText() {
+		return subText;
+	}
+
+	/**
+	 * Sets the field's subText.
+	 * @param subText the field's subText.
+	 */
+	public void setSubText(String subText) {
+		this.subText = subText;
 	}
 
 }

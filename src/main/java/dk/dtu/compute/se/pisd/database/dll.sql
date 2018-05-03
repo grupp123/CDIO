@@ -80,6 +80,7 @@ where
 gameID = game_ID and spaceNumber = space_Number;
 end; //
 
+delimiter ;
 create view game_info as
 select player.gameID as 'gameID', count(player.playerID) as 'number of players',
 game.gameName as 'GameName'

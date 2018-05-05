@@ -128,5 +128,21 @@ public class RealEstate extends Property{
 		this.rentLevels = rentLevels;
 	}
 
+	@Override
+	public String getDescription() {
+		String description = 
+				  "Leje af grund kr. "+this.rentLevels[0]
+				+"\\nm/ 1 hus kr. "+this.rentLevels[1]
+				+"\\n>> 2 huse kr. "+this.rentLevels[2]
+				+"\\n>> 3 huse kr. "+this.rentLevels[3]
+				+"\\n>> 4 huse kr. "+this.rentLevels[4]
+				+"\\n>> hotel kr. "+this.rentLevels[5]
+				+"\\n"
+//				+"Hvis en spiller ejer alle grundene i samme farvegruppe, fordobles lejen af de ubebyggede grunde i den pågældende gruppe."
+				+"\\nHvert hus koster kr. "+this.housePrice
+				+"\\nEt hotel kr. "+this.housePrice+" + 4 huse"
+				+"\\nPatnsætningsværdi kr. "+this.getMortgageValue();
+		return description;
+	}
 
 }

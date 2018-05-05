@@ -243,7 +243,7 @@ public class View implements Observer {
 				gui_tax.setSubText(tax.getSubText());
 				gui_tax.setDescription(tax.getDescription());
 				guiFields[i] = gui_tax;
-			}} 
+			}
 			else {
 				if(space.getIndex() == 10 || space.getIndex() == 30) {
 					GUI_Jail gui_jail = new GUI_Jail();

@@ -52,6 +52,8 @@ public class MiniMonopoly {
 		
 		Space go = new Space();
 		go.setName("Start");
+		go.setDescription("Modtag "+game.getPassesStartMoney()+"kr. når du lander på eller passerer Start.");
+		go.setSubText("Modtag "+game.getPassesStartMoney()+"kr.");
 		go.setColor(Color.red);
 		game.addSpace(go);
 		
@@ -124,7 +126,13 @@ public class MiniMonopoly {
 		game.addSpace(r);
 		
 		Jail prison = new Jail();
-		prison.setName("på besøg");
+		prison.setName("På besøg");
+		prison.setSubText("I fængsel");
+		prison.setDescription("Hvis du er fængslet, kan du komme ud på følgende måder: "
+				+ "ved at kaste dobbelt, "
+				+ "ved at bruge et frikort, "
+				+ "ved at betale kaution."
+				+ "\nEr det 3. gang du kaster uden hæld, tvinges du til at betale kaution.");
 		game.addSpace(prison);
 		
 		r = new RealEstate();
@@ -197,9 +205,10 @@ public class MiniMonopoly {
 		r.setColor(Color.ORANGE);
 		game.addSpace(r);
 		
-		Space Parkering = new Space();
-		Parkering.setName("Helle");
-		game.addSpace(Parkering);
+		Space parkering = new Space();
+		parkering.setName("Helle");
+		parkering.setDescription("Helle er helligt, tag en slapper og nyd solen!");
+		game.addSpace(parkering);
 		
 		r = new RealEstate();
 		r.setName("Trianglen");
@@ -271,9 +280,12 @@ public class MiniMonopoly {
 		r.setColor(new Color(255,250,205));
 		game.addSpace(r);
 		
-		Jail prison2 = new Jail();
-		prison2.setName("De Fængsles");
-		game.addSpace(prison2);
+		prison = new Jail();
+		prison.setName("De Fængsles");
+		prison.setSubText("Gå i fængsel!");
+		prison.setDescription("Lander du her, sendes du videre til fængslet."
+				+ "\nDu modtager ingen penge for at passere Start.");
+		game.addSpace(prison);
 		
 		r = new RealEstate();
 		r.setName("Amagertorv");

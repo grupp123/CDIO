@@ -34,4 +34,17 @@ public class Shipping extends Property{
 
 	}
 
+	@Override
+	public String getDescription() {
+		String description = "Leje kr. "+this.getRent()
+			+"\\nHvis 2 rederier ejes kr. "+this.getRent()*2
+			+"\\nHvis 3 rederier ejes kr. "+this.getRent()*3
+			+"\\nHvis 4 rederier ejes kr. "+this.getRent()*4
+			+"\\n"
+			+"\\nPantsætningsværdi kr. "+this.getMortgageValue();
+		return description;
+	}
+	
+	
+
 }

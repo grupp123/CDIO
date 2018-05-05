@@ -292,6 +292,7 @@ public class GameController {
 		}
 
 		dispose();
+		System.exit(1);
 	}
 
 	/**

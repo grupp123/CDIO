@@ -10,6 +10,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 /**
  * Represents the pay for amount of properties and buildings chance card from the Matador boardgame.
  * @author Nils Rasamoel
+ * @author Alexander Kjeldsen, s165477@student.dtu.dk
  *
  */
 public class CardPayForAmountPropertiesHotel extends Card {

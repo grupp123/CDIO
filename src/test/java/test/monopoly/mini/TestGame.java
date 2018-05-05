@@ -16,7 +16,12 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardMove;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardPay;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.NoHousesAvailableException;
-
+/**
+ * Test for all gamelogic methods
+ * 
+ * @author 
+ *
+ */
 public class TestGame {
 
 	Game game;

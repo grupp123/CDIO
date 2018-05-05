@@ -10,6 +10,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 /**
  * Class that represents the endowment chance card from the Matador boardgame.
  * @author Nils Rasamoel
+ * @author Alexander Kjeldsen, s165477@student.dtu.dk
  *
  */
 public class CardLegat extends Card{

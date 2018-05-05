@@ -7,7 +7,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeExceptio
 
 /**
  * Represents the pay chance card from the Matador boardgame.
- * @author 
+ * @author Alexander Kjeldsen, s165477@student.dtu.dk
  *
  */
 public class CardPay extends Card{

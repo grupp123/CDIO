@@ -25,6 +25,14 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.HousesOnRealEstateE
 import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeException;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 
+/**
+ * Test for All Card classes.
+ * 
+ * 
+ * @author Alexander Kjeldsen, s165477@student.dtu.dk
+ *
+ */
+
 public class TestCards {
 
 	Game game;

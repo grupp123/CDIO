@@ -7,7 +7,9 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeExceptio
 
 /**
  * Represents the move pass start chance card from the Matador boardgame.
- * @author 
+ * in this method you will recieve money for if you are passing start.
+ * 
+ * @author Alexander Kjeldsen, s165477@student.dtu.dk
  *
  */
 public class CardMovePassStart extends Card{

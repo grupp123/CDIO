@@ -12,7 +12,12 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Property;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
-
+/**
+ * Test for player object
+ * 
+ * @author 
+ *
+ */
 
 public class TestPlayer {
 

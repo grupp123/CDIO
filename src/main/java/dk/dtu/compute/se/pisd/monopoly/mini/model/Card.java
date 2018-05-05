@@ -8,7 +8,10 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeExceptio
  * Monopoly game. The concrete cards are represented as
  * suptypes of this class.
  * 
+ * all subclasses are in dk.dtu.compute.se.pisd.monopoly.mini.model.cards
+ * 
  * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Alexander Kjeldsen, s165477@student.dtu.dk
  *
  */
 public abstract class Card {

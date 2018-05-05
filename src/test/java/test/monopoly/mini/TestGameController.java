@@ -14,7 +14,11 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Player;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Property;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeException;
-
+/**
+ * Test gamecontroller methods
+ * @author 
+ *
+ */
 public class TestGameController {
 
 	Game game;

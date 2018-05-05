@@ -12,6 +12,12 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Space;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.cards.CardBail;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 
+/**
+ * 
+ * @author Alexander Kjeldsen, s165477@student.dtu.dk
+ *
+ */
+
 public class GameDAO implements IGameDAO {
 
 	private Connector connector;

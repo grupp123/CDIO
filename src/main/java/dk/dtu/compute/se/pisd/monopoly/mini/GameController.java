@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import dk.dtu.compute.se.pisd.database.Connector;
-import dk.dtu.compute.se.pisd.database.GameDAO;
+import dk.dtu.compute.se.pisd.database.IGameDAO;
+import dk.dtu.compute.se.pisd.database.Repository;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Card;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
 import dk.dtu.compute.se.pisd.monopoly.mini.model.IncomeTax;
@@ -61,9 +61,9 @@ public class GameController {
 
 	private boolean disposed = false;
 
-	private Connector c = new Connector();
+	private Repository repository = Repository.getInstance();
 
-	private GameDAO dao = new GameDAO(c);
+	private IGameDAO dao = repository.game();
 
 
 	/**
@@ -108,7 +108,7 @@ public class GameController {
 	 */
 
 	private void loadGame() throws SQLException {
-		GameDAO dao = new GameDAO(c);
+		IGameDAO dao = repository.game();
 		ArrayList<String> spil = dao.activeGames();
 		if (spil.size() == 0) {
 			gui.showMessage("Du har ingen gemte spil i databasen, opret nyt spil.");

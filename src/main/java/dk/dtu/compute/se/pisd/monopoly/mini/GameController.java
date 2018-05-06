@@ -48,7 +48,7 @@ import gui_main.GUI;
  * based on the basic actions and activities of this game controller. Then, the
  * game controller takes care of updating the GUI.
  * 
- * @author Ekkart Kindler, ekki@dtu.dk, Nils Rasamoel, Alexander Kjeldsen, s165477@student.dtu.dk, Jacob Jørgensen
+ * @author Ekkart Kindler, ekki@dtu.dk, Nils Rasamoel, Alexander Kjeldsen, s165477@student.dtu.dk, Jacob Jørgensen, Tahany Nemer, 
  *
  */
 public class GameController {
@@ -298,10 +298,9 @@ public class GameController {
 	 * if the player goes broke in this move. Note that this is still a very basic
 	 * implementation of the move of a player; many aspects are still missing.
 	 * 
-	 * @param player
-	 *            the player making the move
-	 * @throws PlayerBrokeException
-	 *             if the player goes broke during the move
+	 * @param player the player making the move               
+	 * @author Tahany Nemer,                   
+	 * @throws PlayerBrokeException if the player goes broke during the move
 	 */
 	public void makeMove(Player player) throws PlayerBrokeException {
 
@@ -388,12 +387,10 @@ public class GameController {
 	 * This method implements the activity of moving the player to the new position,
 	 * including all actions associated with moving the player to the new position.
 	 * 
-	 * @param player
-	 *            the moved player
-	 * @param space
-	 *            the space to which the player moves
-	 * @throws PlayerBrokeException
-	 *             when the player goes broke doing the action on that space
+	 * @param player the moved player
+	 * @param space the space to which the player moves
+	 * @author Tahany Nemer,
+	 * @throws PlayerBrokeException when the player goes broke doing the action on that space
 	 */
 	public void moveToSpace(Player player, Space space) throws PlayerBrokeException {
 		int posOld = player.getCurrentPosition().getIndex();
@@ -423,9 +420,8 @@ public class GameController {
 
 	/**
 	 * The method implements the action of a player going directly to jail.
-	 * 
-	 * @param player
-	 *            the player going to jail
+	 * @author Tahany Nemer,
+	 * @param player the player going to jail
 	 */
 	public void gotoJail(Player player) {
 		gui.showMessage("Spiller " + player.getName() + "Gå direkte i fængslet uden at passere Start");
@@ -436,10 +432,8 @@ public class GameController {
 	/**
 	 * The method implementing the activity of taking a chance card.
 	 * 
-	 * @param player
-	 *            the player taking a chance card
-	 * @throws PlayerBrokeException
-	 *             if the player goes broke by this activity
+	 * @param player the player taking a chance card
+	 * @throws PlayerBrokeException if the player goes broke by this activity
 	 */
 	public void takeChanceCard(Player player) throws PlayerBrokeException {
 		Card card = game.drawCardFromDeck();
@@ -472,10 +466,9 @@ public class GameController {
 	 * given amount of money, he will be broke; this is to help the player make the
 	 * right choices to free enough money.
 	 * 
-	 * @param player
-	 *            the player
-	 * @param amount
-	 *            the amount the player should have available after the act
+	 * @param player the player
+	 * @param amount the amount the player should have available after the act
+	 * @author Tahany Nemer,
 	 */
 	public void obtainCash(Player player, int amount) {
 		int oldBalance, newBalance, needed, earned;
@@ -502,8 +495,7 @@ public class GameController {
 	 * The activity that gives the player the opportunity to sell houses, properties
 	 * and mortgage properties.
 	 * 
-	 * @param player
-	 *            the player
+	 * @param player the player
 	 */
 	public void obtainCash(Player player) {
 		String selection = gui.getUserSelection("Hvad vil du optjene penge med?", "Bolig", "Grund", "Pantsæt");
@@ -521,8 +513,7 @@ public class GameController {
 	 * The activity that gives the player the opportunity to buy houses, properties
 	 * and pay mortgage.
 	 * 
-	 * @param player
-	 *            the player
+	 * @param player the player
 	 */
 	public void spendCash(Player player) {
 		String selection = gui.getUserSelection("Hvad vil du bruge penge på?", "Bolig", "Spillers grund", "Pant");
@@ -788,8 +779,7 @@ public class GameController {
 	/**
 	 * Starts a trade dialogue.
 	 * 
-	 * @param player
-	 *            the trading player
+	 * @param player the trading player
 	 */
 	public void trade(Player player) {
 		boolean choice = gui.getUserLeftButtonPressed(player.getName() + " har du lyst til at handle?", "Ja", "Nej");

@@ -18,8 +18,8 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
  * {@link dk.dtu.compute.se.pisd.designpatterns.Subject} of the observer
  * design pattern.
  * 
- * @author Ekkart Kindler, ekki@dtu.dk, Nils Rasamoel, Alexander Kjeldsen, s165477@student.dtu.dk, Jacob Jørgensen
- *
+ * @author Ekkart Kindler, ekki@dtu.dk, Nils Rasamoel, Alexander Kjeldsen, s165477@student.dtu.dk
+ * @author Ahad Imtiaz, Jacob Jørgensen
  */
 public class Player extends Subject {
 

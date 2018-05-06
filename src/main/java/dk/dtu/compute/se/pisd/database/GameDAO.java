@@ -14,7 +14,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 
 /**
  * 
- * @author Alexander Kjeldsen, s165477@student.dtu.dk
+ * @author Alexander Kjeldsen, s165477@student.dtu.dk, Jacob Jørgensen
  *
  */
 
@@ -105,8 +105,8 @@ public class GameDAO implements IGameDAO {
 			// List<Card> jailc = p.getOwnedCards();
 			int jailCard = p.getOwnedCards().size();
 			int jailTime = p.getPrisonTime();
-			connector.doUpdate("call update_player(" + hasLost + "," + balance + "," + inJail + "," + jailCard + ","
-					+ jailTime + "," + gid + "," + id + ");");
+			connector.runProcedure("update_player", hasLost, balance, inJail, jailCard, jailTime, gid, id);
+			
 		}
 		// nu opdateres car-tabellen og det eneste der skal
 		// opdateres løbende er position
@@ -135,11 +135,10 @@ public class GameDAO implements IGameDAO {
 					boolean mortgaged = prop.isMortgaged();
 					int houses = 0;
 
-					// Følgende sql sætning virker i workbench
-					// update properties set ownerP=0, spaceNumber=0, Mortagaged=true where
-					// gameid=1;
-					connector.doUpdate(
-							"call update_properties(" + pid + "," + mortgaged + "," + gid + "," + spaceNumber + ");");
+					
+					
+					connector.runProcedure("update_properties", pid, mortgaged, gid, spaceNumber);
+//					
 				}
 			}
 			if (current instanceof RealEstate) {

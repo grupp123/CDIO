@@ -41,7 +41,7 @@ import gui_main.GUI;
  * sense of the MVC-principle, which updates the GUI when
  * the state of the game (model) changes.
  * 
- * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Ekkart Kindler, ekki@dtu.dk, Jacob Jørgensen
  *
  */
 public class View implements Observer {
@@ -178,6 +178,7 @@ public class View implements Observer {
 
 	/**
 	 * Creates and initiallizes the fields, cards and players in the GUI.
+	 * @author Jacob Jørgesen,
 	 * @return the created GUI object
 	 */
 	public GUI createGUI() {

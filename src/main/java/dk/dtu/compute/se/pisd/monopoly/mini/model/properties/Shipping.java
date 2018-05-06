@@ -7,7 +7,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeExceptio
 
 /**
  * Represents the shipping field from the Matador gameboard.
- * @author Nils Rasamoel
+ * @author Nils Rasamoel, Jacob Jørgensen
  *
  */
 public class Shipping extends Property{

@@ -30,7 +30,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.Utility;
 /**
  * Main class for setting up and running a (Mini-)Monoploy game.
  * 
- * @author Ekkart Kindler, ekki@dtu.dk, Alexander Kjeldsen, s165477@student.dtu.dk
+ * @author Ekkart Kindler, ekki@dtu.dk, Alexander Kjeldsen, s165477@student.dtu.dk, Jacob Jørgensen,
  *
  */
 public class MiniMonopoly {
@@ -39,7 +39,7 @@ public class MiniMonopoly {
 	 * Creates the initial static situation of a Monopoly game. Note
 	 * that the players are not created here, and the chance cards
 	 * are not shuffled here.
-	 * 
+	 * @author Jacob Jørgesen,
 	 * @return the initial game board and (not shuffled) deck of chance cards 
 	 */
 	public static Game createGame() {

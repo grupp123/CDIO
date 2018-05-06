@@ -13,7 +13,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.NoHousesAvailableEx
  * {@link dk.dtu.compute.se.pisd.designpatterns.Subject} of the observer
  * design pattern.
  * 
- * @author Ekkart Kindler, ekki@dtu.dk, Nils Rasamoel
+ * @author Ekkart Kindler, ekki@dtu.dk, Nils Rasamoel, Jacob Jørgensen
  *
  */
 public class Game extends Subject {

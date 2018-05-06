@@ -48,7 +48,7 @@ import gui_main.GUI;
  * based on the basic actions and activities of this game controller. Then, the
  * game controller takes care of updating the GUI.
  * 
- * @author Ekkart Kindler, ekki@dtu.dk, Nils Rasamoel, Alexander Kjeldsen, s165477@student.dtu.dk
+ * @author Ekkart Kindler, ekki@dtu.dk, Nils Rasamoel, Alexander Kjeldsen, s165477@student.dtu.dk, Jacob Jørgensen
  *
  */
 public class GameController {
@@ -65,9 +65,6 @@ public class GameController {
 
 	private GameDAO dao = new GameDAO(c);
 
-	private static int CurrentMaxGameID;
-
-	private static int CurrentMaxPlayerID;
 
 	/**
 	 * Constructor for a controller of a game.
@@ -82,6 +79,7 @@ public class GameController {
 
 	/**
 	 * Choose to load a game or make a new one.
+	 * @author Jacob Jørgesen,
 	 */
 
 	public void chooseNewOrLoadGame() {
@@ -105,7 +103,7 @@ public class GameController {
 
 	/**
 	 * Load game.
-	 * 
+	 * @author Jacob Jørgesen,
 	 * @throws Exception
 	 */
 
@@ -138,9 +136,7 @@ public class GameController {
 	 * @throws SQLException
 	 */
 	private void createPlayers() throws SQLException {
-		CurrentMaxGameID = 0;
-		CurrentMaxPlayerID = 0;
-		// Navnet skal være på mindst 1 tegn
+		// The name must be at least one letter
 		String regexMorethanZero = ".+";
 		int y = 1;
 		do {
@@ -172,7 +168,7 @@ public class GameController {
 			names.add(name);
 
 			String pickedColor = gui.getUserSelection("Vælg din bils farve", colorString.toArray(new String[0]));
-			CurrentMaxPlayerID++;
+			
 
 			int colorIndex = colorString.indexOf(pickedColor);
 			Color color = colorList.get(colorIndex);

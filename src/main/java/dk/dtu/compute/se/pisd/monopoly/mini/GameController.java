@@ -113,6 +113,7 @@ public class GameController {
 		if (spil.size() == 0) {
 			gui.showMessage("Du har ingen gemte spil i databasen, opret nyt spil.");
 			createPlayers();
+			return;
 		}
 		String[] spilstr = new String[spil.size()];
 

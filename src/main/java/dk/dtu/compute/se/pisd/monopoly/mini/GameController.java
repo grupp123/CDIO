@@ -132,7 +132,7 @@ public class GameController {
 
 	/**
 	 * Creates the players for the game based on user input.
-	 * 
+	 * @author Jacob Jørgesen,
 	 * @throws SQLException
 	 */
 	private void createPlayers() throws SQLException {

@@ -15,7 +15,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions.PlayerBrokeExceptio
  * {@link dk.dtu.compute.se.pisd.designpatterns.Subject} of
  * the observer design pattern.
  * 
- * @author Ekkart Kindler, ekki@dtu.dk, Jacob Jørgensen 
+ * @author Ekkart Kindler, ekki@dtu.dk, Jacob Jørgensen, Nicolai Dam
  *
  */
 public class Space extends Subject {

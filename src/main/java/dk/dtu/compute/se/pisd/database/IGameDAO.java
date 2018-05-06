@@ -8,7 +8,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
  /**
   * this class implements the DAO and connects the program to the database
   *  
-  * @author Alexander Kjeldsen, s165477@student.dtu.dk, Jacob Jørgensen
+  * @author Alexander Kjeldsen, s165477@student.dtu.dk, Jacob Jørgensen, Nicolai Dam
   *
   */
 
@@ -18,7 +18,7 @@ public interface IGameDAO {
 	/**
 	 * creates a new reference to update and load in the database.
 	 * @param game
-	 * @author Jacob Jørgensen
+	 * @author Jacob Jørgensen, Nicolai Dam
 	 * @throws SQLException
 	 */
 
@@ -28,7 +28,7 @@ public interface IGameDAO {
 	 * updates each game automatically and saves the progress to the database.
 	 * this is so that the user doesn't have to get prompted. 
 	 * @param game
-	 * @author Jacob Jørgensen
+	 * @author Jacob Jørgensen, Nicolai Dam
 	 * @throws SQLException
 	 */
 	
@@ -39,7 +39,7 @@ public interface IGameDAO {
 	 * 
 	 * @param game
 	 * @param gameID
-	 * @author Jacob Jørgensen
+	 * @author Jacob Jørgensen, Nicolai Dam
 	 * @throws SQLException
 	 */
 	

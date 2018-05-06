@@ -14,7 +14,7 @@ import dk.dtu.compute.se.pisd.monopoly.mini.model.properties.RealEstate;
 
 /**
  * 
- * @author Alexander Kjeldsen, s165477@student.dtu.dk, Jacob Jørgensen
+ * @author Alexander Kjeldsen, s165477@student.dtu.dk, Jacob Jørgensen, Nicolai Dam
  *
  */
 

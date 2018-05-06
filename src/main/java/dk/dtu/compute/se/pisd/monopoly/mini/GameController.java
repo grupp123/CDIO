@@ -48,8 +48,8 @@ import gui_main.GUI;
  * based on the basic actions and activities of this game controller. Then, the
  * game controller takes care of updating the GUI.
  * 
- * @author Ekkart Kindler, ekki@dtu.dk, Nils Rasamoel, Alexander Kjeldsen, s165477@student.dtu.dk, Jacob Jørgensen, Tahany Nemer, Nicolai Dam 
- *
+ * @author Ekkart Kindler, ekki@dtu.dk, Nils Rasamoel, Alexander Kjeldsen, s165477@student.dtu.dk, Jacob Jørgensen
+ * @author Tahany Nemer, Nicolai Dam, Ahad Imtiaz
  */
 public class GameController {
 

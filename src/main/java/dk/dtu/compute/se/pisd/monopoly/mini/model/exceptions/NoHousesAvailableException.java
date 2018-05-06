@@ -2,6 +2,12 @@ package dk.dtu.compute.se.pisd.monopoly.mini.model.exceptions;
 
 import dk.dtu.compute.se.pisd.monopoly.mini.model.Game;
 
+
+/**
+ * An exception that indicates that there are no houses available to buy.
+ * @author Ahad Imtiaz
+ *
+ */
 @SuppressWarnings("serial")
 public class NoHousesAvailableException extends Exception {
 

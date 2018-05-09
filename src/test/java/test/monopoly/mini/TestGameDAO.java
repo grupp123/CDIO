@@ -41,7 +41,6 @@ public class TestGameDAO {
 	Game game;
 	GameDAO dao;
 	Connector connector = new Connector();
-	Player updatePlayer;
 
 	@Before
 	public void setUp() throws Exception {
@@ -74,9 +73,8 @@ public class TestGameDAO {
 			for (Player player: game.getPlayers()) {
 				player.setBalance(40);
 			}
-			updatePlayer = game.getPlayers().get(0);
-			updatePlayer.addOwnedProperty((Property) game.getSpaces().get(1));
-			updatePlayer.setColor(Color.cyan);
+			game.getPlayers().get(0).addOwnedProperty((Property) game.getSpaces().get(1));
+			game.getPlayers().get(1).setInPrison(true);
 			dao.update(game);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -86,24 +84,33 @@ public class TestGameDAO {
 	
 	@Test
 	public void testLoadWGetGameID() {
+		Player player = null;
+		String gameName = "Test_Load_"+Math.random()*Math.pow(1337, Math.random());
+		
 		try {
-			game.setGameName("Test_Load");
+			game.setGameName(gameName);
 			dao.create(game);
-			for (Player player: game.getPlayers()) {
-				player.setBalance(40);
-			}
-			updatePlayer = game.getPlayers().get(0);
-			updatePlayer.addOwnedProperty((Property) game.getSpaces().get(1));
-			updatePlayer.setColor(Color.cyan);
-			dao.update(game);
-			game.setPlayers(new ArrayList<Player>());
 			
-			dao.load(game, dao.getGameIdFromName("Test_Load"));
-		} catch (SQLException e) {
+			for (Player p: game.getPlayers()) {
+				p.setBalance(40);
+			}
+			
+			player = game.getPlayers().get(0);
+			player.addOwnedProperty((Property) game.getSpaces().get(8));
+			player.setBalance(30000);
+			
+			//Update the game on the database
+			dao.update(game);
+			//Erase players from the game
+			game.setPlayers(new ArrayList<Player>());
+			//Load the game back
+			dao.load(game, dao.getGameIdFromName(gameName));
+		} 
+		catch (SQLException e) {
 			e.printStackTrace();
 			fail("Failed because of exception: "+e);
 		}
-		assertEquals(updatePlayer.toString(),game.getPlayers().get(0).toString());
+		assertEquals(player,game.getPlayers().get(0));
 	}
 
 	private void initializeGame() {
@@ -571,7 +578,7 @@ public class TestGameDAO {
 		Player[] players = new Player[6];
 		for (int i = 0; i < 6; i++) {
 			players[i] = new Player();
-			players[i].setName("Spiller"+i+1);
+			players[i].setName("Spiller"+(i+1));
 			players[i].setCurrentPosition(game.getSpaces().get(0));
 			players[i].setColor(colors[i]);
 			players[i].setId(i);

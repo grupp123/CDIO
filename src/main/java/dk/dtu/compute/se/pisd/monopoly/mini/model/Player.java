@@ -328,6 +328,36 @@ public class Player extends Subject {
 		return _throw;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + balance;
+		result = prime * result + id;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj != null) {
+			if (getClass() == obj.getClass()) {
+				Player other = (Player)obj;
+				if (id == other.getId()) {
+					if (balance == other.getBalance()) {
+						if (name.equals(other.getName())) {
+							return true;
+						}
+					}
+				}
+				
+			}
+		}
+		
+		return false;
+		
+	}
+
 	/**
 	 * Sets the player's last dice throw value.
 	 * @param _throw the player's throw.

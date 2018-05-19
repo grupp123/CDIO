@@ -64,6 +64,9 @@ public class GameController {
 	private Repository repository = Repository.getInstance();
 
 	private IGameDAO dao = repository.game();
+	
+	private int[][] _throws = {{3,5},{2,2},{4,4},{3,3},{5,2},{1,6},{3,4},{6,6}};
+	private int round = 0;
 
 
 	/**
@@ -308,8 +311,12 @@ public class GameController {
 		boolean castDouble;
 		int doublesCount = 0;
 		do {
-			int die1 = (int) (1 + 6.0 * Math.random());
-			int die2 = (int) (1 + 6.0 * Math.random());
+//			int die1 = (int) (1 + 6.0 * Math.random());
+//			int die2 = (int) (1 + 6.0 * Math.random());
+			int die1 = _throws[round][0];
+			int die2 = _throws[round][1];
+			round = (++round == _throws.length)? 0 : round;
+			
 			player.set_throw(die1 + die2);
 			castDouble = (die1 == die2);
 			gui.setDice(die1, die2);
